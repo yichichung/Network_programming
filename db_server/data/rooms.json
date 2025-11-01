@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Test Room",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "idle",
+    "id": 1
+  },
+  {
+    "name": "Alice's Game Room",
+    "host_user_id": 2,
+    "visibility": "public",
+    "status": "idle",
+    "id": 2
+  },
+  {
+    "name": "Test Game",
+    "host_user_id": 4,
+    "visibility": "public",
+    "status": "idle",
+    "id": 3
+  }
+]

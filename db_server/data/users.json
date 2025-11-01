@@ -1,0 +1,49 @@
+[
+  {
+    "name": "Alice Updated",
+    "email": "alice@example.com",
+    "password_hash": "hashed_password_123",
+    "id": 1
+  },
+  {
+    "name": "Alice",
+    "email": "alice@test.com",
+    "password_hash": "ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f",
+    "id": 2,
+    "last_login_at": "2025-11-01T22:03:17.680376"
+  },
+  {
+    "name": "Bob",
+    "email": "bob@test.com",
+    "password_hash": "c6ba91b90d922e159893f46c387e5dc1b3dc5c101a5a4522f03b987177a24a91",
+    "id": 3,
+    "last_login_at": "2025-11-01T22:03:17.680960"
+  },
+  {
+    "name": "TestAlice",
+    "email": "testalice@test.com",
+    "password_hash": "13d249f2cb4127b40cfa757866850278793f814ded3c587fe5889e889a7a9f6c",
+    "id": 4,
+    "last_login_at": "2025-11-01T23:43:58.914087"
+  },
+  {
+    "name": "TestBob",
+    "email": "testbob@test.com",
+    "password_hash": "13d249f2cb4127b40cfa757866850278793f814ded3c587fe5889e889a7a9f6c",
+    "id": 5,
+    "last_login_at": "2025-11-01T23:43:58.915108"
+  },
+  {
+    "name": "ManualAlice",
+    "email": "manualalice@test.com",
+    "password_hash": "d74ff0ee8da3b9806b18c877dbf29bbde50b5bd8e4dad7a3a725000feb82e8f1",
+    "id": 6,
+    "last_login_at": "2025-11-01T23:45:57.805763"
+  },
+  {
+    "name": "ManualBob",
+    "email": "manualbob@test.com",
+    "password_hash": "d74ff0ee8da3b9806b18c877dbf29bbde50b5bd8e4dad7a3a725000feb82e8f1",
+    "id": 7
+  }
+]
