@@ -1,5 +1,29 @@
 # Game Instructions - 2-Player Tetris
 
+## Quick Start (For Players)
+
+**Want to play right now? Follow these 3 simple steps:**
+
+1. **Start the servers** (or ask your admin to do this):
+   ```bash
+   cd db_server && python3 db_server.py &
+   cd ../lobby_server && python3 lobby_server.py &
+   ```
+
+2. **Both players run:**
+   ```bash
+   python3 play_lobby.py
+   ```
+
+3. **Follow the menu prompts:**
+   - Player 1: Register → Login → Create Room → Start Game
+   - Player 2: Register → Login → Join Room (enter Room ID from Player 1)
+   - Both: Copy and paste the game client command when it appears
+
+That's it! No coding required!
+
+---
+
 ## System Architecture
 
 ```
@@ -58,10 +82,60 @@ python3 test_lobby_client.py
 
 ### Step 4: Two Players Join and Start Game
 
+**🎮 EASY MODE - Use Interactive Client (Recommended)**
+
+**Player 1 (Host):**
+
+```bash
+python3 play_lobby.py
+```
+
+Then follow these steps:
+1. Choose `1` to Register (or `2` if you already have an account)
+   - Enter your name (e.g., "Alice")
+   - Enter your email (e.g., "alice@test.com")
+   - Enter your password (e.g., "pass123")
+2. Choose `2` to Login
+   - Enter your email and password
+3. Choose `3` to Create Room
+   - Enter room name (e.g., "Game Room")
+   - Choose visibility (1 for public, 2 for private)
+   - **Note the Room ID** displayed - share this with Player 2!
+4. Wait for Player 2 to join
+5. Choose `6` to Start Game
+   - Copy the game client command that appears
+   - Open a new terminal and run that command
+
+**Player 2 (Guest):**
+
+```bash
+python3 play_lobby.py
+```
+
+Then follow these steps:
+1. Choose `1` to Register (or `2` if you already have an account)
+   - Enter your name (e.g., "Bob")
+   - Enter your email (e.g., "bob@test.com")
+   - Enter your password (e.g., "pass456")
+2. Choose `2` to Login
+   - Enter your email and password
+3. Choose `5` to Join Room
+   - Enter the Room ID that Player 1 shared
+4. Wait for Player 1 to start the game
+5. When the game starts, copy the game client command
+   - Open a new terminal and run that command
+
+---
+
+**💻 ADVANCED MODE - Use Python Code (For Developers)**
+
+<details>
+<summary>Click to expand Python code method</summary>
+
 **Player 1 - Connect to Lobby:**
 
 ```bash
-# In Python interactive shell or create a simple lobby client
+# In Python interactive shell
 python3
 >>> from test_lobby_client import LobbyClient
 >>> alice = LobbyClient()
@@ -94,7 +168,26 @@ python3
 
 This will return game server connection info (host and port).
 
+</details>
+
 ### Step 5: Launch Game Clients
+
+**🎮 EASY MODE:**
+
+When using `play_lobby.py`, the game client command is **automatically generated** for you!
+
+After the host starts the game (Step 4, option 6), both players will see:
+
+```
+LAUNCH YOUR GAME CLIENT NOW:
+python3 game_client.py --host localhost --port 10100 --room-id 1 --user-id 1
+```
+
+Simply **copy and paste** this command into a new terminal window.
+
+---
+
+**💻 ADVANCED MODE:**
 
 The lobby will automatically start a Game Server. Players need to launch their game clients.
 
