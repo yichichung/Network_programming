@@ -19,5 +19,12 @@
     "visibility": "public",
     "status": "idle",
     "id": 3
+  },
+  {
+    "name": "nina",
+    "host_user_id": 8,
+    "visibility": "public",
+    "status": "playing",
+    "id": 4
   }
 ]

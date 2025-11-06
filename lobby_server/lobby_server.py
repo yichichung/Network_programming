@@ -4,10 +4,14 @@ import json
 import threading
 import logging
 import hashlib
+import signal
+import sys
+import argparse
 from datetime import datetime
 from protocol import send_message, recv_message, ProtocolError
 from db_client import DBClient
 from game_manager import GameManager
+from queue import Queue  # 新增：發送任務隊列
 
 # 設定 logging
 logging.basicConfig(
@@ -24,10 +28,11 @@ class LobbyServer:
         self.port = port
         self.server_socket = None
         self.running = False
+        self.shutdown_flag = False
         
         # DB 客戶端
         self.db = DBClient(db_host, db_port)
-        
+
         # Game Server 管理器
         self.game_manager = GameManager()
         
@@ -41,6 +46,53 @@ class LobbyServer:
         
         # 邀請追蹤
         self.pending_invitations = {}  # {user_id: [{"room_id": ..., "from": ...}]}
+
+        # 發送任務隊列與 worker（避免單一慢 client 阻塞 request thread）
+        self.send_queue = Queue()
+        self.send_workers = []
+        self._start_send_workers(num_workers=4)
+    
+    def _start_send_workers(self, num_workers=4):
+        """啟動固定數量的發送 worker（daemon threads）"""
+        for i in range(num_workers):
+            t = threading.Thread(target=self._send_worker, name=f"send-worker-{i}", daemon=True)
+            t.start()
+            self.send_workers.append(t)
+        logger.info(f"🔁 已啟動 {num_workers} 個 send worker")
+
+    def _send_worker(self):
+        """持續處理 send_queue 的發送任務"""
+        while True:
+            try:
+                user_id, message = self.send_queue.get()
+                sock = None
+                try:
+                    with self.lock:
+                        user_info = self.online_users.get(user_id)
+                        if not user_info:
+                            continue
+                        sock = user_info["socket"]
+
+                    # 實際發送（仍使用既有的 protocol.send_message）
+                    send_message(sock, json.dumps(message))
+                    logger.debug(f"[worker] 已發送給 user {user_id}: {message}")
+                except Exception as e:
+                    logger.error(f"[worker] 傳送給 {user_id} 發生錯誤: {e}")
+                    # 嘗試清理失效連線（若 socket 與記錄一致）
+                    try:
+                        with self.lock:
+                            if user_id in self.online_users and self.online_users[user_id]["socket"] is sock:
+                                del self.user_sockets[sock]
+                                del self.online_users[user_id]
+                                logger.info(f"🧹 已移除連線失敗的使用者 {user_id}")
+                    except Exception:
+                        pass
+                finally:
+                    self.send_queue.task_done()
+            except Exception as e:
+                logger.error(f"[worker] 未預期錯誤: {e}")
+                import time
+                time.sleep(0.1)
     
     def start(self):
         """啟動 Lobby Server"""
@@ -129,6 +181,8 @@ class LobbyServer:
                         response = self.handle_respond_invitation(data, client_sock)
                     elif action == "start_game":
                         response = self.handle_start_game(data, client_sock)
+                    elif action == "report_game_result":
+                        response = self.handle_game_result(data)
                     else:
                         response = {"status": "error", "message": f"未知的 action: {action}"}
                     
@@ -344,7 +398,7 @@ class LobbyServer:
         
         logger.info(f"🚪 使用者 {user_id} 加入房間 {room_id}")
         
-        # 廣播給房間內其他成員
+        # 廣播給房間內其他成員（非阻塞）
         self.broadcast_to_room(room_id, {
             "type": "room_update",
             "action": "user_joined",
@@ -534,60 +588,136 @@ class LobbyServer:
                 "game_server_port": game_port
             }
         }
-    
+
+    def handle_game_result(self, data):
+        """處理遊戲結果回報"""
+        room_id = data.get("room_id")
+        winner = data.get("winner")
+        results = data.get("results", [])
+
+        if not room_id:
+            return {"status": "error", "message": "缺少 room_id"}
+
+        # 儲存遊戲記錄到資料庫
+        try:
+            # 提取玩家 ID
+            user_ids = [r["userId"] for r in results]
+
+            # 建立 match_id (使用時間戳)
+            match_id = f"match_{room_id}_{int(datetime.now().timestamp())}"
+
+            # 儲存到資料庫
+            self.db.create_gamelog(match_id, room_id, user_ids, results)
+            logger.info(f"📊 已儲存遊戲記錄: {match_id}")
+        except Exception as e:
+            logger.error(f"❌ 儲存遊戲記錄失敗: {e}")
+
+        # 重置房間狀態為 waiting
+        self.db.update_room(room_id, {"status": "waiting"})
+        logger.info(f"🏠 房間 {room_id} 狀態重置為 waiting")
+
+        # 從 GameManager 清除遊戲
+        with self.lock:
+            if room_id in self.game_manager.active_games:
+                del self.game_manager.active_games[room_id]
+
+        return {"status": "success", "message": "遊戲結果已記錄"}
+
     # ========== 輔助函式 ==========
     
     def broadcast_to_room(self, room_id, message, exclude_user=None):
-        """廣播訊息給房間內所有成員"""
+        """廣播訊息給房間內所有成員（非阻塞）"""
         with self.lock:
             if room_id not in self.rooms:
                 return
             
-            members = self.rooms[room_id]["members"]
-            for member_id in members:
-                if member_id != exclude_user:
-                    self.send_to_user(member_id, message)
+            members = list(self.rooms[room_id]["members"])  # 複製避免 race condition
+        for member_id in members:
+            if member_id != exclude_user:
+                self.send_to_user(member_id, message)
     
     def send_to_user(self, user_id, message):
-        """發送訊息給特定使用者（非阻塞）"""
-        with self.lock:
-            user_info = self.online_users.get(user_id)
-            if not user_info:
-                return
-            
-            sock = user_info["socket"]
-        
+        """把發送任務放到 queue，由 worker 實際送出（非阻塞）"""
         try:
-            send_message(sock, json.dumps(message))
+            self.send_queue.put((user_id, message))
         except Exception as e:
-            logger.error(f"❌ 發送訊息給使用者 {user_id} 失敗: {e}")
+            logger.error(f"❌ enqueue 訊息給使用者 {user_id} 失敗: {e}")
     
     def shutdown(self):
-        """關閉伺服器"""
+        """關閉伺服器（支援多次呼叫）"""
+        if self.shutdown_flag:
+            return  # 已經關閉過了
+
+        self.shutdown_flag = True
         logger.info("🛑 正在關閉 Lobby Server...")
         self.running = False
-        
+
         # 關閉所有 Game Server
-        self.game_manager.shutdown_all()
-        
+        try:
+            self.game_manager.shutdown_all()
+        except Exception as e:
+            logger.error(f"關閉 Game Servers 時發生錯誤: {e}")
+
         # 關閉 DB 連線
-        self.db.disconnect()
-        
+        try:
+            self.db.disconnect()
+        except Exception as e:
+            logger.error(f"關閉 DB 連線時發生錯誤: {e}")
+
         # 關閉伺服器 socket
         if self.server_socket:
+            try:
+                self.server_socket.shutdown(socket.SHUT_RDWR)
+            except:
+                pass
             try:
                 self.server_socket.close()
             except:
                 pass
-        
+
         logger.info("✅ Lobby Server 已關閉")
 
 
 if __name__ == "__main__":
-    server = LobbyServer(host='0.0.0.0', port=10002)
+    # 解析命令列參數
+    parser = argparse.ArgumentParser(description='Lobby Server for 2-Player Tetris')
+    parser.add_argument('--host', type=str, default='0.0.0.0', help='Host address (default: 0.0.0.0)')
+    parser.add_argument('--port', type=int, default=10002, help='Port number (default: 10002)')
+    parser.add_argument('--db-host', type=str, default='localhost', help='DB Server host (default: localhost)')
+    parser.add_argument('--db-port', type=int, default=10001, help='DB Server port (default: 10001)')
+    args = parser.parse_args()
+
+    # 建立伺服器實例
+    server = LobbyServer(host=args.host, port=args.port, db_host=args.db_host, db_port=args.db_port)
+
+    # 設定信號處理器，確保優雅關閉
+    def signal_handler(sig, *_args):
+        logger.info(f"\n⚠️ 收到信號 {sig}，正在關閉伺服器...")
+        server.shutdown()
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, signal_handler)   # Ctrl+C
+    signal.signal(signal.SIGTERM, signal_handler)  # kill command
+
     try:
+        logger.info(f"🚀 啟動 Lobby Server (Host: {args.host}, Port: {args.port})")
+        logger.info(f"📊 DB Server: {args.db_host}:{args.db_port}")
+        logger.info("使用 Ctrl+C 停止伺服器")
         server.start()
-    except KeyboardInterrupt:
-        logger.info("\n⚠️ 收到 Ctrl+C")
+    except OSError as e:
+        if e.errno == 48 or "Address already in use" in str(e):
+            logger.error(f"❌ 埠 {args.port} 已被使用")
+            logger.error("解決方法:")
+            logger.error(f"  1. 使用不同的埠: python3 lobby_server.py --port <其他埠號>")
+            logger.error(f"  2. 找出並關閉佔用埠的程式: lsof -i :{args.port}")
+            logger.error(f"  3. 等待幾秒鐘後重試（系統可能正在釋放埠）")
+        else:
+            logger.error(f"❌ 發生錯誤: {e}")
+        sys.exit(1)
+    except Exception as e:
+        logger.error(f"❌ 發生未預期的錯誤: {e}")
+        import traceback
+        traceback.print_exc()
+        sys.exit(1)
     finally:
         server.shutdown()
