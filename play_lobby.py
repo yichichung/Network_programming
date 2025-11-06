@@ -260,11 +260,7 @@ class InteractiveLobbyClient:
             resp = self.send_request("start_game", {"room_id": self.current_room_id})
             if resp.get("status") == "success":
                 game_info = resp["data"]
-                print("\n✅ 遊戲伺服器啟動成功！")
-                print(f"\n請在新終端機執行：")
-                print("="*60)
-                print(f"python3 game_client.py --host {game_info.get('game_server_host','localhost')} --port {game_info.get('game_server_port')} --room-id {self.current_room_id} --user-id {self.user_id}")
-                print("="*60 + "\n")
+                print("\n✅ 遊戲伺服器啟動成功！等待通知...\n")
                 return game_info
             else:
                 print(f"\n❌ 啟動遊戲失敗: {resp.get('message')}")

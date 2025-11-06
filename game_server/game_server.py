@@ -208,33 +208,56 @@ class GameServer:
         sock = player_info["socket"]
         board = player_info["board"]
 
+        logger.info(f"🎮 Starting input handler for player {user_id}")
+
         try:
             sock.settimeout(1.0)
 
             while self.running and not self.game_over:
                 try:
                     msg_str = recv_message(sock)
+                    if not msg_str:
+                        logger.warning(f"⚠️ Empty message from {user_id}")
+                        continue
+
                     msg = json.loads(msg_str)
 
                     if msg.get("type") == "INPUT":
                         action = msg.get("action")
                         seq = msg.get("seq", 0)
 
+                        logger.info(f"🎮 Received INPUT from {user_id}: {action} (seq: {seq})")
+
                         # Process input
                         with self.lock:
                             if seq > player_info["last_input_seq"]:
                                 player_info["last_input_seq"] = seq
+                                logger.info(f"✅ Processing action: {action}")
                                 self.process_action(board, action)
+                            else:
+                                logger.warning(f"⚠️ Ignoring old input seq {seq} (last: {player_info['last_input_seq']})")
 
                 except socket.timeout:
                     continue
-                except ProtocolError:
+                except ProtocolError as e:
+                    # Check if it's a timeout error (not a fatal error)
+                    if "逾時" in str(e) or "timeout" in str(e).lower():
+                        continue  # Treat timeout as non-fatal
+                    logger.error(f"❌ ProtocolError for {user_id}: {e}")
                     break
-                except json.JSONDecodeError:
+                except json.JSONDecodeError as e:
+                    logger.error(f"❌ JSONDecodeError for {user_id}: {e}")
                     continue
+                except Exception as e:
+                    logger.error(f"❌ Unexpected error in input loop for {user_id}: {e}")
+                    import traceback
+                    traceback.print_exc()
+                    break
 
         except Exception as e:
             logger.error(f"❌ Error handling input for {user_id}: {e}")
+            import traceback
+            traceback.print_exc()
         finally:
             logger.info(f"🔌 Player {user_id} input handler stopped")
 
@@ -359,6 +382,7 @@ class GameServer:
                 send_message(player_info["socket"], msg_str)
             except Exception as e:
                 logger.error(f"❌ Failed to send to player: {e}")
+                # Don't log every snapshot, only errors
 
     def check_game_over(self):
         """Check if game is over"""

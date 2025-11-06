@@ -65,10 +65,13 @@ class GameManager:
                     "--player2", str(player2_id)
                 ]
                 
+                # Create log file for game server output
+                log_file = open(f"game_server_{room_id}.log", "w")
+
                 process = subprocess.Popen(
                     cmd,
-                    stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE,
+                    stdout=log_file,
+                    stderr=subprocess.STDOUT,  # Redirect stderr to stdout
                     text=True
                 )
                 
@@ -87,7 +90,8 @@ class GameManager:
                     "process": process,
                     "room_id": room_id,
                     "players": [player1_id, player2_id],
-                    "start_time": time.time()
+                    "start_time": time.time(),
+                    "log_file": log_file
                 }
                 
                 self.active_games[room_id] = game_info
@@ -112,21 +116,23 @@ class GameManager:
         game_info = self.active_games.get(room_id)
         if not game_info:
             return
-        
+
         process = game_info["process"]
-        
+        log_file = game_info.get("log_file")
+
         # 等待行程結束
         return_code = process.wait()
-        
+
         logger.info(f"🎮 Game Server (房間 {room_id}) 已結束 (return code: {return_code})")
-        
-        # 讀取輸出（用於除錯）
-        stdout, stderr = process.communicate()
-        if stdout:
-            logger.debug(f"Game Server stdout: {stdout}")
-        if stderr:
-            logger.error(f"Game Server stderr: {stderr}")
-        
+        logger.info(f"📄 Game Server 日誌已保存到: game_server_{room_id}.log")
+
+        # Close log file
+        if log_file:
+            try:
+                log_file.close()
+            except:
+                pass
+
         # 清理
         with self.lock:
             if room_id in self.active_games:
@@ -141,11 +147,12 @@ class GameManager:
                 return False
             
             process = game_info["process"]
-            
+            log_file = game_info.get("log_file")
+
             try:
                 # 優雅地終止
                 process.terminate()
-                
+
                 # 等待最多 5 秒
                 try:
                     process.wait(timeout=5)
@@ -153,7 +160,14 @@ class GameManager:
                     # 強制殺死
                     logger.warning(f"⚠️ 強制終止 Game Server (房間 {room_id})")
                     process.kill()
-                
+
+                # Close log file
+                if log_file:
+                    try:
+                        log_file.close()
+                    except:
+                        pass
+
                 del self.active_games[room_id]
                 logger.info(f"🛑 已停止 Game Server (房間 {room_id})")
                 return True

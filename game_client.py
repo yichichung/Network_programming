@@ -89,7 +89,7 @@ class GameClient:
         # Input tracking
         self.input_seq = 0
         self.last_key_time = {}
-        self.key_repeat_delay = 0.15  # seconds
+        self.key_repeat_delay = 0.05  # seconds - faster response
 
         # Lock for thread-safe updates
         self.lock = threading.Lock()
@@ -264,6 +264,7 @@ class GameClient:
                 # Check repeat delay
                 last_time = self.last_key_time.get(key, 0)
                 if current_time - last_time > self.key_repeat_delay:
+                    print(f"🎮 Sending input: {action}")  # Debug output
                     self.send_input(action)
                     self.last_key_time[key] = current_time
 
