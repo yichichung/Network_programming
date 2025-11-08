@@ -9,6 +9,7 @@ import json
 import sys
 import os
 import threading
+import subprocess
 
 # Add lobby_server to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'lobby_server'))
@@ -116,10 +117,15 @@ class InteractiveLobbyClient:
         t = notif.get("type")
         if t == "game_start":
             print("\n" + "="*60)
-            print("🎮 遊戲開始！")
+            print("🎮 遊戲開始！正在自動啟動遊戲...")
             print("="*60)
-            print(f"請在新終端機執行：")
-            print(f"python3 game_client.py --host {notif.get('game_server_host','localhost')} --port {notif.get('game_server_port')} --room-id {notif.get('room_id')} --user-id {self.user_id}")
+
+            # 自動啟動遊戲客戶端
+            host = notif.get('game_server_host', 'localhost')
+            port = notif.get('game_server_port')
+            room_id = notif.get('room_id')
+
+            self._launch_game_client(host, port, room_id)
             print("="*60 + "\n")
         elif t == "room_update":
             action = notif.get("action")
@@ -136,6 +142,44 @@ class InteractiveLobbyClient:
         else:
             # 其他通知類型
             pass
+
+    def _launch_game_client(self, host, port, room_id):
+        """自動啟動遊戲客戶端"""
+        try:
+            game_client_path = os.path.join(os.path.dirname(__file__), "game_client.py")
+
+            cmd = [
+                "python3",
+                game_client_path,
+                "--host", host,
+                "--port", str(port),
+                "--room-id", str(room_id),
+                "--user-id", str(self.user_id)
+            ]
+
+            print(f"🚀 啟動遊戲客戶端...")
+            print(f"   Host: {host}")
+            print(f"   Port: {port}")
+            print(f"   Room: {room_id}")
+            print(f"   User: {self.user_name} (ID: {self.user_id})")
+
+            # 創建日誌文件來記錄遊戲客戶端輸出
+            log_file = open(f"game_client_{self.user_id}.log", "w")
+
+            # 在新進程中啟動遊戲客戶端（不等待它結束）
+            subprocess.Popen(
+                cmd,
+                stdout=log_file,
+                stderr=subprocess.STDOUT
+            )
+
+            print("✅ 遊戲視窗應該已經開啟！")
+            print(f"📄 遊戲日誌: game_client_{self.user_id}.log")
+
+        except Exception as e:
+            print(f"❌ 無法啟動遊戲客戶端: {e}")
+            print(f"\n請手動執行：")
+            print(f"python3 game_client.py --host {host} --port {port} --room-id {room_id} --user-id {self.user_id}")
 
     def register_user(self):
         print("\n" + "="*60)

@@ -40,5 +40,12 @@
     "visibility": "public",
     "status": "playing",
     "id": 6
+  },
+  {
+    "name": "ui",
+    "host_user_id": 8,
+    "visibility": "public",
+    "status": "playing",
+    "id": 7
   }
 ]
