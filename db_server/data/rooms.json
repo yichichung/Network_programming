@@ -40,5 +40,12 @@
     "visibility": "public",
     "status": "waiting",
     "id": 6
+  },
+  {
+    "name": "jason",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "waiting",
+    "id": 7
   }
 ]
