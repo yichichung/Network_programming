@@ -1,51 +1,44 @@
 [
   {
-    "name": "r",
-    "host_user_id": 8,
+    "name": "w",
+    "host_user_id": 1,
     "visibility": "public",
     "status": "playing",
     "id": 1
   },
   {
     "name": "t",
-    "host_user_id": 8,
+    "host_user_id": 1,
     "visibility": "public",
     "status": "playing",
     "id": 2
   },
   {
-    "name": "p",
-    "host_user_id": 8,
+    "name": "w",
+    "host_user_id": 1,
     "visibility": "public",
-    "status": "playing",
+    "status": "waiting",
     "id": 3
   },
   {
-    "name": "y",
-    "host_user_id": 8,
+    "name": "ii",
+    "host_user_id": 1,
     "visibility": "public",
-    "status": "playing",
+    "status": "waiting",
     "id": 4
   },
   {
-    "name": "t",
-    "host_user_id": 8,
+    "name": "i",
+    "host_user_id": 1,
     "visibility": "public",
-    "status": "playing",
+    "status": "waiting",
     "id": 5
   },
   {
-    "name": "ty",
-    "host_user_id": 9,
+    "name": "uoiuh",
+    "host_user_id": 1,
     "visibility": "public",
-    "status": "playing",
+    "status": "waiting",
     "id": 6
-  },
-  {
-    "name": "ui",
-    "host_user_id": 8,
-    "visibility": "public",
-    "status": "playing",
-    "id": 7
   }
 ]

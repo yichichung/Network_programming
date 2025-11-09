@@ -1,0 +1,484 @@
+[2025-11-09 01:01:49,815] INFO: 🎮 Game Server started on port 10102
+[2025-11-09 01:01:49,815] INFO:    Room: 2, Players: [1, 2]
+[2025-11-09 01:01:49,815] INFO:    Seed: 1684718454
+[2025-11-09 01:01:52,056] INFO: 📥 Player 1 connected from ('127.0.0.1', 51940)
+[2025-11-09 01:01:52,057] INFO: ✅ Player 2 (P2) ready
+[2025-11-09 01:01:52,058] INFO: 📥 Player 2 connected from ('127.0.0.1', 51941)
+[2025-11-09 01:01:52,058] INFO: ✅ Player 1 (P1) ready
+[2025-11-09 01:01:52,058] INFO: ✅ Both players connected, starting game...
+[2025-11-09 01:01:52,059] INFO: 🎮 Starting input handler for player 2
+[2025-11-09 01:01:52,059] INFO: 🎮 Starting input handler for player 1
+[2025-11-09 01:01:54,644] INFO: 👁️ Spectator connection from ('127.0.0.1', 51943)
+[2025-11-09 01:01:54,645] INFO: ✅ Spectator 3 joined (ID: spectator_3_1762621314645)
+[2025-11-09 01:01:58,755] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 1)
+[2025-11-09 01:01:58,756] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:01:58,817] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 2)
+[2025-11-09 01:01:58,817] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:01:58,989] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 3)
+[2025-11-09 01:01:58,989] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:01:59,052] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 4)
+[2025-11-09 01:01:59,053] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:01:59,495] INFO: 🎮 Received INPUT from 2: DOWN (seq: 5)
+[2025-11-09 01:01:59,495] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:01:59,562] INFO: 🎮 Received INPUT from 2: DOWN (seq: 6)
+[2025-11-09 01:01:59,563] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:01:59,614] INFO: 🎮 Received INPUT from 2: DOWN (seq: 7)
+[2025-11-09 01:01:59,614] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:01:59,665] INFO: 🎮 Received INPUT from 2: DOWN (seq: 8)
+[2025-11-09 01:01:59,665] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:01:59,716] INFO: 🎮 Received INPUT from 2: DOWN (seq: 9)
+[2025-11-09 01:01:59,716] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:01:59,782] INFO: 🎮 Received INPUT from 2: DOWN (seq: 10)
+[2025-11-09 01:01:59,782] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:01:59,833] INFO: 🎮 Received INPUT from 2: DOWN (seq: 11)
+[2025-11-09 01:01:59,833] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:01:59,883] INFO: 🎮 Received INPUT from 2: DOWN (seq: 12)
+[2025-11-09 01:01:59,883] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:00,477] INFO: 🎮 Received INPUT from 2: LEFT (seq: 13)
+[2025-11-09 01:02:00,477] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:00,543] INFO: 🎮 Received INPUT from 2: LEFT (seq: 14)
+[2025-11-09 01:02:00,543] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:00,781] INFO: 🎮 Received INPUT from 2: LEFT (seq: 15)
+[2025-11-09 01:02:00,781] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:00,850] INFO: 🎮 Received INPUT from 2: LEFT (seq: 16)
+[2025-11-09 01:02:00,850] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:01,117] INFO: 🎮 Received INPUT from 2: LEFT (seq: 17)
+[2025-11-09 01:02:01,118] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:01,184] INFO: 🎮 Received INPUT from 2: LEFT (seq: 18)
+[2025-11-09 01:02:01,184] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:01,443] INFO: 🎮 Received INPUT from 2: DOWN (seq: 19)
+[2025-11-09 01:02:01,443] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:01,505] INFO: 🎮 Received INPUT from 2: DOWN (seq: 20)
+[2025-11-09 01:02:01,505] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:01,556] INFO: 🎮 Received INPUT from 2: DOWN (seq: 21)
+[2025-11-09 01:02:01,556] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:01,606] INFO: 🎮 Received INPUT from 2: DOWN (seq: 22)
+[2025-11-09 01:02:01,606] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:01,657] INFO: 🎮 Received INPUT from 2: DOWN (seq: 23)
+[2025-11-09 01:02:01,658] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:01,708] INFO: 🎮 Received INPUT from 2: DOWN (seq: 24)
+[2025-11-09 01:02:01,709] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:01,760] INFO: 🎮 Received INPUT from 2: DOWN (seq: 25)
+[2025-11-09 01:02:01,760] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:01,810] INFO: 🎮 Received INPUT from 2: DOWN (seq: 26)
+[2025-11-09 01:02:01,810] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:01,861] INFO: 🎮 Received INPUT from 2: DOWN (seq: 27)
+[2025-11-09 01:02:01,861] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:01,911] INFO: 🎮 Received INPUT from 2: DOWN (seq: 28)
+[2025-11-09 01:02:01,912] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:03,824] INFO: 🎮 Received INPUT from 2: DOWN (seq: 29)
+[2025-11-09 01:02:03,824] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:03,888] INFO: 🎮 Received INPUT from 2: DOWN (seq: 30)
+[2025-11-09 01:02:03,888] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:03,939] INFO: 🎮 Received INPUT from 2: DOWN (seq: 31)
+[2025-11-09 01:02:03,939] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:03,989] INFO: 🎮 Received INPUT from 2: DOWN (seq: 32)
+[2025-11-09 01:02:03,989] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:04,040] INFO: 🎮 Received INPUT from 2: DOWN (seq: 33)
+[2025-11-09 01:02:04,040] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:04,090] INFO: 🎮 Received INPUT from 2: DOWN (seq: 34)
+[2025-11-09 01:02:04,091] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:04,141] INFO: 🎮 Received INPUT from 2: DOWN (seq: 35)
+[2025-11-09 01:02:04,141] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:04,193] INFO: 🎮 Received INPUT from 2: DOWN (seq: 36)
+[2025-11-09 01:02:04,193] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:04,259] INFO: 🎮 Received INPUT from 2: DOWN (seq: 37)
+[2025-11-09 01:02:04,259] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:04,310] INFO: 🎮 Received INPUT from 2: DOWN (seq: 38)
+[2025-11-09 01:02:04,310] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:04,360] INFO: 🎮 Received INPUT from 2: DOWN (seq: 39)
+[2025-11-09 01:02:04,361] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:04,413] INFO: 🎮 Received INPUT from 2: DOWN (seq: 40)
+[2025-11-09 01:02:04,413] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:04,481] INFO: 🎮 Received INPUT from 2: DOWN (seq: 41)
+[2025-11-09 01:02:04,481] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:04,923] INFO: 🎮 Received INPUT from 2: LEFT (seq: 42)
+[2025-11-09 01:02:04,924] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:04,989] INFO: 🎮 Received INPUT from 2: LEFT (seq: 43)
+[2025-11-09 01:02:04,989] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:05,040] INFO: 🎮 Received INPUT from 2: LEFT (seq: 44)
+[2025-11-09 01:02:05,040] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:06,010] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 45)
+[2025-11-09 01:02:06,011] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:06,073] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 46)
+[2025-11-09 01:02:06,074] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:06,415] INFO: 🎮 Received INPUT from 2: DOWN (seq: 47)
+[2025-11-09 01:02:06,415] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:06,481] INFO: 🎮 Received INPUT from 2: DOWN (seq: 48)
+[2025-11-09 01:02:06,481] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:07,348] INFO: 🎮 Received INPUT from 2: DOWN (seq: 49)
+[2025-11-09 01:02:07,348] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:07,398] INFO: 🎮 Received INPUT from 2: DOWN (seq: 50)
+[2025-11-09 01:02:07,399] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:07,448] INFO: 🎮 Received INPUT from 2: DOWN (seq: 51)
+[2025-11-09 01:02:07,449] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:07,499] INFO: 🎮 Received INPUT from 2: DOWN (seq: 52)
+[2025-11-09 01:02:07,499] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:07,549] INFO: 🎮 Received INPUT from 2: DOWN (seq: 53)
+[2025-11-09 01:02:07,549] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:07,601] INFO: 🎮 Received INPUT from 2: DOWN (seq: 54)
+[2025-11-09 01:02:07,602] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:07,654] INFO: 🎮 Received INPUT from 2: DOWN (seq: 55)
+[2025-11-09 01:02:07,657] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:07,703] INFO: 🎮 Received INPUT from 2: DOWN (seq: 56)
+[2025-11-09 01:02:07,703] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:07,756] INFO: 🎮 Received INPUT from 2: DOWN (seq: 57)
+[2025-11-09 01:02:07,757] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:07,806] INFO: 🎮 Received INPUT from 2: DOWN (seq: 58)
+[2025-11-09 01:02:07,806] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:07,857] INFO: 🎮 Received INPUT from 2: DOWN (seq: 59)
+[2025-11-09 01:02:07,858] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:09,427] INFO: 🎮 Received INPUT from 2: CCW (seq: 60)
+[2025-11-09 01:02:09,427] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:09,482] INFO: 🎮 Received INPUT from 2: CCW (seq: 61)
+[2025-11-09 01:02:09,482] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:09,528] INFO: 🎮 Received INPUT from 2: CCW (seq: 62)
+[2025-11-09 01:02:09,528] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:09,748] INFO: 🎮 Received INPUT from 2: CCW (seq: 63)
+[2025-11-09 01:02:09,748] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:09,814] INFO: 🎮 Received INPUT from 2: CCW (seq: 64)
+[2025-11-09 01:02:09,814] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:10,306] INFO: 🎮 Received INPUT from 2: CCW (seq: 65)
+[2025-11-09 01:02:10,306] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:10,369] INFO: 🎮 Received INPUT from 2: CCW (seq: 66)
+[2025-11-09 01:02:10,370] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:10,998] INFO: 🎮 Received INPUT from 2: CCW (seq: 67)
+[2025-11-09 01:02:10,998] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:11,049] INFO: 🎮 Received INPUT from 2: CCW (seq: 68)
+[2025-11-09 01:02:11,049] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:11,741] INFO: 🎮 Received INPUT from 2: CCW (seq: 69)
+[2025-11-09 01:02:11,741] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:11,802] INFO: 🎮 Received INPUT from 2: CCW (seq: 70)
+[2025-11-09 01:02:11,802] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:12,517] INFO: 🎮 Received INPUT from 2: CCW (seq: 71)
+[2025-11-09 01:02:12,517] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:12,583] INFO: 🎮 Received INPUT from 2: CCW (seq: 72)
+[2025-11-09 01:02:12,583] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:13,264] INFO: 🎮 Received INPUT from 2: CCW (seq: 73)
+[2025-11-09 01:02:13,264] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:13,856] INFO: 🎮 Received INPUT from 2: LEFT (seq: 74)
+[2025-11-09 01:02:13,856] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:13,920] INFO: 🎮 Received INPUT from 2: LEFT (seq: 75)
+[2025-11-09 01:02:13,920] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:13,971] INFO: 🎮 Received INPUT from 2: LEFT (seq: 76)
+[2025-11-09 01:02:13,972] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:14,109] INFO: 🎮 Received INPUT from 2: LEFT (seq: 77)
+[2025-11-09 01:02:14,109] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:14,175] INFO: 🎮 Received INPUT from 2: LEFT (seq: 78)
+[2025-11-09 01:02:14,175] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:14,615] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 79)
+[2025-11-09 01:02:14,616] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:14,665] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 80)
+[2025-11-09 01:02:14,666] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:15,043] INFO: 🎮 Received INPUT from 2: LEFT (seq: 81)
+[2025-11-09 01:02:15,043] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:15,105] INFO: 🎮 Received INPUT from 2: LEFT (seq: 82)
+[2025-11-09 01:02:15,106] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:15,259] INFO: 🎮 Received INPUT from 2: LEFT (seq: 83)
+[2025-11-09 01:02:15,259] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:15,325] INFO: 🎮 Received INPUT from 2: LEFT (seq: 84)
+[2025-11-09 01:02:15,326] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:18,002] INFO: 🎮 Received INPUT from 2: DOWN (seq: 85)
+[2025-11-09 01:02:18,003] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:18,068] INFO: 🎮 Received INPUT from 2: DOWN (seq: 86)
+[2025-11-09 01:02:18,068] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:18,630] INFO: 🎮 Received INPUT from 2: LEFT (seq: 87)
+[2025-11-09 01:02:18,630] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:18,694] INFO: 🎮 Received INPUT from 2: LEFT (seq: 88)
+[2025-11-09 01:02:18,694] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:19,794] INFO: 🎮 Received INPUT from 2: DOWN (seq: 89)
+[2025-11-09 01:02:19,794] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:19,860] INFO: 🎮 Received INPUT from 2: DOWN (seq: 90)
+[2025-11-09 01:02:19,861] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:19,913] INFO: 🎮 Received INPUT from 2: DOWN (seq: 91)
+[2025-11-09 01:02:19,913] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:19,978] INFO: 🎮 Received INPUT from 2: DOWN (seq: 92)
+[2025-11-09 01:02:19,978] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:20,029] INFO: 🎮 Received INPUT from 2: DOWN (seq: 93)
+[2025-11-09 01:02:20,029] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:20,081] INFO: 🎮 Received INPUT from 2: DOWN (seq: 94)
+[2025-11-09 01:02:20,081] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:20,133] INFO: 🎮 Received INPUT from 2: DOWN (seq: 95)
+[2025-11-09 01:02:20,133] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:20,182] INFO: 🎮 Received INPUT from 2: DOWN (seq: 96)
+[2025-11-09 01:02:20,182] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:20,233] INFO: 🎮 Received INPUT from 2: DOWN (seq: 97)
+[2025-11-09 01:02:20,233] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:20,284] INFO: 🎮 Received INPUT from 2: DOWN (seq: 98)
+[2025-11-09 01:02:20,284] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:20,942] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 99)
+[2025-11-09 01:02:20,942] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:20,993] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 100)
+[2025-11-09 01:02:20,993] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:21,044] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 101)
+[2025-11-09 01:02:21,044] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:21,543] INFO: 🎮 Received INPUT from 2: LEFT (seq: 102)
+[2025-11-09 01:02:21,543] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:21,603] INFO: 🎮 Received INPUT from 2: LEFT (seq: 103)
+[2025-11-09 01:02:21,603] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:21,961] INFO: 🎮 Received INPUT from 2: DOWN (seq: 104)
+[2025-11-09 01:02:21,962] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:22,028] INFO: 🎮 Received INPUT from 2: DOWN (seq: 105)
+[2025-11-09 01:02:22,028] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:22,079] INFO: 🎮 Received INPUT from 2: DOWN (seq: 106)
+[2025-11-09 01:02:22,079] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:22,130] INFO: 🎮 Received INPUT from 2: DOWN (seq: 107)
+[2025-11-09 01:02:22,130] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:22,181] INFO: 🎮 Received INPUT from 2: DOWN (seq: 108)
+[2025-11-09 01:02:22,181] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:22,232] INFO: 🎮 Received INPUT from 2: DOWN (seq: 109)
+[2025-11-09 01:02:22,233] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:22,283] INFO: 🎮 Received INPUT from 2: DOWN (seq: 110)
+[2025-11-09 01:02:22,283] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:22,333] INFO: 🎮 Received INPUT from 2: DOWN (seq: 111)
+[2025-11-09 01:02:22,333] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:22,384] INFO: 🎮 Received INPUT from 2: DOWN (seq: 112)
+[2025-11-09 01:02:22,385] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:22,435] INFO: 🎮 Received INPUT from 2: DOWN (seq: 113)
+[2025-11-09 01:02:22,435] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:22,487] INFO: 🎮 Received INPUT from 2: DOWN (seq: 114)
+[2025-11-09 01:02:22,487] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:22,541] INFO: 🎮 Received INPUT from 2: DOWN (seq: 115)
+[2025-11-09 01:02:22,542] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:23,116] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 116)
+[2025-11-09 01:02:23,116] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:23,182] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 117)
+[2025-11-09 01:02:23,182] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:23,590] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 118)
+[2025-11-09 01:02:23,590] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:23,657] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 119)
+[2025-11-09 01:02:23,657] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:23,845] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 120)
+[2025-11-09 01:02:23,845] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:23,912] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 121)
+[2025-11-09 01:02:23,912] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:24,131] INFO: 🎮 Received INPUT from 2: DOWN (seq: 122)
+[2025-11-09 01:02:24,131] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:24,181] INFO: 🎮 Received INPUT from 2: DOWN (seq: 123)
+[2025-11-09 01:02:24,181] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:24,247] INFO: 🎮 Received INPUT from 2: DOWN (seq: 124)
+[2025-11-09 01:02:24,248] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:24,298] INFO: 🎮 Received INPUT from 2: DOWN (seq: 125)
+[2025-11-09 01:02:24,299] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:24,364] INFO: 🎮 Received INPUT from 2: DOWN (seq: 126)
+[2025-11-09 01:02:24,364] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:24,415] INFO: 🎮 Received INPUT from 2: DOWN (seq: 127)
+[2025-11-09 01:02:24,415] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:24,466] INFO: 🎮 Received INPUT from 2: DOWN (seq: 128)
+[2025-11-09 01:02:24,466] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:24,516] INFO: 🎮 Received INPUT from 2: DOWN (seq: 129)
+[2025-11-09 01:02:24,517] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:24,567] INFO: 🎮 Received INPUT from 2: DOWN (seq: 130)
+[2025-11-09 01:02:24,568] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:24,618] INFO: 🎮 Received INPUT from 2: DOWN (seq: 131)
+[2025-11-09 01:02:24,618] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:24,669] INFO: 🎮 Received INPUT from 2: DOWN (seq: 132)
+[2025-11-09 01:02:24,669] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:24,723] INFO: 🎮 Received INPUT from 2: DOWN (seq: 133)
+[2025-11-09 01:02:24,724] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:25,674] INFO: 🎮 Received INPUT from 2: CCW (seq: 134)
+[2025-11-09 01:02:25,674] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:25,738] INFO: 🎮 Received INPUT from 2: CCW (seq: 135)
+[2025-11-09 01:02:25,738] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:25,790] INFO: 🎮 Received INPUT from 2: CCW (seq: 136)
+[2025-11-09 01:02:25,790] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:25,841] INFO: 🎮 Received INPUT from 2: CCW (seq: 137)
+[2025-11-09 01:02:25,841] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:26,349] INFO: 🎮 Received INPUT from 2: CCW (seq: 138)
+[2025-11-09 01:02:26,349] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:26,399] INFO: 🎮 Received INPUT from 2: CCW (seq: 139)
+[2025-11-09 01:02:26,399] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:26,857] INFO: 🎮 Received INPUT from 2: CCW (seq: 140)
+[2025-11-09 01:02:26,857] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:27,398] INFO: 🎮 Received INPUT from 2: CCW (seq: 141)
+[2025-11-09 01:02:27,398] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:27,448] INFO: 🎮 Received INPUT from 2: CCW (seq: 142)
+[2025-11-09 01:02:27,449] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:28,010] INFO: 🎮 Received INPUT from 2: CCW (seq: 143)
+[2025-11-09 01:02:28,010] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:28,075] INFO: 🎮 Received INPUT from 2: CCW (seq: 144)
+[2025-11-09 01:02:28,076] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:28,635] INFO: 🎮 Received INPUT from 2: CCW (seq: 145)
+[2025-11-09 01:02:28,635] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:28,701] INFO: 🎮 Received INPUT from 2: CCW (seq: 146)
+[2025-11-09 01:02:28,701] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:29,257] INFO: 🎮 Received INPUT from 2: LEFT (seq: 147)
+[2025-11-09 01:02:29,257] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:29,323] INFO: 🎮 Received INPUT from 2: LEFT (seq: 148)
+[2025-11-09 01:02:29,323] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:29,374] INFO: 🎮 Received INPUT from 2: LEFT (seq: 149)
+[2025-11-09 01:02:29,374] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:29,460] INFO: 🎮 Received INPUT from 2: LEFT (seq: 150)
+[2025-11-09 01:02:29,461] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:29,526] INFO: 🎮 Received INPUT from 2: LEFT (seq: 151)
+[2025-11-09 01:02:29,527] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:30,207] INFO: 🎮 Received INPUT from 2: CCW (seq: 152)
+[2025-11-09 01:02:30,207] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:30,269] INFO: 🎮 Received INPUT from 2: CCW (seq: 153)
+[2025-11-09 01:02:30,269] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:30,761] INFO: 🎮 Received INPUT from 2: CCW (seq: 154)
+[2025-11-09 01:02:30,761] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:30,811] INFO: 🎮 Received INPUT from 2: CCW (seq: 155)
+[2025-11-09 01:02:30,811] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:32,040] INFO: 🎮 Received INPUT from 2: DOWN (seq: 156)
+[2025-11-09 01:02:32,041] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:32,103] INFO: 🎮 Received INPUT from 2: DOWN (seq: 157)
+[2025-11-09 01:02:32,103] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:32,153] INFO: 🎮 Received INPUT from 2: DOWN (seq: 158)
+[2025-11-09 01:02:32,153] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:32,679] INFO: 🎮 Received INPUT from 2: DOWN (seq: 159)
+[2025-11-09 01:02:32,679] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:32,730] INFO: 🎮 Received INPUT from 2: DOWN (seq: 160)
+[2025-11-09 01:02:32,730] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:32,780] INFO: 🎮 Received INPUT from 2: DOWN (seq: 161)
+[2025-11-09 01:02:32,780] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:33,359] INFO: 🎮 Received INPUT from 2: DOWN (seq: 162)
+[2025-11-09 01:02:33,360] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:33,426] INFO: 🎮 Received INPUT from 2: DOWN (seq: 163)
+[2025-11-09 01:02:33,426] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:33,476] INFO: 🎮 Received INPUT from 2: DOWN (seq: 164)
+[2025-11-09 01:02:33,476] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:33,528] INFO: 🎮 Received INPUT from 2: DOWN (seq: 165)
+[2025-11-09 01:02:33,528] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:33,579] INFO: 🎮 Received INPUT from 2: DOWN (seq: 166)
+[2025-11-09 01:02:33,579] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:33,630] INFO: 🎮 Received INPUT from 2: DOWN (seq: 167)
+[2025-11-09 01:02:33,630] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:33,680] INFO: 🎮 Received INPUT from 2: DOWN (seq: 168)
+[2025-11-09 01:02:33,680] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:33,731] INFO: 🎮 Received INPUT from 2: DOWN (seq: 169)
+[2025-11-09 01:02:33,731] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:33,782] INFO: 🎮 Received INPUT from 2: DOWN (seq: 170)
+[2025-11-09 01:02:33,783] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:33,833] INFO: 🎮 Received INPUT from 2: DOWN (seq: 171)
+[2025-11-09 01:02:33,833] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:33,900] INFO: 🎮 Received INPUT from 2: DOWN (seq: 172)
+[2025-11-09 01:02:33,900] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:34,631] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 173)
+[2025-11-09 01:02:34,632] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:34,682] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 174)
+[2025-11-09 01:02:34,682] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:34,732] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 175)
+[2025-11-09 01:02:34,733] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:34,784] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 176)
+[2025-11-09 01:02:34,784] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:34,835] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 177)
+[2025-11-09 01:02:34,836] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:34,886] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 178)
+[2025-11-09 01:02:34,887] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:34,937] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 179)
+[2025-11-09 01:02:34,937] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:34,989] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 180)
+[2025-11-09 01:02:34,989] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:35,039] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 181)
+[2025-11-09 01:02:35,039] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:35,260] INFO: 🎮 Received INPUT from 2: DOWN (seq: 182)
+[2025-11-09 01:02:35,260] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:35,326] INFO: 🎮 Received INPUT from 2: DOWN (seq: 183)
+[2025-11-09 01:02:35,327] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:35,377] INFO: 🎮 Received INPUT from 2: DOWN (seq: 184)
+[2025-11-09 01:02:35,377] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:35,428] INFO: 🎮 Received INPUT from 2: DOWN (seq: 185)
+[2025-11-09 01:02:35,428] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:35,479] INFO: 🎮 Received INPUT from 2: DOWN (seq: 186)
+[2025-11-09 01:02:35,480] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:35,530] INFO: 🎮 Received INPUT from 2: DOWN (seq: 187)
+[2025-11-09 01:02:35,530] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:35,581] INFO: 🎮 Received INPUT from 2: DOWN (seq: 188)
+[2025-11-09 01:02:35,581] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:35,631] INFO: 🎮 Received INPUT from 2: DOWN (seq: 189)
+[2025-11-09 01:02:35,631] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:35,682] INFO: 🎮 Received INPUT from 2: DOWN (seq: 190)
+[2025-11-09 01:02:35,682] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:37,242] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 191)
+[2025-11-09 01:02:37,242] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:37,302] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 192)
+[2025-11-09 01:02:37,302] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:37,354] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 193)
+[2025-11-09 01:02:37,354] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:37,763] INFO: 🎮 Received INPUT from 2: LEFT (seq: 194)
+[2025-11-09 01:02:37,763] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:37,830] INFO: 🎮 Received INPUT from 2: LEFT (seq: 195)
+[2025-11-09 01:02:37,830] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:37,896] INFO: 🎮 Received INPUT from 2: LEFT (seq: 196)
+[2025-11-09 01:02:37,896] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:37,947] INFO: 🎮 Received INPUT from 2: LEFT (seq: 197)
+[2025-11-09 01:02:37,947] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:38,675] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 198)
+[2025-11-09 01:02:38,675] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:38,741] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 199)
+[2025-11-09 01:02:38,741] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:39,422] INFO: 🎮 Received INPUT from 2: LEFT (seq: 200)
+[2025-11-09 01:02:39,422] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:39,487] INFO: 🎮 Received INPUT from 2: LEFT (seq: 201)
+[2025-11-09 01:02:39,487] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:39,996] INFO: 🎮 Received INPUT from 2: CCW (seq: 202)
+[2025-11-09 01:02:39,996] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:40,062] INFO: 🎮 Received INPUT from 2: CCW (seq: 203)
+[2025-11-09 01:02:40,063] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:41,978] INFO: 🎮 Received INPUT from 2: CCW (seq: 204)
+[2025-11-09 01:02:41,979] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:42,028] INFO: 🎮 Received INPUT from 2: CCW (seq: 205)
+[2025-11-09 01:02:42,029] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:42,079] INFO: 🎮 Received INPUT from 2: CCW (seq: 206)
+[2025-11-09 01:02:42,079] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:42,623] INFO: 🎮 Received INPUT from 2: CCW (seq: 207)
+[2025-11-09 01:02:42,623] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:42,674] INFO: 🎮 Received INPUT from 2: CCW (seq: 208)
+[2025-11-09 01:02:42,674] INFO: ✅ Processing action: CCW
+[2025-11-09 01:02:44,517] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 209)
+[2025-11-09 01:02:44,517] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:44,584] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 210)
+[2025-11-09 01:02:44,584] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:45,027] INFO: 🎮 Received INPUT from 2: LEFT (seq: 211)
+[2025-11-09 01:02:45,027] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:45,093] INFO: 🎮 Received INPUT from 2: LEFT (seq: 212)
+[2025-11-09 01:02:45,094] INFO: ✅ Processing action: LEFT
+[2025-11-09 01:02:45,724] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 213)
+[2025-11-09 01:02:45,724] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:46,351] INFO: 🎮 Received INPUT from 2: DOWN (seq: 214)
+[2025-11-09 01:02:46,351] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:46,416] INFO: 🎮 Received INPUT from 2: DOWN (seq: 215)
+[2025-11-09 01:02:46,417] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:46,467] INFO: 🎮 Received INPUT from 2: DOWN (seq: 216)
+[2025-11-09 01:02:46,467] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:47,157] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 217)
+[2025-11-09 01:02:47,157] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:47,221] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 218)
+[2025-11-09 01:02:47,221] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:47,611] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 219)
+[2025-11-09 01:02:47,612] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:47,678] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 220)
+[2025-11-09 01:02:47,678] INFO: ✅ Processing action: RIGHT
+[2025-11-09 01:02:48,275] INFO: 🎮 Received INPUT from 2: DOWN (seq: 221)
+[2025-11-09 01:02:48,275] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:48,339] INFO: 🎮 Received INPUT from 2: DOWN (seq: 222)
+[2025-11-09 01:02:48,339] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:48,389] INFO: 🎮 Received INPUT from 2: DOWN (seq: 223)
+[2025-11-09 01:02:48,390] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:48,440] INFO: 🎮 Received INPUT from 2: DOWN (seq: 224)
+[2025-11-09 01:02:48,440] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:48,491] INFO: 🎮 Received INPUT from 2: DOWN (seq: 225)
+[2025-11-09 01:02:48,491] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:48,542] INFO: 🎮 Received INPUT from 2: DOWN (seq: 226)
+[2025-11-09 01:02:48,544] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:48,593] INFO: 🎮 Received INPUT from 2: DOWN (seq: 227)
+[2025-11-09 01:02:48,593] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:48,644] INFO: 🎮 Received INPUT from 2: DOWN (seq: 228)
+[2025-11-09 01:02:48,644] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:48,695] INFO: 🎮 Received INPUT from 2: DOWN (seq: 229)
+[2025-11-09 01:02:48,695] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:48,746] INFO: 🎮 Received INPUT from 2: DOWN (seq: 230)
+[2025-11-09 01:02:48,746] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:48,797] INFO: 🎮 Received INPUT from 2: DOWN (seq: 231)
+[2025-11-09 01:02:48,799] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:48,849] INFO: 🎮 Received INPUT from 2: DOWN (seq: 232)
+[2025-11-09 01:02:48,849] INFO: ✅ Processing action: DOWN
+[2025-11-09 01:02:49,737] INFO: 🎮 Game Over! Winner: 2
+[2025-11-09 01:02:49,737] INFO: 📊 Final results: [{'userId': 2, 'score': 100, 'lines': 1, 'maxCombo': 0}, {'userId': 1, 'score': 0, 'lines': 0, 'maxCombo': 0}]
+[2025-11-09 01:02:49,850] INFO: 🔌 Player 2 input handler stopped
+[2025-11-09 01:02:50,117] INFO: 🔌 Player 1 input handler stopped
+[2025-11-09 01:02:51,741] INFO: 🛑 Shutting down Game Server...
+[2025-11-09 01:02:51,742] INFO: ✅ Game Server shut down
+[2025-11-09 01:02:51,742] INFO: 🛑 Shutting down Game Server...
+[2025-11-09 01:02:51,742] INFO: ✅ Game Server shut down

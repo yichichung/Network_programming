@@ -20,6 +20,8 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (128, 128, 128)
 DARK_GRAY = (64, 64, 64)
+LIGHT_BLUE = (173, 216, 230)  # 新增淡藍色背景
+GOLD = (255, 215, 0)          # 新增金色
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 100, 255)
@@ -40,13 +42,13 @@ PIECE_COLORS = {
 }
 
 # Display settings
-CELL_SIZE = 30
+CELL_SIZE = 30          # 調大這個數字 = 更大的主棋盤
 BOARD_WIDTH = 10
 BOARD_HEIGHT = 20
-MINI_CELL_SIZE = 15
+MINI_CELL_SIZE = 15     # 調大這個數字 = 更大的對手棋盤
 
 # Screen dimensions
-INFO_WIDTH = 200
+INFO_WIDTH = 200        # 調整左側面板寬度
 MAIN_BOARD_WIDTH = BOARD_WIDTH * CELL_SIZE
 MAIN_BOARD_HEIGHT = BOARD_HEIGHT * CELL_SIZE
 MINI_BOARD_WIDTH = BOARD_WIDTH * MINI_CELL_SIZE
@@ -59,11 +61,12 @@ SCREEN_HEIGHT = max(MAIN_BOARD_HEIGHT, MINI_BOARD_HEIGHT) + 100
 class GameClient:
     """Tetris Game Client with GUI"""
 
-    def __init__(self, host, port, room_id, user_id):
+    def __init__(self, host, port, room_id, user_id, spectator=False):
         self.host = host
         self.port = port
         self.room_id = room_id
         self.user_id = user_id
+        self.spectator = spectator
 
         # Connection
         self.sock = None
@@ -96,7 +99,8 @@ class GameClient:
 
         # Pygame setup
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-        pygame.display.set_caption(f"Tetris - Player {user_id}")
+        title = f"Tetris - Spectator {user_id}" if spectator else f"Tetris - Player {user_id}"
+        pygame.display.set_caption(title)
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(None, 24)
         self.big_font = pygame.font.Font(None, 48)
@@ -113,7 +117,8 @@ class GameClient:
                 "type": "HELLO",
                 "version": 1,
                 "roomId": self.room_id,
-                "userId": self.user_id
+                "userId": self.user_id,
+                "spectator": self.spectator
             }
             send_message(self.sock, json.dumps(hello_msg))
 
@@ -180,20 +185,38 @@ class GameClient:
         board = self.decompress_board(board_rle)
 
         with self.lock:
-            if user_id == self.user_id:
-                # My board
-                self.my_board = board
-                self.my_score = snapshot.get("score", 0)
-                self.my_lines = snapshot.get("lines", 0)
-                self.my_level = snapshot.get("level", 1)
-                self.my_hold = snapshot.get("hold")
-                self.my_next = snapshot.get("next", [])
+            # For spectators, use role to determine which board
+            # For players, use user_id matching
+            if self.spectator:
+                # Spectator mode: use role to assign boards
+                if role == "P1":
+                    self.my_board = board
+                    self.my_score = snapshot.get("score", 0)
+                    self.my_lines = snapshot.get("lines", 0)
+                    self.my_level = snapshot.get("level", 1)
+                    self.my_hold = snapshot.get("hold")
+                    self.my_next = snapshot.get("next", [])
+                else:  # P2
+                    self.opponent_board = board
+                    self.opponent_score = snapshot.get("score", 0)
+                    self.opponent_lines = snapshot.get("lines", 0)
+                    self.opponent_level = snapshot.get("level", 1)
             else:
-                # Opponent's board
-                self.opponent_board = board
-                self.opponent_score = snapshot.get("score", 0)
-                self.opponent_lines = snapshot.get("lines", 0)
-                self.opponent_level = snapshot.get("level", 1)
+                # Player mode: use user_id to identify own board
+                if user_id == self.user_id:
+                    # My board
+                    self.my_board = board
+                    self.my_score = snapshot.get("score", 0)
+                    self.my_lines = snapshot.get("lines", 0)
+                    self.my_level = snapshot.get("level", 1)
+                    self.my_hold = snapshot.get("hold")
+                    self.my_next = snapshot.get("next", [])
+                else:
+                    # Opponent's board
+                    self.opponent_board = board
+                    self.opponent_score = snapshot.get("score", 0)
+                    self.opponent_lines = snapshot.get("lines", 0)
+                    self.opponent_level = snapshot.get("level", 1)
 
     def decompress_board(self, board_rle):
         """Decompress RLE board"""
@@ -245,6 +268,10 @@ class GameClient:
 
     def handle_input(self):
         """Handle keyboard input"""
+        # Spectators cannot send input
+        if self.spectator:
+            return
+
         keys = pygame.key.get_pressed()
         current_time = time.time()
 
@@ -293,6 +320,11 @@ class GameClient:
                     color = GREEN
                     pygame.draw.rect(surface, color, (px, py, cell_size, cell_size))
                     pygame.draw.rect(surface, WHITE, (px, py, cell_size, cell_size), 2)
+
+        # Draw board border (外框)
+        board_width = BOARD_WIDTH * cell_size
+        board_height = BOARD_HEIGHT * cell_size
+        pygame.draw.rect(surface, WHITE, (offset_x - 2, offset_y - 2, board_width + 4, board_height + 4), 3)
 
     def draw_piece_preview(self, surface, piece_type, x, y, size=20):
         """Draw a small piece preview"""
@@ -363,7 +395,10 @@ class GameClient:
             self.draw_board(self.screen, self.my_board, CELL_SIZE, board_x, board_y)
 
             # Board label
-            label = self.font.render("Your Board", True, WHITE)
+            if self.spectator:
+                label = self.font.render("Player 1", True, WHITE)
+            else:
+                label = self.font.render("Your Board", True, WHITE)
             self.screen.blit(label, (board_x, 20))
 
             # Opponent board (right)
@@ -372,7 +407,10 @@ class GameClient:
             self.draw_board(self.screen, self.opponent_board, MINI_CELL_SIZE, mini_x, mini_y)
 
             # Opponent label
-            opp_label = self.font.render("Opponent", True, WHITE)
+            if self.spectator:
+                opp_label = self.font.render("Player 2", True, WHITE)
+            else:
+                opp_label = self.font.render("Opponent", True, WHITE)
             self.screen.blit(opp_label, (mini_x, 20))
 
             # Opponent stats
@@ -400,15 +438,19 @@ class GameClient:
                 text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
                 self.screen.blit(text, text_rect)
 
-            # Controls hint
+            # Controls hint or spectator mode indicator
             controls_y = SCREEN_HEIGHT - 60
-            controls = [
-                "Controls: ← → ↓ (move), ↑ (rotate CW), Z (rotate CCW),",
-                "SPACE (hard drop), C (hold)"
-            ]
-            for i, line in enumerate(controls):
-                text = self.font.render(line, True, GRAY)
-                self.screen.blit(text, (10, controls_y + i * 20))
+            if self.spectator:
+                spectator_text = self.font.render("SPECTATOR MODE - Read Only", True, GOLD)
+                self.screen.blit(spectator_text, (10, controls_y))
+            else:
+                controls = [
+                    "Controls: LEFT/RIGHT/DOWN (move), UP (rotate CW), Z (rotate CCW),",
+                    "SPACE (hard drop), C (hold)"
+                ]
+                for i, line in enumerate(controls):
+                    text = self.font.render(line, True, GRAY)
+                    self.screen.blit(text, (10, controls_y + i * 20))
 
     def game_loop(self):
         """Main game loop"""
@@ -447,6 +489,7 @@ def main():
     parser.add_argument("--port", type=int, required=True, help="Game server port")
     parser.add_argument("--room-id", type=int, required=True, help="Room ID")
     parser.add_argument("--user-id", type=int, required=True, help="User ID")
+    parser.add_argument("--spectate", action="store_true", help="Join as spectator (read-only)")
 
     args = parser.parse_args()
 
@@ -454,7 +497,8 @@ def main():
         host=args.host,
         port=args.port,
         room_id=args.room_id,
-        user_id=args.user_id
+        user_id=args.user_id,
+        spectator=args.spectate
     )
 
     try:

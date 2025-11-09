@@ -183,6 +183,10 @@ class LobbyServer:
                         response = self.handle_start_game(data, client_sock)
                     elif action == "report_game_result":
                         response = self.handle_game_result(data)
+                    elif action == "spectate_game":
+                        response = self.handle_spectate_game(data, client_sock)
+                    elif action == "replay_response":
+                        response = self.handle_replay_response(data, client_sock)
                     else:
                         response = {"status": "error", "message": f"未知的 action: {action}"}
                     
@@ -363,48 +367,60 @@ class LobbyServer:
         user_id = self.user_sockets.get(client_sock)
         if not user_id:
             return {"status": "error", "message": "未登入"}
-        
+
         room_id = data.get("room_id")
-        
+
         # 從 DB 取得房間資訊
         room = self.db.get_room(room_id)
         if not room:
             return {"status": "error", "message": "房間不存在"}
-        
-        # 檢查房間狀態
+
+        # 檢查是否為房主
+        is_host = (room.get("host_user_id") == user_id)
+
+        # 檢查房間狀態（房主可以加入 waiting 狀態的房間）
         if room["status"] == "playing":
             return {"status": "error", "message": "房間正在遊戲中"}
-        
-        # 檢查是否為私人房間
-        if room["visibility"] == "private":
+
+        # 檢查是否為私人房間（房主總是可以加入）
+        if room["visibility"] == "private" and not is_host:
             # 檢查是否在邀請名單中
             if user_id not in room.get("invite_list", []):
                 return {"status": "error", "message": "此房間為私人房間，需要邀請才能加入"}
-        
+
         # 加入房間
         with self.lock:
             if room_id not in self.rooms:
                 self.rooms[room_id] = {"members": [], "invitations": {}}
-            
-            # 檢查房間是否已滿（最多 2 人）
-            if len(self.rooms[room_id]["members"]) >= 2:
-                return {"status": "error", "message": "房間已滿"}
-            
+
             # 檢查是否已在房間中
             if user_id in self.rooms[room_id]["members"]:
                 return {"status": "error", "message": "已在房間中"}
-            
+
+            # 檢查房間是否已滿（最多 2 人，但房主總是可以加入）
+            if len(self.rooms[room_id]["members"]) >= 2 and not is_host:
+                return {"status": "error", "message": "房間已滿"}
+
+            # 如果房主重新加入，確保房主總是在成員列表中
+            # 如果房間已滿但房主要加入，這是允許的（房主可能之前離開了）
+            if is_host and len(self.rooms[room_id]["members"]) >= 2:
+                # 房主優先，不檢查房間是否已滿
+                pass
+
             self.rooms[room_id]["members"].append(user_id)
-        
-        logger.info(f"🚪 使用者 {user_id} 加入房間 {room_id}")
-        
+
+        if is_host:
+            logger.info(f"🚪 房主 {user_id} 重新加入房間 {room_id}")
+        else:
+            logger.info(f"🚪 使用者 {user_id} 加入房間 {room_id}")
+
         # 廣播給房間內其他成員（非阻塞）
         self.broadcast_to_room(room_id, {
             "type": "room_update",
             "action": "user_joined",
             "user_id": user_id
         }, exclude_user=user_id)
-        
+
         return {"status": "success", "message": "已加入房間"}
     
     def handle_leave_room(self, data, client_sock):
@@ -621,7 +637,120 @@ class LobbyServer:
             if room_id in self.game_manager.active_games:
                 del self.game_manager.active_games[room_id]
 
+        # 發送 game_ended 通知給房間內所有成員（玩家和觀眾）
+        # 玩家會收到 replay 請求，觀眾只收到遊戲結束通知
+        with self.lock:
+            if room_id in self.rooms:
+                members = list(self.rooms[room_id]["members"])
+                for member_id in members:
+                    self.send_to_user(member_id, {
+                        "type": "game_ended",
+                        "room_id": room_id,
+                        "winner": winner,
+                        "results": results,
+                        "request_replay": True  # 請求玩家回覆是否要replay
+                    })
+
         return {"status": "success", "message": "遊戲結果已記錄"}
+
+    def handle_replay_response(self, data, client_sock):
+        """處理 replay 回應"""
+        user_id = self.user_sockets.get(client_sock)
+        if not user_id:
+            return {"status": "error", "message": "未登入"}
+
+        room_id = data.get("room_id")
+        want_replay = data.get("replay", False)
+
+        logger.info(f"👤 使用者 {user_id} replay回應: {'是' if want_replay else '否'} (房間 {room_id})")
+
+        with self.lock:
+            # 確保房間存在
+            if room_id not in self.rooms:
+                return {"status": "error", "message": "房間不存在"}
+
+            # 初始化 replay_responses 如果不存在
+            if "replay_responses" not in self.rooms[room_id]:
+                self.rooms[room_id]["replay_responses"] = {}
+
+            # 記錄此玩家的回應
+            self.rooms[room_id]["replay_responses"][user_id] = want_replay
+
+            # 取得房間中的玩家列表
+            room = self.db.get_room(room_id)
+            if not room:
+                return {"status": "error", "message": "房間資料不存在"}
+
+            players = room.get("players", [])
+
+            # 檢查是否所有玩家都已回應
+            replay_responses = self.rooms[room_id]["replay_responses"]
+            all_responded = all(player in replay_responses for player in players)
+
+            if all_responded:
+                # 所有玩家都回應了
+                all_want_replay = all(replay_responses.get(player, False) for player in players)
+
+                # 清除 replay_responses 以便下次使用
+                self.rooms[room_id]["replay_responses"] = {}
+
+                if all_want_replay:
+                    # 所有玩家都想重玩
+                    logger.info(f"✅ 房間 {room_id} 所有玩家同意重玩")
+
+                    # 通知所有玩家可以重新開始
+                    for player_id in players:
+                        self.send_to_user(player_id, {
+                            "type": "replay_accepted",
+                            "room_id": room_id,
+                            "message": "所有玩家同意重玩，房主可以重新開始遊戲"
+                        })
+                else:
+                    # 至少有一個玩家不想重玩
+                    logger.info(f"❌ 房間 {room_id} 有玩家拒絕重玩")
+
+                    # 通知所有玩家重玩被拒絕
+                    for player_id in players:
+                        self.send_to_user(player_id, {
+                            "type": "replay_rejected",
+                            "room_id": room_id,
+                            "message": "有玩家拒絕重玩，返回選單"
+                        })
+
+        return {"status": "success", "message": "已收到回應"}
+
+    def handle_spectate_game(self, data, client_sock):
+        """處理觀戰請求"""
+        user_id = self.user_sockets.get(client_sock)
+        if not user_id:
+            return {"status": "error", "message": "未登入"}
+
+        room_id = data.get("room_id")
+
+        # 檢查房間是否存在
+        room = self.db.get_room(room_id)
+        if not room:
+            return {"status": "error", "message": "房間不存在"}
+
+        # 檢查房間是否在遊戲中
+        if room["status"] != "playing":
+            return {"status": "error", "message": "房間尚未開始遊戲"}
+
+        # 取得 Game Server 資訊
+        game_info = self.game_manager.get_game_info(room_id)
+        if not game_info:
+            return {"status": "error", "message": "找不到 Game Server"}
+
+        logger.info(f"👁️ 使用者 {user_id} 觀戰房間 {room_id}")
+
+        return {
+            "status": "success",
+            "data": {
+                "game_server_host": "localhost",
+                "game_server_port": game_info["port"],
+                "room_id": room_id
+            }
+        }
 
     # ========== 輔助函式 ==========
     

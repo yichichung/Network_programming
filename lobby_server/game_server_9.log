@@ -1,0 +1,18 @@
+[2025-11-09 00:24:47,258] INFO: 🎮 Game Server started on port 10100
+[2025-11-09 00:24:47,258] INFO:    Room: 9, Players: [1, 2]
+[2025-11-09 00:24:47,258] INFO:    Seed: 1682495898
+[2025-11-09 00:24:50,739] INFO: 📥 Player 1 connected from ('127.0.0.1', 50277)
+[2025-11-09 00:24:50,742] INFO: ✅ Player 2 (P2) ready
+[2025-11-09 00:24:50,745] INFO: 📥 Player 2 connected from ('127.0.0.1', 50278)
+[2025-11-09 00:24:50,745] INFO: ✅ Player 1 (P1) ready
+[2025-11-09 00:24:50,746] INFO: ✅ Both players connected, starting game...
+[2025-11-09 00:24:50,746] INFO: 🎮 Starting input handler for player 2
+[2025-11-09 00:24:50,746] INFO: 🎮 Starting input handler for player 1
+[2025-11-09 00:24:57,101] INFO: 👁️ Spectator connection from ('127.0.0.1', 50279)
+[2025-11-09 00:25:05,945] INFO: 🎮 Received INPUT from 2: RIGHT (seq: 1)
+[2025-11-09 00:26:45,601] ERROR: ❌ ProtocolError for 1: 連線已關閉（recv 回傳空資料）
+[2025-11-09 00:26:45,602] INFO: 🔌 Player 1 input handler stopped
+[2025-11-09 00:28:01,052] INFO: 🛑 Shutting down Game Server...
+[2025-11-09 00:28:10,273] INFO: 
+⚠️ Interrupted
+[2025-11-09 00:28:10,274] INFO: 🛑 Shutting down Game Server...

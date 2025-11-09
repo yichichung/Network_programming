@@ -26,10 +26,12 @@ logger = logging.getLogger(__name__)
 class GameServer:
     """Game Server for 2-player Tetris"""
 
-    def __init__(self, port, room_id, player1_id, player2_id, drop_interval=500):
+    def __init__(self, port, room_id, player1_id, player2_id, drop_interval=500, lobby_host='localhost', lobby_port=10002):
         self.port = port
         self.room_id = room_id
         self.player_ids = [player1_id, player2_id]
+        self.lobby_host = lobby_host
+        self.lobby_port = lobby_port
 
         self.drop_interval = drop_interval  # ms between gravity drops
         self.seed = int(time.time() * 1000) % (2**31)  # Random seed
@@ -40,6 +42,7 @@ class GameServer:
 
         # Player connections
         self.players = {}  # {player_id: {"socket": sock, "board": TetrisBoard, "ready": bool}}
+        self.spectators = {}  # {spectator_id: {"socket": sock, "addr": addr}}
         self.lock = threading.Lock()
 
         # Game state
@@ -58,7 +61,7 @@ class GameServer:
             self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             self.server_socket.bind(('0.0.0.0', self.port))
-            self.server_socket.listen(2)
+            self.server_socket.listen(10)  # Allow players + spectators
             self.running = True
 
             logger.info(f"🎮 Game Server started on port {self.port}")
@@ -71,6 +74,14 @@ class GameServer:
             # Wait for both players to be ready
             if len(self.players) == 2:
                 logger.info("✅ Both players connected, starting game...")
+
+                # Start spectator acceptance thread
+                spectator_thread = threading.Thread(
+                    target=self.accept_spectators,
+                    daemon=True
+                )
+                spectator_thread.start()
+
                 self.start_game()
 
             else:
@@ -106,6 +117,87 @@ class GameServer:
                 logger.error(f"❌ Error accepting player {i+1}: {e}")
                 break
 
+    def accept_spectators(self):
+        """Accept spectator connections while game is running"""
+        self.server_socket.settimeout(1.0)  # Short timeout for checking game state
+
+        while self.running and not self.game_over:
+            try:
+                client_sock, client_addr = self.server_socket.accept()
+                logger.info(f"👁️ Spectator connection from {client_addr}")
+
+                # Handle spectator handshake in separate thread
+                thread = threading.Thread(
+                    target=self.handle_spectator_handshake,
+                    args=(client_sock, client_addr),
+                    daemon=True
+                )
+                thread.start()
+
+            except socket.timeout:
+                continue
+            except Exception as e:
+                if self.running:
+                    logger.error(f"❌ Error accepting spectator: {e}")
+
+    def handle_spectator_handshake(self, client_sock, client_addr):
+        """Handle spectator HELLO -> WELCOME handshake"""
+        try:
+            # Receive HELLO
+            msg_str = recv_message(client_sock)
+            msg = json.loads(msg_str)
+
+            if msg.get("type") != "HELLO":
+                logger.error(f"❌ Expected HELLO, got {msg.get('type')}")
+                client_sock.close()
+                return
+
+            user_id = msg.get("userId")
+            room_id = msg.get("roomId")
+            is_spectator = msg.get("spectator", False)
+
+            # Validate room
+            if room_id != self.room_id:
+                logger.error(f"❌ Wrong room ID: {room_id} != {self.room_id}")
+                client_sock.close()
+                return
+
+            if not is_spectator:
+                logger.error(f"❌ Not a spectator connection")
+                client_sock.close()
+                return
+
+            # Store spectator info
+            spectator_id = f"spectator_{user_id}_{int(time.time() * 1000)}"
+            with self.lock:
+                self.spectators[spectator_id] = {
+                    "socket": client_sock,
+                    "addr": client_addr,
+                    "user_id": user_id
+                }
+
+            # Send WELCOME (spectator mode)
+            welcome_msg = {
+                "type": "WELCOME",
+                "role": "SPECTATOR",
+                "seed": self.seed,
+                "bagRule": "7bag",
+                "gravityPlan": {
+                    "mode": "fixed",
+                    "dropMs": self.drop_interval
+                }
+            }
+            send_message(client_sock, json.dumps(welcome_msg))
+
+            logger.info(f"✅ Spectator {user_id} joined (ID: {spectator_id})")
+
+        except Exception as e:
+            logger.error(f"❌ Spectator handshake error: {e}")
+            try:
+                client_sock.close()
+            except:
+                pass
+
     def handle_player_handshake(self, client_sock, client_addr):
         """Handle HELLO -> WELCOME handshake"""
         try:
@@ -120,10 +212,16 @@ class GameServer:
 
             user_id = msg.get("userId")
             room_id = msg.get("roomId")
+            is_spectator = msg.get("spectator", False)
 
             # Validate
             if room_id != self.room_id:
                 logger.error(f"❌ Wrong room ID: {room_id} != {self.room_id}")
+                client_sock.close()
+                return
+
+            if is_spectator:
+                logger.error(f"❌ Spectator trying to connect during player phase")
                 client_sock.close()
                 return
 
@@ -306,11 +404,16 @@ class GameServer:
 
             tick += 1
 
-            # Broadcast snapshot for each player
+            # Create snapshots for each player (need lock for reading)
+            snapshots = []
             with self.lock:
                 for user_id, player_info in self.players.items():
                     snapshot = self.create_snapshot(user_id, tick)
-                    self.broadcast_to_all(snapshot)
+                    snapshots.append(snapshot)
+
+            # Broadcast snapshots (outside lock to avoid deadlock)
+            for snapshot in snapshots:
+                self.broadcast_to_all(snapshot)
 
     def create_snapshot(self, user_id, tick):
         """Create snapshot message for a player"""
@@ -374,15 +477,35 @@ class GameServer:
         return ",".join(result)
 
     def broadcast_to_all(self, message):
-        """Broadcast message to all players"""
+        """Broadcast message to all players and spectators"""
+        # Skip if game is over to avoid broken pipe errors
+        if self.game_over:
+            return
+
         msg_str = json.dumps(message)
 
+        # Send to players
         for player_info in self.players.values():
             try:
                 send_message(player_info["socket"], msg_str)
-            except Exception as e:
-                logger.error(f"❌ Failed to send to player: {e}")
-                # Don't log every snapshot, only errors
+            except Exception:
+                # Silently ignore - player probably disconnected
+                pass
+
+        # Send to spectators
+        with self.lock:
+            disconnected_spectators = []
+            for spec_id, spec_info in self.spectators.items():
+                try:
+                    send_message(spec_info["socket"], msg_str)
+                except Exception:
+                    # Mark for cleanup but don't log error
+                    disconnected_spectators.append(spec_id)
+
+            # Clean up disconnected spectators
+            for spec_id in disconnected_spectators:
+                del self.spectators[spec_id]
+                logger.info(f"🔌 Spectator {spec_id} disconnected")
 
     def check_game_over(self):
         """Check if game is over"""
@@ -406,29 +529,77 @@ class GameServer:
         logger.info(f"🎮 Game Over! Winner: {self.winner}")
 
         # Collect results
-        results = []
+        results = {}
         for user_id, player_info in self.players.items():
             board = player_info["board"]
-            results.append({
-                "userId": user_id,
+            # Determine player role (P1 or P2)
+            role = "P1" if user_id == self.player_ids[0] else "P2"
+            results[role] = {
+                "user_id": user_id,
                 "score": board.score,
-                "lines": board.lines_cleared,
-                "maxCombo": 0  # Not implemented
-            })
+                "lines_cleared": board.lines_cleared,
+                "max_combo": 0  # Not implemented
+            }
 
-        # Send GAME_OVER message
+        # Send GAME_OVER message to clients
         game_over_msg = {
             "type": "GAME_OVER",
             "winner": self.winner,
-            "results": results
+            "results": [
+                {
+                    "userId": user_id,
+                    "score": player_info["board"].score,
+                    "lines": player_info["board"].lines_cleared,
+                    "maxCombo": 0
+                }
+                for user_id, player_info in self.players.items()
+            ]
         }
         self.broadcast_to_all(game_over_msg)
 
-        # TODO: Report to Lobby/DB Server
+        # Report to Lobby Server
+        self.report_game_result(results)
         logger.info(f"📊 Final results: {results}")
 
         # Wait a bit before shutdown
         time.sleep(2)
+
+    def report_game_result(self, results):
+        """Report game results to Lobby Server"""
+        try:
+            # Connect to lobby server
+            lobby_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            lobby_sock.connect((self.lobby_host, self.lobby_port))
+
+            # Determine winner role
+            winner_role = None
+            if self.winner:
+                winner_role = "P1" if self.winner == self.player_ids[0] else "P2"
+
+            # Send report
+            report = {
+                "action": "report_game_result",
+                "data": {
+                    "room_id": self.room_id,
+                    "winner": winner_role,
+                    "results": results
+                }
+            }
+            send_message(lobby_sock, json.dumps(report))
+
+            # Wait for response
+            response_str = recv_message(lobby_sock)
+            response = json.loads(response_str)
+
+            if response.get("status") == "success":
+                logger.info("✅ Game result reported to Lobby Server")
+            else:
+                logger.warning(f"⚠️ Lobby Server response: {response.get('message')}")
+
+            lobby_sock.close()
+
+        except Exception as e:
+            logger.error(f"❌ Failed to report game result: {e}")
 
     def shutdown(self):
         """Shutdown server"""

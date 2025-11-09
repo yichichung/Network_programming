@@ -34,12 +34,14 @@ Players can register accounts, create or join game rooms, and compete in real-ti
 ### For Players (Easy Mode)
 
 1. **Start the servers**:
+
    ```bash
    cd db_server && python3 db_server.py &
    cd ../lobby_server && python3 lobby_server.py &
    ```
 
 2. **Both players run the interactive lobby client**:
+
    ```bash
    python3 play_lobby.py
    ```
@@ -108,6 +110,7 @@ See [GAME_INSTRUCTIONS.md](GAME_INSTRUCTIONS.md) for detailed setup instructions
   ```
 
 Main dependencies:
+
 - `pygame` - For game client GUI
 - `sqlite3` - For database (included in Python standard library)
 
@@ -237,6 +240,7 @@ All game logic runs on the Game Server - clients only send inputs and render sta
 ### "Connection refused" errors
 
 Make sure the servers are running in the correct order:
+
 1. DB Server first
 2. Lobby Server second
 3. Then clients can connect
@@ -250,6 +254,7 @@ pip install pygame
 ### Port already in use
 
 Check if another instance is running:
+
 ```bash
 lsof -i :10001  # DB Server
 lsof -i :10002  # Lobby Server

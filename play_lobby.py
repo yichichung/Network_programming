@@ -32,6 +32,9 @@ class InteractiveLobbyClient:
         self._recv_thread = None
         self._recv_running = False
 
+        # 用於處理 replay 請求（避免 stdin 競爭）
+        self.pending_replay_request = None  # {"room_id": int}
+
     def connect(self):
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -139,6 +142,68 @@ class InteractiveLobbyClient:
             from_user = notif.get("from_user_name") or notif.get("from_user_id")
             room_name = notif.get("room_name")
             print(f"\n✉️ 收到邀請：{from_user} 邀請你加入房間 {room_name}\n")
+        elif t == "game_ended":
+            # 遊戲結束通知
+            room_id = notif.get("room_id")
+            winner = notif.get("winner")
+            results = notif.get("results", {})
+            request_replay = notif.get("request_replay", False)
+
+            print("\n" + "="*60)
+            print("🏁 遊戲結束！")
+            print("="*60)
+
+            # 顯示勝利者
+            if winner:
+                print(f"🏆 勝利者: Player {winner}")
+
+            # 顯示結果統計（如果有）
+            if results:
+                for player, stats in results.items():
+                    print(f"\n{player}:")
+                    print(f"  分數: {stats.get('score', 0)}")
+                    print(f"  消除行數: {stats.get('lines_cleared', 0)}")
+
+            print("="*60)
+
+            # 檢查是否為觀眾（不在玩家列表中）
+            # 檢查結果中是否包含當前使用者的 user_id
+            is_player = False
+            if request_replay and self.user_id and results:
+                # Debug: print data types and values
+                print(f"\n[DEBUG] self.user_id = {self.user_id} (type: {type(self.user_id)})")
+                print(f"[DEBUG] results = {results}")
+                for role, player_stats in results.items():
+                    stats_user_id = player_stats.get("user_id")
+                    print(f"[DEBUG] Checking {role}: user_id={stats_user_id} (type: {type(stats_user_id)})")
+                    # Compare both as strings and as ints to handle type mismatches
+                    if stats_user_id == self.user_id or str(stats_user_id) == str(self.user_id):
+                        is_player = True
+                        print(f"[DEBUG] Match found! is_player = True")
+                        break
+
+            if not is_player:
+                # 觀眾：顯示遊戲結束，回到選單
+                print("\n📺 觀戰結束，返回主選單...\n")
+            else:
+                # 玩家：設置待處理的 replay 請求
+                # 不在背景執行緒中讀取 stdin，而是讓主執行緒處理
+                self.pending_replay_request = {"room_id": room_id}
+                print("\n⚠️  遊戲結束！請在主選單輸入 'y' 重新對戰，或 'n' 拒絕\n")
+        elif t == "replay_accepted":
+            # 所有玩家同意重玩
+            message = notif.get("message", "")
+            print("\n" + "="*60)
+            print("✅ " + message)
+            print("="*60 + "\n")
+        elif t == "replay_rejected":
+            # 有玩家拒絕重玩
+            message = notif.get("message", "")
+            print("\n" + "="*60)
+            print("❌ " + message)
+            print("="*60 + "\n")
+            # 清除當前房間 ID
+            self.current_room_id = None
         else:
             # 其他通知類型
             pass
@@ -357,6 +422,91 @@ class InteractiveLobbyClient:
         except Exception as e:
             print(f"❌ 錯誤: {e}")
 
+    def spectate_game(self):
+        """觀戰遊戲"""
+        print("\n" + "="*60)
+        print("觀戰遊戲")
+        print("="*60)
+
+        # 顯示正在進行中的房間
+        try:
+            resp = self.send_request("list_rooms")
+            if resp.get("status") != "success":
+                print("❌ 無法取得房間列表")
+                return
+
+            rooms = resp["data"]
+            playing_rooms = [r for r in rooms if r.get("status") == "playing"]
+
+            if not playing_rooms:
+                print("\n目前沒有正在進行的遊戲")
+                return
+
+            print(f"\n共 {len(playing_rooms)} 個正在進行的遊戲:\n")
+            for room in playing_rooms:
+                print(f"  房間 ID: {room['id']}")
+                print(f"  名稱: {room['name']}")
+                print()
+
+            room_id = input("請輸入要觀戰的房間 ID: ").strip()
+            if not room_id:
+                return
+
+            try:
+                room_id = int(room_id)
+            except ValueError:
+                print("❌ 房間 ID 必須是數字")
+                return
+
+            # 取得遊戲伺服器資訊
+            resp = self.send_request("spectate_game", {"room_id": room_id})
+            if resp.get("status") == "success":
+                game_info = resp["data"]
+                host = game_info.get("game_server_host", "localhost")
+                port = game_info.get("game_server_port")
+
+                print(f"\n🎮 連接到遊戲伺服器...")
+                self._launch_spectator_client(host, port, room_id)
+            else:
+                print(f"\n❌ {resp.get('message', '無法觀戰此遊戲')}")
+
+        except Exception as e:
+            print(f"❌ 錯誤: {e}")
+
+    def _launch_spectator_client(self, host, port, room_id):
+        """啟動觀戰客戶端"""
+        try:
+            game_client_path = os.path.join(os.path.dirname(__file__), "game_client.py")
+
+            cmd = [
+                "python3",
+                game_client_path,
+                "--host", host,
+                "--port", str(port),
+                "--room-id", str(room_id),
+                "--user-id", str(self.user_id),
+                "--spectate"  # 觀戰模式標記
+            ]
+
+            print(f"🚀 啟動觀戰視窗...")
+            print(f"   Host: {host}")
+            print(f"   Port: {port}")
+            print(f"   Room: {room_id}")
+
+            log_file = open(f"spectator_{self.user_id}.log", "w")
+
+            subprocess.Popen(
+                cmd,
+                stdout=log_file,
+                stderr=subprocess.STDOUT
+            )
+
+            print("✅ 觀戰視窗應該已經開啟！")
+            print(f"📄 觀戰日誌: spectator_{self.user_id}.log\n")
+
+        except Exception as e:
+            print(f"❌ 無法啟動觀戰視窗: {e}")
+
     def close(self):
         # 先嘗試優雅登出（如果你想避免在 close 時把緩衝區通知印出，可註解掉 logout）
         if self.sock:
@@ -391,10 +541,11 @@ def print_menu():
     print("2. Login")
     print("3. Create room")
     print("4. List public rooms")
-    print("5. Join room")
+    print("5. Join room (as player)")
     print("6. Start game (host only)")
     print("7. List online users")
-    print("8. Exit")
+    print("8. Spectate game (watch only)")
+    print("9. Exit")
     print("="*60)
 
 
@@ -414,8 +565,39 @@ def main():
 
     try:
         while True:
+            # 檢查是否有待處理的 replay 請求
+            if client.pending_replay_request:
+                room_id = client.pending_replay_request["room_id"]
+                print("\n" + "="*60)
+                print("⚠️  等待您的 REPLAY 回應")
+                print("="*60)
+                replay_choice = input("是否要重新對戰？ (y/n): ").strip().lower()
+
+                want_replay = (replay_choice == 'y')
+
+                # 發送回應給伺服器
+                try:
+                    send_message(client.sock, json.dumps({
+                        "action": "replay_response",
+                        "data": {
+                            "room_id": room_id,
+                            "replay": want_replay
+                        }
+                    }))
+                    if want_replay:
+                        print("✅ 已發送重新對戰請求，等待對手回應...\n")
+                    else:
+                        print("✅ 已回絕重新對戰，返回主選單...\n")
+                        client.current_room_id = None
+                except Exception as e:
+                    print(f"❌ 發送回應失敗: {e}\n")
+
+                # 清除待處理請求
+                client.pending_replay_request = None
+                continue
+
             print_menu()
-            choice = input("\nEnter your choice (1-8): ").strip()
+            choice = input("\nEnter your choice (1-9): ").strip()
 
             if choice == "1":
                 client.register_user()
@@ -452,11 +634,17 @@ def main():
                     client.list_online_users()
 
             elif choice == "8":
+                if not logged_in:
+                    print("\n❌ You must login first!")
+                else:
+                    client.spectate_game()
+
+            elif choice == "9":
                 print("\n👋 Goodbye!")
                 break
 
             else:
-                print("\n❌ Invalid choice. Please enter 1-8.")
+                print("\n❌ Invalid choice. Please enter 1-9.")
 
     except KeyboardInterrupt:
         print("\n\n👋 Goodbye!")
