@@ -1,201 +1,42 @@
-[2025-11-10 15:06:07,810] INFO: 🎮 Game Server started on port 10102
-[2025-11-10 15:06:07,811] INFO:    Room: 2, Players: [1, 2]
-[2025-11-10 15:06:07,811] INFO:    Seed: 1821776450
-[2025-11-10 15:06:10,468] INFO: 📥 Player 1 connected from ('127.0.0.1', 54506)
-[2025-11-10 15:06:10,476] INFO: ✅ Player 1 (P1) ready
-[2025-11-10 15:06:10,476] INFO: 📥 Player 2 connected from ('127.0.0.1', 54507)
-[2025-11-10 15:06:10,488] INFO: ✅ Player 2 (P2) ready
-[2025-11-10 15:06:10,488] INFO: ✅ Both players connected, starting game...
-[2025-11-10 15:06:10,492] INFO: 🎮 Starting input handler for player 1
-[2025-11-10 15:06:10,497] INFO: 🎮 Starting input handler for player 2
-[2025-11-10 15:06:14,470] INFO: 🎮 Received INPUT from 1: DOWN (seq: 1)
-[2025-11-10 15:06:14,470] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:14,523] INFO: 🎮 Received INPUT from 1: DOWN (seq: 2)
-[2025-11-10 15:06:14,523] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:14,574] INFO: 🎮 Received INPUT from 1: DOWN (seq: 3)
-[2025-11-10 15:06:14,574] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:14,641] INFO: 🎮 Received INPUT from 1: DOWN (seq: 4)
-[2025-11-10 15:06:14,641] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:14,691] INFO: 🎮 Received INPUT from 1: DOWN (seq: 5)
-[2025-11-10 15:06:14,691] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:14,757] INFO: 🎮 Received INPUT from 1: DOWN (seq: 6)
-[2025-11-10 15:06:14,758] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:14,808] INFO: 🎮 Received INPUT from 1: DOWN (seq: 7)
-[2025-11-10 15:06:14,808] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:14,874] INFO: 🎮 Received INPUT from 1: DOWN (seq: 8)
-[2025-11-10 15:06:14,874] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:14,925] INFO: 🎮 Received INPUT from 1: DOWN (seq: 9)
-[2025-11-10 15:06:14,925] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:14,976] INFO: 🎮 Received INPUT from 1: DOWN (seq: 10)
-[2025-11-10 15:06:14,976] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,027] INFO: 🎮 Received INPUT from 1: DOWN (seq: 11)
-[2025-11-10 15:06:15,027] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,078] INFO: 🎮 Received INPUT from 1: DOWN (seq: 12)
-[2025-11-10 15:06:15,082] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,128] INFO: 🎮 Received INPUT from 1: DOWN (seq: 13)
-[2025-11-10 15:06:15,129] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,180] INFO: 🎮 Received INPUT from 1: DOWN (seq: 14)
-[2025-11-10 15:06:15,180] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,232] INFO: 🎮 Received INPUT from 1: DOWN (seq: 15)
-[2025-11-10 15:06:15,232] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,282] INFO: 🎮 Received INPUT from 1: DOWN (seq: 16)
-[2025-11-10 15:06:15,282] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,333] INFO: 🎮 Received INPUT from 1: DOWN (seq: 17)
-[2025-11-10 15:06:15,333] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,383] INFO: 🎮 Received INPUT from 1: DOWN (seq: 18)
-[2025-11-10 15:06:15,383] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,437] INFO: 🎮 Received INPUT from 1: DOWN (seq: 19)
-[2025-11-10 15:06:15,438] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,484] INFO: 🎮 Received INPUT from 1: DOWN (seq: 20)
-[2025-11-10 15:06:15,484] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,534] INFO: 🎮 Received INPUT from 1: DOWN (seq: 21)
-[2025-11-10 15:06:15,534] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,585] INFO: 🎮 Received INPUT from 1: DOWN (seq: 22)
-[2025-11-10 15:06:15,585] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,654] INFO: 🎮 Received INPUT from 1: DOWN (seq: 23)
-[2025-11-10 15:06:15,654] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,717] INFO: 🎮 Received INPUT from 1: DOWN (seq: 24)
-[2025-11-10 15:06:15,718] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,770] INFO: 🎮 Received INPUT from 1: DOWN (seq: 25)
-[2025-11-10 15:06:15,771] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,825] INFO: 🎮 Received INPUT from 1: DOWN (seq: 26)
-[2025-11-10 15:06:15,825] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,890] INFO: 🎮 Received INPUT from 1: DOWN (seq: 27)
-[2025-11-10 15:06:15,890] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,941] INFO: 🎮 Received INPUT from 1: DOWN (seq: 28)
-[2025-11-10 15:06:15,941] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:15,993] INFO: 🎮 Received INPUT from 1: DOWN (seq: 29)
-[2025-11-10 15:06:15,993] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,043] INFO: 🎮 Received INPUT from 1: DOWN (seq: 30)
-[2025-11-10 15:06:16,043] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,094] INFO: 🎮 Received INPUT from 1: DOWN (seq: 31)
-[2025-11-10 15:06:16,094] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,145] INFO: 🎮 Received INPUT from 1: DOWN (seq: 32)
-[2025-11-10 15:06:16,146] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,196] INFO: 🎮 Received INPUT from 1: DOWN (seq: 33)
-[2025-11-10 15:06:16,197] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,248] INFO: 🎮 Received INPUT from 1: DOWN (seq: 34)
-[2025-11-10 15:06:16,248] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,298] INFO: 🎮 Received INPUT from 1: DOWN (seq: 35)
-[2025-11-10 15:06:16,298] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,365] INFO: 🎮 Received INPUT from 1: DOWN (seq: 36)
-[2025-11-10 15:06:16,365] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,415] INFO: 🎮 Received INPUT from 1: DOWN (seq: 37)
-[2025-11-10 15:06:16,415] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,482] INFO: 🎮 Received INPUT from 1: DOWN (seq: 38)
-[2025-11-10 15:06:16,483] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,549] INFO: 🎮 Received INPUT from 1: DOWN (seq: 39)
-[2025-11-10 15:06:16,550] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,601] INFO: 🎮 Received INPUT from 1: DOWN (seq: 40)
-[2025-11-10 15:06:16,601] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,652] INFO: 🎮 Received INPUT from 1: DOWN (seq: 41)
-[2025-11-10 15:06:16,652] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,719] INFO: 🎮 Received INPUT from 1: DOWN (seq: 42)
-[2025-11-10 15:06:16,719] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,770] INFO: 🎮 Received INPUT from 1: DOWN (seq: 43)
-[2025-11-10 15:06:16,770] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,823] INFO: 🎮 Received INPUT from 1: DOWN (seq: 44)
-[2025-11-10 15:06:16,824] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,890] INFO: 🎮 Received INPUT from 1: DOWN (seq: 45)
-[2025-11-10 15:06:16,891] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,941] INFO: 🎮 Received INPUT from 1: DOWN (seq: 46)
-[2025-11-10 15:06:16,941] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:16,992] INFO: 🎮 Received INPUT from 1: DOWN (seq: 47)
-[2025-11-10 15:06:16,992] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,043] INFO: 🎮 Received INPUT from 1: DOWN (seq: 48)
-[2025-11-10 15:06:17,044] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,093] INFO: 🎮 Received INPUT from 1: DOWN (seq: 49)
-[2025-11-10 15:06:17,093] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,144] INFO: 🎮 Received INPUT from 1: DOWN (seq: 50)
-[2025-11-10 15:06:17,144] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,210] INFO: 🎮 Received INPUT from 1: DOWN (seq: 51)
-[2025-11-10 15:06:17,211] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,262] INFO: 🎮 Received INPUT from 1: DOWN (seq: 52)
-[2025-11-10 15:06:17,262] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,313] INFO: 🎮 Received INPUT from 1: DOWN (seq: 53)
-[2025-11-10 15:06:17,314] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,364] INFO: 🎮 Received INPUT from 1: DOWN (seq: 54)
-[2025-11-10 15:06:17,364] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,415] INFO: 🎮 Received INPUT from 1: DOWN (seq: 55)
-[2025-11-10 15:06:17,415] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,466] INFO: 🎮 Received INPUT from 1: DOWN (seq: 56)
-[2025-11-10 15:06:17,466] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,518] INFO: 🎮 Received INPUT from 1: DOWN (seq: 57)
-[2025-11-10 15:06:17,518] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,584] INFO: 🎮 Received INPUT from 1: DOWN (seq: 58)
-[2025-11-10 15:06:17,585] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,636] INFO: 🎮 Received INPUT from 1: DOWN (seq: 59)
-[2025-11-10 15:06:17,637] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,687] INFO: 🎮 Received INPUT from 1: DOWN (seq: 60)
-[2025-11-10 15:06:17,687] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,741] INFO: 🎮 Received INPUT from 1: DOWN (seq: 61)
-[2025-11-10 15:06:17,741] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,806] INFO: 🎮 Received INPUT from 1: DOWN (seq: 62)
-[2025-11-10 15:06:17,806] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,857] INFO: 🎮 Received INPUT from 1: DOWN (seq: 63)
-[2025-11-10 15:06:17,857] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,909] INFO: 🎮 Received INPUT from 1: DOWN (seq: 64)
-[2025-11-10 15:06:17,909] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:17,975] INFO: 🎮 Received INPUT from 1: DOWN (seq: 65)
-[2025-11-10 15:06:17,975] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,026] INFO: 🎮 Received INPUT from 1: DOWN (seq: 66)
-[2025-11-10 15:06:18,026] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,078] INFO: 🎮 Received INPUT from 1: DOWN (seq: 67)
-[2025-11-10 15:06:18,079] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,128] INFO: 🎮 Received INPUT from 1: DOWN (seq: 68)
-[2025-11-10 15:06:18,129] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,194] INFO: 🎮 Received INPUT from 1: DOWN (seq: 69)
-[2025-11-10 15:06:18,195] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,247] INFO: 🎮 Received INPUT from 1: DOWN (seq: 70)
-[2025-11-10 15:06:18,247] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,313] INFO: 🎮 Received INPUT from 1: DOWN (seq: 71)
-[2025-11-10 15:06:18,313] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,364] INFO: 🎮 Received INPUT from 1: DOWN (seq: 72)
-[2025-11-10 15:06:18,364] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,415] INFO: 🎮 Received INPUT from 1: DOWN (seq: 73)
-[2025-11-10 15:06:18,415] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,465] INFO: 🎮 Received INPUT from 1: DOWN (seq: 74)
-[2025-11-10 15:06:18,465] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,516] INFO: 🎮 Received INPUT from 1: DOWN (seq: 75)
-[2025-11-10 15:06:18,516] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,567] INFO: 🎮 Received INPUT from 1: DOWN (seq: 76)
-[2025-11-10 15:06:18,567] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,618] INFO: 🎮 Received INPUT from 1: DOWN (seq: 77)
-[2025-11-10 15:06:18,618] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,669] INFO: 🎮 Received INPUT from 1: DOWN (seq: 78)
-[2025-11-10 15:06:18,669] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,720] INFO: 🎮 Received INPUT from 1: DOWN (seq: 79)
-[2025-11-10 15:06:18,720] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,770] INFO: 🎮 Received INPUT from 1: DOWN (seq: 80)
-[2025-11-10 15:06:18,770] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,821] INFO: 🎮 Received INPUT from 1: DOWN (seq: 81)
-[2025-11-10 15:06:18,821] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,871] INFO: 🎮 Received INPUT from 1: DOWN (seq: 82)
-[2025-11-10 15:06:18,871] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,921] INFO: 🎮 Received INPUT from 1: DOWN (seq: 83)
-[2025-11-10 15:06:18,921] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:18,974] INFO: 🎮 Received INPUT from 1: DOWN (seq: 84)
-[2025-11-10 15:06:18,974] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:19,025] INFO: 🎮 Received INPUT from 1: DOWN (seq: 85)
-[2025-11-10 15:06:19,025] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:19,075] INFO: 🎮 Received INPUT from 1: DOWN (seq: 86)
-[2025-11-10 15:06:19,075] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:19,131] INFO: 🎮 Received INPUT from 1: DOWN (seq: 87)
-[2025-11-10 15:06:19,132] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:19,177] INFO: 🎮 Received INPUT from 1: DOWN (seq: 88)
-[2025-11-10 15:06:19,177] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:19,244] INFO: 🎮 Received INPUT from 1: DOWN (seq: 89)
-[2025-11-10 15:06:19,244] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:19,311] INFO: 🎮 Received INPUT from 1: DOWN (seq: 90)
-[2025-11-10 15:06:19,312] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:19,362] INFO: 🎮 Received INPUT from 1: DOWN (seq: 91)
-[2025-11-10 15:06:19,362] INFO: ✅ Processing action: DOWN
-[2025-11-10 15:06:19,391] INFO: 🎮 Game Over! Winner: 2
-[2025-11-10 15:06:19,406] INFO: ✅ Game result reported to Lobby Server
-[2025-11-10 15:06:19,407] INFO: 📊 Final results: {'P1': {'user_id': 1, 'score': 0, 'lines_cleared': 0, 'max_combo': 0}, 'P2': {'user_id': 2, 'score': 0, 'lines_cleared': 0, 'max_combo': 0}}
-[2025-11-10 15:06:19,513] INFO: 🔌 Player 2 input handler stopped
-[2025-11-10 15:06:20,363] INFO: 🔌 Player 1 input handler stopped
-[2025-11-10 15:06:21,413] INFO: 🛑 Shutting down Game Server...
-[2025-11-10 15:06:21,413] INFO: ✅ Game Server shut down
-[2025-11-10 15:06:21,413] INFO: 🛑 Shutting down Game Server...
-[2025-11-10 15:06:21,413] INFO: ✅ Game Server shut down
+[2025-11-10 16:07:05,149] INFO: 🎮 Game Server started on port 10102
+[2025-11-10 16:07:05,149] INFO:    Room: 2, Players: [1, 2]
+[2025-11-10 16:07:05,149] INFO:    Seed: 1825433789
+[2025-11-10 16:07:06,987] INFO: 📥 Player 1 connected from ('127.0.0.1', 57264)
+[2025-11-10 16:07:06,988] INFO: ✅ Player 1 (P1) ready
+[2025-11-10 16:07:07,017] INFO: 📥 Player 2 connected from ('127.0.0.1', 57265)
+[2025-11-10 16:07:07,018] INFO: ✅ Player 2 (P2) ready
+[2025-11-10 16:07:07,018] INFO: ✅ Both players connected, starting game...
+[2025-11-10 16:07:07,018] INFO: 🎮 Starting input handler for player 1
+[2025-11-10 16:07:07,019] INFO: 🎮 Starting input handler for player 2
+[2025-11-10 16:07:15,486] ERROR: ❌ ProtocolError for 2: 連線已關閉（recv 回傳空資料）
+[2025-11-10 16:07:15,487] WARNING: ⚠️ Player 2 disconnected during game!
+[2025-11-10 16:07:15,487] ERROR: ❌ Error handling input for 2: 'GameServer' object has no attribute 'player1_id'
+Traceback (most recent call last):
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/game_server.py", line 316, in handle_player_input
+    msg_str = recv_message(sock)
+              ^^^^^^^^^^^^^^^^^^
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/../db_server/protocol.py", line 94, in recv_message
+    header = recv_exact(sock, 4)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/../db_server/protocol.py", line 70, in recv_exact
+    raise ProtocolError("連線已關閉（recv 回傳空資料）")
+db_server.protocol.ProtocolError: 連線已關閉（recv 回傳空資料）
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/game_server.py", line 346, in handle_player_input
+    self.handle_player_disconnect(user_id)
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/game_server.py", line 640, in handle_player_disconnect
+    for role, player_info in [("P1", self.players.get(self.player1_id)), ("P2", self.players.get(self.player2_id))]:
+                                                      ^^^^^^^^^^^^^^^
+AttributeError: 'GameServer' object has no attribute 'player1_id'. Did you mean: 'player_ids'?
+[2025-11-10 16:07:15,495] INFO: 🔌 Player 2 input handler stopped
+[2025-11-10 16:07:15,549] INFO: 🎮 Game Over! Winner: None
+[2025-11-10 16:07:16,026] INFO: 🔌 Player 1 input handler stopped
+[2025-11-10 16:09:11,077] INFO: 🛑 Shutting down Game Server...
+[2025-11-10 16:09:11,078] INFO: ✅ Game Server shut down
+[2025-11-10 16:09:11,079] INFO: 
+⚠️ Interrupted
+[2025-11-10 16:09:11,080] INFO: 🛑 Shutting down Game Server...
+[2025-11-10 16:09:11,080] INFO: ✅ Game Server shut down

@@ -1,0 +1,324 @@
+[
+  {
+    "match_id": "match_1_1762761952",
+    "room_id": 1,
+    "users": [
+      2,
+      1
+    ],
+    "results": [
+      {
+        "userId": 2,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      },
+      {
+        "userId": 1,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      }
+    ],
+    "id": 1
+  },
+  {
+    "match_id": "match_1_1762761970",
+    "room_id": 1,
+    "users": [
+      1,
+      2
+    ],
+    "results": [
+      {
+        "userId": 1,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      },
+      {
+        "userId": 2,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      }
+    ],
+    "id": 2
+  },
+  {
+    "match_id": "match_2_1762762035",
+    "room_id": 2,
+    "users": [
+      1,
+      2
+    ],
+    "results": [
+      {
+        "userId": 1,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      },
+      {
+        "userId": 2,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      }
+    ],
+    "id": 3
+  },
+  {
+    "match_id": "match_3_1762762363",
+    "room_id": 3,
+    "users": [
+      1,
+      2
+    ],
+    "results": [
+      {
+        "userId": 1,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      },
+      {
+        "userId": 2,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      }
+    ],
+    "id": 4
+  },
+  {
+    "match_id": "match_3_1762762383",
+    "room_id": 3,
+    "users": [
+      1,
+      2
+    ],
+    "results": [
+      {
+        "userId": 1,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      },
+      {
+        "userId": 2,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      }
+    ],
+    "id": 5
+  },
+  {
+    "match_id": "match_4_1762762967",
+    "room_id": 4,
+    "users": [
+      1,
+      2
+    ],
+    "results": [
+      {
+        "userId": 1,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      },
+      {
+        "userId": 2,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      }
+    ],
+    "id": 6
+  },
+  {
+    "match_id": "match_5_1762763277",
+    "room_id": 5,
+    "users": [
+      1,
+      2
+    ],
+    "results": [
+      {
+        "userId": 1,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      },
+      {
+        "userId": 2,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      }
+    ],
+    "id": 7
+  },
+  {
+    "match_id": "match_15_1762765650",
+    "room_id": 15,
+    "users": [
+      1,
+      2
+    ],
+    "results": [
+      {
+        "userId": 1,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      },
+      {
+        "userId": 2,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      }
+    ],
+    "id": 8
+  },
+  {
+    "match_id": "match_15_1762765665",
+    "room_id": 15,
+    "users": [
+      2,
+      1
+    ],
+    "results": [
+      {
+        "userId": 2,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      },
+      {
+        "userId": 1,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      }
+    ],
+    "id": 9
+  },
+  {
+    "match_id": "match_17_1762782862",
+    "room_id": 17,
+    "users": [
+      2,
+      1
+    ],
+    "results": [
+      {
+        "userId": 2,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      },
+      {
+        "userId": 1,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      }
+    ],
+    "id": 10
+  },
+  {
+    "match_id": "match_18_1762783149",
+    "room_id": 18,
+    "users": [
+      1,
+      2
+    ],
+    "results": [
+      {
+        "userId": 1,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      },
+      {
+        "userId": 2,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      }
+    ],
+    "id": 11
+  },
+  {
+    "match_id": "match_18_1762783149",
+    "room_id": 18,
+    "users": [
+      2,
+      1
+    ],
+    "results": [
+      {
+        "userId": 2,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      },
+      {
+        "userId": 1,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      }
+    ],
+    "id": 12
+  },
+  {
+    "match_id": "match_20_1762783263",
+    "room_id": 20,
+    "users": [
+      1,
+      2
+    ],
+    "results": [
+      {
+        "userId": 1,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      },
+      {
+        "userId": 2,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      }
+    ],
+    "id": 13
+  },
+  {
+    "match_id": "match_20_1762783263",
+    "room_id": 20,
+    "users": [
+      2,
+      1
+    ],
+    "results": [
+      {
+        "userId": 2,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      },
+      {
+        "userId": 1,
+        "score": 0,
+        "lines": 0,
+        "maxCombo": 0
+      }
+    ],
+    "id": 14
+  }
+]

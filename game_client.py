@@ -88,6 +88,7 @@ class GameClient:
         self.my_next = []
         self.game_over = False
         self.winner = None
+        self.game_over_reason = None  # For disconnect messages
 
         # Input tracking
         self.input_seq = 0
@@ -245,7 +246,13 @@ class GameClient:
         with self.lock:
             self.game_over = True
             self.winner = msg.get("winner")
-        print(f"🎮 Game Over! Winner: {self.winner}")
+            self.game_over_reason = msg.get("reason")
+            message = msg.get("message", "")
+
+        if self.game_over_reason == "opponent_disconnected":
+            print(f"⚠️ {message}")
+        else:
+            print(f"🎮 Game Over! Winner: {self.winner}")
 
     def send_input(self, action):
         """Send input to server"""
@@ -431,7 +438,10 @@ class GameClient:
                 self.screen.blit(overlay, (0, 0))
 
                 # Determine message and color
-                if self.spectator:
+                if self.game_over_reason == "opponent_disconnected":
+                    main_text = "OPPONENT\nDISCONNECTED"
+                    text_color = YELLOW
+                elif self.spectator:
                     # Spectator mode - show who won
                     if self.winner is None:
                         main_text = "DRAW!"

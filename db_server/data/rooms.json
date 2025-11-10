@@ -1,0 +1,142 @@
+[
+  {
+    "name": "sdlk;j",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "waiting",
+    "id": 1
+  },
+  {
+    "name": "aksjdb",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "waiting",
+    "id": 2
+  },
+  {
+    "name": "alspk;dj",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "waiting",
+    "id": 3
+  },
+  {
+    "name": "f;askidfjc",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "waiting",
+    "id": 4
+  },
+  {
+    "name": "alsksdnh",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "waiting",
+    "id": 5
+  },
+  {
+    "name": "a/;'sldk,",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "idle",
+    "id": 6
+  },
+  {
+    "name": "acndk",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "idle",
+    "id": 7
+  },
+  {
+    "name": "heyo",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "idle",
+    "id": 8
+  },
+  {
+    "name": "d",
+    "host_user_id": 2,
+    "visibility": "public",
+    "status": "idle",
+    "id": 9
+  },
+  {
+    "name": "alkjsdfhbn",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "idle",
+    "id": 10
+  },
+  {
+    "name": "a;",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "idle",
+    "id": 11
+  },
+  {
+    "name": "as.ldmk",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "idle",
+    "id": 12
+  },
+  {
+    "name": "a;'",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "playing",
+    "id": 13
+  },
+  {
+    "name": "as;kldmj",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "playing",
+    "id": 14
+  },
+  {
+    "name": "a;llskdj",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "waiting",
+    "id": 15
+  },
+  {
+    "name": "asljkdn",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "idle",
+    "id": 16
+  },
+  {
+    "name": "asldkfjn",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "waiting",
+    "id": 17
+  },
+  {
+    "name": "asldkj",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "waiting",
+    "id": 18
+  },
+  {
+    "name": "sdlk;jkflvn",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "idle",
+    "id": 19
+  },
+  {
+    "name": "as;dkldmjj",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "waiting",
+    "id": 20
+  }
+]

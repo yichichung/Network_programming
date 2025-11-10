@@ -11,7 +11,7 @@ from datetime import datetime
 
 # Add parent directory to path for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
-from db_server.protocol import send_message, recv_message, ProtocolError
+from lobby_server.protocol import send_message, recv_message, ProtocolError
 
 from tetris_engine import TetrisBoard, PieceGenerator
 
@@ -342,6 +342,8 @@ class GameServer:
                     if "逾時" in str(e) or "timeout" in str(e).lower():
                         continue  # Treat timeout as non-fatal
                     logger.error(f"❌ ProtocolError for {user_id}: {e}")
+                    # Player disconnected
+                    self.handle_player_disconnect(user_id)
                     break
                 except json.JSONDecodeError as e:
                     logger.error(f"❌ JSONDecodeError for {user_id}: {e}")
@@ -350,12 +352,16 @@ class GameServer:
                     logger.error(f"❌ Unexpected error in input loop for {user_id}: {e}")
                     import traceback
                     traceback.print_exc()
+                    # Player disconnected unexpectedly
+                    self.handle_player_disconnect(user_id)
                     break
 
         except Exception as e:
             logger.error(f"❌ Error handling input for {user_id}: {e}")
             import traceback
             traceback.print_exc()
+            # Player disconnected
+            self.handle_player_disconnect(user_id)
         finally:
             logger.info(f"🔌 Player {user_id} input handler stopped")
 
@@ -601,6 +607,50 @@ class GameServer:
 
         except Exception as e:
             logger.error(f"❌ Failed to report game result: {e}")
+
+    def handle_player_disconnect(self, user_id):
+        """Handle player disconnection during game"""
+        if self.game_over:
+            return  # Game already over
+
+        logger.warning(f"⚠️ Player {user_id} disconnected during game!")
+
+        # Mark game as over
+        self.game_over = True
+
+        # Determine the winner (the other player)
+        other_player_id = None
+        for pid in self.players.keys():
+            if pid != user_id:
+                other_player_id = pid
+                break
+
+        # Broadcast game over message
+        if other_player_id:
+            disconnect_msg = {
+                "type": "GAME_OVER",
+                "reason": "opponent_disconnected",
+                "message": f"Player {user_id} disconnected. You win by default!",
+                "winner": other_player_id
+            }
+            self.broadcast_to_all(disconnect_msg, force=True)
+
+        # Report to lobby that game ended due to disconnection
+        results = {}
+        for i, player_id in enumerate(self.player_ids):
+            role = f"P{i+1}"
+            player_info = self.players.get(player_id)
+            if player_info:
+                results[role] = {
+                    "user_id": player_id,
+                    "score": player_info["board"].score,
+                    "lines_cleared": player_info["board"].lines_cleared
+                }
+
+        winner_role = "P1" if other_player_id == self.player_ids[0] else "P2"
+        self.report_game_result(results)
+
+        logger.info(f"🏁 Game ended due to player {user_id} disconnection")
 
     def shutdown(self):
         """Shutdown server"""

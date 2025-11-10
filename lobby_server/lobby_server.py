@@ -37,9 +37,13 @@ class LobbyServer:
         self.game_manager = GameManager()
         
         # 線上使用者追蹤
-        self.online_users = {}  # {user_id: {"socket": sock, "name": name, ...}}
+        self.online_users = {}  # {user_id: {"socket": sock, "name": name, "last_heartbeat": timestamp, ...}}
         self.user_sockets = {}  # {socket: user_id}
         self.lock = threading.Lock()
+
+        # 心跳監控
+        self._heartbeat_monitor_thread = None
+        self._heartbeat_monitor_running = False
         
         # 房間追蹤（記憶體中的即時狀態）
         self.rooms = {}  # {room_id: {"members": [user_id], "invitations": {user_id: status}}}
@@ -75,7 +79,7 @@ class LobbyServer:
 
                     # 實際發送（仍使用既有的 protocol.send_message）
                     send_message(sock, json.dumps(message))
-                    logger.debug(f"[worker] 已發送給 user {user_id}: {message}")
+                    logger.info(f"[worker] 已發送給 user {user_id}: type={message.get('type', 'unknown')}")
                 except Exception as e:
                     logger.error(f"[worker] 傳送給 {user_id} 發生錯誤: {e}")
                     # 嘗試清理失效連線（若 socket 與記錄一致）
@@ -93,7 +97,81 @@ class LobbyServer:
                 logger.error(f"[worker] 未預期錯誤: {e}")
                 import time
                 time.sleep(0.1)
-    
+
+    def _start_heartbeat_monitor(self):
+        """啟動心跳監控執行緒"""
+        self._heartbeat_monitor_running = True
+        self._heartbeat_monitor_thread = threading.Thread(
+            target=self._heartbeat_monitor_loop,
+            name="heartbeat-monitor",
+            daemon=True
+        )
+        self._heartbeat_monitor_thread.start()
+        logger.info("💓 已啟動心跳監控執行緒")
+
+    def _heartbeat_monitor_loop(self):
+        """監控所有使用者的心跳，超時則斷線處理"""
+        import time
+        HEARTBEAT_TIMEOUT = 5.0  # 5 秒未收到心跳視為斷線
+
+        while self._heartbeat_monitor_running:
+            try:
+                time.sleep(1)  # 每秒檢查一次
+
+                current_time = time.time()
+                timeout_users = []
+
+                # 找出超時的使用者
+                with self.lock:
+                    for user_id, user_info in list(self.online_users.items()):
+                        last_heartbeat = user_info.get("last_heartbeat", current_time)
+                        if current_time - last_heartbeat > HEARTBEAT_TIMEOUT:
+                            timeout_users.append((user_id, user_info))
+
+                # 處理超時使用者（在 lock 外部執行以避免死鎖）
+                for user_id, user_info in timeout_users:
+                    logger.warning(f"⏰ 使用者 {user_id} ({user_info.get('name')}) 心跳超時，斷線處理")
+                    self._handle_user_timeout(user_id, user_info)
+
+            except Exception as e:
+                logger.error(f"❌ 心跳監控執行緒錯誤: {e}")
+                time.sleep(1)
+
+    def _handle_user_timeout(self, user_id, user_info):
+        """處理使用者心跳超時"""
+        # 查找該使用者所在的房間
+        with self.lock:
+            user_room_id = None
+            for room_id, room_info in self.rooms.items():
+                if user_id in room_info.get("members", []):
+                    user_room_id = room_id
+                    break
+
+        # 如果在房間中，通知其他成員
+        if user_room_id:
+            logger.info(f"📢 使用者 {user_id} 在房間 {user_room_id} 中斷線，通知其他成員")
+            with self.lock:
+                if user_room_id in self.rooms:
+                    members = list(self.rooms[user_room_id]["members"])
+                    for member_id in members:
+                        if member_id != user_id:
+                            # 通知其他玩家：有人斷線
+                            self.send_to_user(member_id, {
+                                "type": "player_disconnected",
+                                "user_id": user_id,
+                                "room_id": user_room_id,
+                                "message": f"玩家 {user_id} 已斷線"
+                            })
+
+        # 清理使用者
+        sock = user_info.get("socket")
+        if sock:
+            self.remove_online_user(sock)
+            try:
+                sock.close()
+            except:
+                pass
+
     def start(self):
         """啟動 Lobby Server"""
         try:
@@ -108,9 +186,12 @@ class LobbyServer:
             self.server_socket.bind((self.host, self.port))
             self.server_socket.listen(10)
             self.running = True
-            
+
+            # 暫時關閉心跳監控執行緒 - 需要修復
+            # self._start_heartbeat_monitor()
+
             logger.info(f"✅ Lobby Server 啟動於 {self.host}:{self.port}")
-            
+
             # 主迴圈
             while self.running:
                 try:
@@ -187,6 +268,8 @@ class LobbyServer:
                         response = self.handle_spectate_game(data, client_sock)
                     elif action == "replay_response":
                         response = self.handle_replay_response(data, client_sock)
+                    elif action == "heartbeat":
+                        response = self.handle_heartbeat(client_sock)
                     else:
                         response = {"status": "error", "message": f"未知的 action: {action}"}
                     
@@ -252,31 +335,38 @@ class LobbyServer:
         """處理登入"""
         email = data.get("email")
         password = data.get("password")
-        
+
         if not email or not password:
             return {"status": "error", "message": "缺少必要欄位"}
-        
+
         # 查詢使用者
         user = self.db.get_user_by_email(email)
         if not user:
             return {"status": "error", "message": "使用者不存在"}
-        
+
         # 驗證密碼
         password_hash = hashlib.sha256(password.encode()).hexdigest()
         if user["password_hash"] != password_hash:
             return {"status": "error", "message": "密碼錯誤"}
-        
+
+        # 檢查是否已經登入（防止重複登入）
+        with self.lock:
+            if user["id"] in self.online_users:
+                return {"status": "error", "message": "此帳號已在其他地方登入"}
+
         # 更新最後登入時間
         now = datetime.now().isoformat()
         self.db.update_user_login(user["id"], now)
-        
+
         # 加入線上使用者列表
+        import time
         with self.lock:
             self.online_users[user["id"]] = {
                 "socket": client_sock,
                 "name": user["name"],
                 "email": user["email"],
-                "login_at": now
+                "login_at": now,
+                "last_heartbeat": time.time()  # 記錄初始心跳時間
             }
             self.user_sockets[client_sock] = user["id"]
         
@@ -295,7 +385,17 @@ class LobbyServer:
         """處理登出"""
         self.remove_online_user(client_sock)
         return {"status": "success", "message": "登出成功"}
-    
+
+    def handle_heartbeat(self, client_sock):
+        """處理心跳訊息"""
+        import time
+        with self.lock:
+            user_id = self.user_sockets.get(client_sock)
+            if user_id and user_id in self.online_users:
+                self.online_users[user_id]["last_heartbeat"] = time.time()
+                # logger.debug(f"💓 收到使用者 {user_id} 的心跳")  # 可選：debug logging
+        return {"status": "success"}
+
     def remove_online_user(self, client_sock):
         """移除線上使用者"""
         with self.lock:
@@ -383,8 +483,10 @@ class LobbyServer:
             }
         
         logger.info(f"🏠 使用者 {user_id} 建立房間 '{room_name}' (ID: {room['id']})")
-        
-        return {"status": "success", "data": room}
+
+        response = {"status": "success", "data": room}
+        logger.info(f"[DEBUG] create_room response: {response}")
+        return response
     
     def handle_join_room(self, data, client_sock):
         """加入房間"""
@@ -635,6 +737,8 @@ class LobbyServer:
         winner = data.get("winner")
         results = data.get("results", {})
 
+        logger.info(f"🎯 處理遊戲結果: room_id={room_id}, winner={winner}")
+
         if not room_id:
             return {"status": "error", "message": "缺少 room_id"}
 
@@ -676,17 +780,52 @@ class LobbyServer:
 
         # 發送 game_ended 通知給房間內所有成員（玩家和觀眾）
         # 玩家會收到 replay 請求，觀眾只收到遊戲結束通知
+        # 注意：使用資料庫而非 self.rooms，因為 self.rooms 可能在玩家斷線時已被清理
         with self.lock:
+            logger.info(f"🔍 檢查房間 {room_id} 是否在 self.rooms 中...")
+            logger.info(f"🔍 self.rooms.keys() = {list(self.rooms.keys())}")
+
+            # 先嘗試從 self.rooms 取得成員列表
+            members = []
             if room_id in self.rooms:
                 members = list(self.rooms[room_id]["members"])
+                logger.info(f"✅ 從 self.rooms 取得 {len(members)} 位成員: {members}")
+            else:
+                # 如果 self.rooms 中沒有（可能被清理了），從資料庫取得
+                logger.warning(f"⚠️ 房間 {room_id} 不在 self.rooms 中，嘗試從資料庫查詢...")
+                try:
+                    room_data = self.db.get_room(room_id)
+                    if room_data:
+                        # 資料庫中的房間可能包含斷線的玩家，只通知仍在線的
+                        # 從遊戲結果中提取玩家 ID
+                        player_ids = [player_data["user_id"] for player_data in results.values()]
+                        # 只通知仍在線的玩家
+                        members = [uid for uid in player_ids if uid in self.online_users]
+                        logger.info(f"✅ 從資料庫取得玩家 {player_ids}，其中在線: {members}")
+                    else:
+                        logger.error(f"❌ 資料庫中也找不到房間 {room_id}")
+                except Exception as e:
+                    logger.error(f"❌ 查詢資料庫時發生錯誤: {e}")
+
+            # 發送通知
+            if members:
+                logger.info(f"📢 發送 game_ended 通知給 {len(members)} 位成員: {members}")
+
+                # 檢查是否有足夠玩家進行 replay（需要至少 2 人）
+                can_replay = len(members) >= 2
+
                 for member_id in members:
+                    logger.info(f"  → 發送給使用者 {member_id}")
                     self.send_to_user(member_id, {
                         "type": "game_ended",
                         "room_id": room_id,
                         "winner": winner,
                         "results": results,
-                        "request_replay": True  # 請求玩家回覆是否要replay
+                        "request_replay": can_replay,  # 只有在至少 2 人在線時才請求 replay
+                        "message": "遊戲結束" if can_replay else "遊戲結束，對手已離線"
                     })
+            else:
+                logger.warning(f"⚠️ 沒有找到任何在線成員，無法發送通知")
 
         return {"status": "success", "message": "遊戲結果已記錄"}
 

@@ -43,12 +43,18 @@ class InteractiveLobbyClient:
         # 用於標記是否應該退出（server shutdown）
         self._should_exit = False
 
+        # 心跳機制
+        self._heartbeat_thread = None
+        self._heartbeat_running = False
+
     def connect(self):
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.connect((self.host, self.port))
             # 啟動 background recv thread（收到通知會即時印出）
             self._start_recv_thread()
+            # 暫時關閉心跳執行緒 - 需要修復
+            # self._start_heartbeat_thread()
             print(f"✅ 成功連線到 Lobby Server\n")
             return True
         except Exception as e:
@@ -65,6 +71,40 @@ class InteractiveLobbyClient:
     def _stop_recv_thread(self):
         # 停止接收 loop；實際上會在 close 時關 socket 讓 recv_message 拋例外離開
         self._recv_running = False
+
+    def _start_heartbeat_thread(self):
+        """啟動心跳執行緒，每 2 秒發送一次心跳"""
+        if self._heartbeat_thread and self._heartbeat_thread.is_alive():
+            return
+        self._heartbeat_running = True
+        self._heartbeat_thread = threading.Thread(target=self._heartbeat_loop, daemon=True)
+        self._heartbeat_thread.start()
+
+    def _stop_heartbeat_thread(self):
+        """停止心跳執行緒"""
+        self._heartbeat_running = False
+
+    def _heartbeat_loop(self):
+        """背景持續發送心跳"""
+        import time
+        while self._heartbeat_running:
+            try:
+                # 每 2 秒發送一次心跳
+                time.sleep(2)
+
+                if not self._heartbeat_running:
+                    break
+
+                # 發送心跳訊息
+                send_message(self.sock, json.dumps({
+                    "action": "heartbeat",
+                    "data": {}
+                }))
+            except Exception as e:
+                # 如果發送失敗，可能是斷線了
+                if self._heartbeat_running:
+                    # 短暫休息後重試
+                    time.sleep(1)
 
     def _recv_loop(self):
         """背景持續接收：通知直接處理、回應放到 response_queue"""
@@ -91,7 +131,14 @@ class InteractiveLobbyClient:
                     continue
 
                 # 同步回應 → 放到 response queue，供 send_request 取
+                # 但要過濾掉心跳回應（heartbeat 回應沒有 action 欄位）
                 try:
+                    # Check if this is a generic success response without data
+                    # This might be a heartbeat response, so we should skip it
+                    # unless it has meaningful data
+                    if response.get("status") == "success" and not response.get("data") and not response.get("message"):
+                        # This is likely a heartbeat response, skip it
+                        continue
                     self._response_queue.put(response)
                 except Exception:
                     # 若放 queue 失敗，忽略
@@ -161,6 +208,8 @@ class InteractiveLobbyClient:
                     self.current_room_id = None
                     self.is_host = False
                     self.waiting_for_game = False
+                    # Force exit from waiting loop by printing newline
+                    print()
                 else:
                     print()
         elif t == "invitation":
@@ -174,6 +223,8 @@ class InteractiveLobbyClient:
             winner = notif.get("winner")
             results = notif.get("results", {})
             request_replay = notif.get("request_replay", False)
+
+            print(f"\n[DEBUG] 收到 game_ended 通知: room_id={room_id}, winner={winner}")
 
             # Clear waiting flag - game ended
             self.waiting_for_game = False
@@ -195,26 +246,41 @@ class InteractiveLobbyClient:
 
             print("="*60)
 
-            # 檢查是否為觀眾（不在玩家列表中）
-            # 檢查結果中是否包含當前使用者的 user_id
-            is_player = False
-            if request_replay and self.user_id and results:
-                for role, player_stats in results.items():
-                    stats_user_id = player_stats.get("user_id")
-                    # Compare both as strings and as ints to handle type mismatches
-                    if stats_user_id == self.user_id or str(stats_user_id) == str(self.user_id):
-                        is_player = True
-                        break
-
-            if not is_player:
-                # 觀眾：顯示遊戲結束，回到選單
-                print("\n📺 觀戰結束，返回主選單...\n")
-            else:
-                # 玩家：設置待處理的 replay 請求
-                # 不在背景執行緒中讀取 stdin，而是讓主執行緒處理
-                self.pending_replay_request = {"room_id": room_id}
+            # 檢查是否請求 replay
+            if not request_replay:
+                # 不需要 replay（對手已離線或其他原因）
+                # 顯示額外訊息並返回主選單
+                message = notif.get("message", "")
+                if message:
+                    print(f"\n⚠️  {message}")
+                print("\n返回主選單...\n")
+                # 清除房間狀態
+                self.current_room_id = None
+                self.is_host = False
+                self.waiting_for_game = False
                 # Print a newline to interrupt any pending input() call
                 print()
+            else:
+                # 需要 replay - 檢查是否為玩家（不是觀眾）
+                # 檢查結果中是否包含當前使用者的 user_id
+                is_player = False
+                if self.user_id and results:
+                    for role, player_stats in results.items():
+                        stats_user_id = player_stats.get("user_id")
+                        # Compare both as strings and as ints to handle type mismatches
+                        if stats_user_id == self.user_id or str(stats_user_id) == str(self.user_id):
+                            is_player = True
+                            break
+
+                if not is_player:
+                    # 觀眾：顯示遊戲結束，回到選單
+                    print("\n📺 觀戰結束，返回主選單...\n")
+                else:
+                    # 玩家：設置待處理的 replay 請求
+                    # 不在背景執行緒中讀取 stdin，而是讓主執行緒處理
+                    self.pending_replay_request = {"room_id": room_id}
+                    # Print a newline to interrupt any pending input() call
+                    print()
         elif t == "replay_accepted":
             # 所有玩家同意重玩
             message = notif.get("message", "")
@@ -242,6 +308,24 @@ class InteractiveLobbyClient:
             print("按 Enter 結束...")
             # Set flag to exit main loop
             self._should_exit = True
+        elif t == "player_disconnected":
+            # 玩家斷線通知
+            disconnected_user_id = notif.get("user_id")
+            room_id = notif.get("room_id")
+            message = notif.get("message", f"玩家 {disconnected_user_id} 已斷線")
+
+            print("\n" + "="*60)
+            print(f"⚠️  {message}")
+            print("="*60 + "\n")
+
+            # 如果在等待中或遊戲中，返回主選單
+            if self.waiting_for_game:
+                print("⚠️  返回主選單...\n")
+                self.current_room_id = None
+                self.is_host = False
+                self.waiting_for_game = False
+                # Force exit from waiting loop
+                print()
         else:
             # 其他通知類型
             pass
@@ -351,12 +435,21 @@ class InteractiveLobbyClient:
         visibility = "public"
 
         try:
-            resp = self.send_request("create_room", {"name": room_name, "visibility": visibility})
+            print("[DEBUG] Sending create_room request...")
+            resp = self.send_request("create_room", {"name": room_name, "visibility": visibility}, timeout=10.0)
+            print(f"[DEBUG] create_room response: {resp}")  # Debug logging
+
+            if not resp:
+                print(f"\n❌ 建立房間失敗: 沒有收到回應")
+                return None
+
             if resp.get("status") == "success":
                 data = resp.get("data", {})
+                print(f"[DEBUG] data: {data}")  # Debug logging
                 room_id = data.get("id")
                 if not room_id:
                     print(f"\n❌ 建立房間失敗: 無法取得房間 ID")
+                    print(f"[DEBUG] Response was: {resp}")
                     return None
                 self.current_room_id = room_id
                 self.is_host = True  # Mark as host
@@ -367,8 +460,12 @@ class InteractiveLobbyClient:
                 print(f"\n📋 請將此 Room ID 分享給朋友: {room_id}\n")
                 return room_id
             else:
-                print(f"\n❌ 建立房間失敗: {resp.get('message')}")
+                print(f"\n❌ 建立房間失敗: {resp.get('message', '未知錯誤')}")
+                print(f"[DEBUG] Full response: {resp}")
                 return None
+        except TimeoutError as e:
+            print(f"❌ 請求逾時: {e}")
+            return None
         except Exception as e:
             print(f"❌ 錯誤: {e}")
             import traceback
@@ -599,6 +696,11 @@ class InteractiveLobbyClient:
                 pass
 
             try:
+                self._stop_heartbeat_thread()
+            except Exception:
+                pass
+
+            try:
                 self.sock.close()
             except Exception:
                 pass
@@ -637,6 +739,11 @@ def main():
 
     try:
         while True:
+            # 檢查是否收到 server shutdown 通知
+            if client._should_exit:
+                print("正在退出...")
+                break
+
             # 檢查是否有待處理的 replay 請求
             if client.pending_replay_request:
                 room_id = client.pending_replay_request["room_id"]
@@ -696,6 +803,12 @@ def main():
                             print()  # New line after the prompt
                             break
 
+                        # Check if we should exit waiting mode (someone left, etc.)
+                        if not client.waiting_for_game:
+                            print()  # New line after the prompt
+                            choice = None
+                            break
+
                         # Check if input is available
                         if hasattr(select, 'select'):
                             ready, _, _ = select.select([sys.stdin], [], [], 0.1)
@@ -710,6 +823,10 @@ def main():
 
                     # If we broke out due to replay request, continue to handle it
                     if client.pending_replay_request:
+                        continue
+
+                    # If we broke out due to exiting waiting mode, continue to main menu
+                    if not client.waiting_for_game or choice is None:
                         continue
 
                     if choice == "6":

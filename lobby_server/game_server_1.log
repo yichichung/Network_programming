@@ -1,21 +1,41 @@
-[2025-11-10 15:04:03,075] INFO: 🎮 Game Server started on port 10103
-[2025-11-10 15:04:03,075] INFO:    Room: 1, Players: [1, 2]
-[2025-11-10 15:04:03,075] INFO:    Seed: 1821651715
-[2025-11-10 15:04:05,174] INFO: 📥 Player 1 connected from ('127.0.0.1', 54419)
-[2025-11-10 15:04:05,177] INFO: ✅ Player 2 (P2) ready
-[2025-11-10 15:04:05,177] INFO: 📥 Player 2 connected from ('127.0.0.1', 54420)
-[2025-11-10 15:04:05,178] INFO: ✅ Player 1 (P1) ready
-[2025-11-10 15:04:05,178] INFO: ✅ Both players connected, starting game...
-[2025-11-10 15:04:05,179] INFO: 🎮 Starting input handler for player 2
-[2025-11-10 15:04:05,179] INFO: 🎮 Starting input handler for player 1
-[2025-11-10 15:04:08,321] ERROR: ❌ ProtocolError for 1: 接收失敗: [Errno 54] Connection reset by peer
-[2025-11-10 15:04:08,321] INFO: 🔌 Player 1 input handler stopped
-[2025-11-10 15:04:09,021] ERROR: ❌ ProtocolError for 2: 接收失敗: [Errno 54] Connection reset by peer
-[2025-11-10 15:04:09,021] INFO: 🔌 Player 2 input handler stopped
-[2025-11-10 15:04:57,858] INFO: 🎮 Game Over! Winner: None
-[2025-11-10 15:04:57,872] INFO: ✅ Game result reported to Lobby Server
-[2025-11-10 15:04:57,872] INFO: 📊 Final results: {'P2': {'user_id': 2, 'score': 0, 'lines_cleared': 0, 'max_combo': 0}, 'P1': {'user_id': 1, 'score': 0, 'lines_cleared': 0, 'max_combo': 0}}
-[2025-11-10 15:04:59,874] INFO: 🛑 Shutting down Game Server...
-[2025-11-10 15:04:59,875] INFO: ✅ Game Server shut down
-[2025-11-10 15:04:59,875] INFO: 🛑 Shutting down Game Server...
-[2025-11-10 15:04:59,875] INFO: ✅ Game Server shut down
+[2025-11-10 16:06:03,883] INFO: 🎮 Game Server started on port 10103
+[2025-11-10 16:06:03,883] INFO:    Room: 1, Players: [1, 2]
+[2025-11-10 16:06:03,883] INFO:    Seed: 1825372523
+[2025-11-10 16:06:06,033] INFO: 📥 Player 1 connected from ('127.0.0.1', 57247)
+[2025-11-10 16:06:06,035] INFO: ✅ Player 1 (P1) ready
+[2025-11-10 16:06:06,035] INFO: 📥 Player 2 connected from ('127.0.0.1', 57246)
+[2025-11-10 16:06:06,035] INFO: ✅ Player 2 (P2) ready
+[2025-11-10 16:06:06,036] INFO: ✅ Both players connected, starting game...
+[2025-11-10 16:06:06,036] INFO: 🎮 Starting input handler for player 1
+[2025-11-10 16:06:06,036] INFO: 🎮 Starting input handler for player 2
+[2025-11-10 16:06:09,618] INFO: 🎮 Received INPUT from 1: HARD_DROP (seq: 1)
+[2025-11-10 16:06:09,618] INFO: ✅ Processing action: HARD_DROP
+[2025-11-10 16:06:09,670] INFO: 🎮 Received INPUT from 1: HARD_DROP (seq: 2)
+[2025-11-10 16:06:09,671] INFO: ✅ Processing action: HARD_DROP
+[2025-11-10 16:06:09,814] INFO: 🎮 Received INPUT from 1: HARD_DROP (seq: 3)
+[2025-11-10 16:06:09,814] INFO: ✅ Processing action: HARD_DROP
+[2025-11-10 16:06:09,874] INFO: 🎮 Received INPUT from 1: HARD_DROP (seq: 4)
+[2025-11-10 16:06:09,874] INFO: ✅ Processing action: HARD_DROP
+[2025-11-10 16:06:10,010] INFO: 🎮 Received INPUT from 1: HARD_DROP (seq: 5)
+[2025-11-10 16:06:10,010] INFO: ✅ Processing action: HARD_DROP
+[2025-11-10 16:06:10,076] INFO: 🎮 Received INPUT from 1: HARD_DROP (seq: 6)
+[2025-11-10 16:06:10,076] INFO: ✅ Processing action: HARD_DROP
+[2025-11-10 16:06:10,195] INFO: 🎮 Received INPUT from 1: HARD_DROP (seq: 7)
+[2025-11-10 16:06:10,195] INFO: ✅ Processing action: HARD_DROP
+[2025-11-10 16:06:10,382] INFO: 🎮 Received INPUT from 1: HARD_DROP (seq: 8)
+[2025-11-10 16:06:10,382] INFO: ✅ Processing action: HARD_DROP
+[2025-11-10 16:06:10,567] INFO: 🎮 Received INPUT from 1: HARD_DROP (seq: 9)
+[2025-11-10 16:06:10,567] INFO: ✅ Processing action: HARD_DROP
+[2025-11-10 16:06:10,737] INFO: 🎮 Received INPUT from 1: HARD_DROP (seq: 10)
+[2025-11-10 16:06:10,737] INFO: ✅ Processing action: HARD_DROP
+[2025-11-10 16:06:10,803] INFO: 🎮 Received INPUT from 1: HARD_DROP (seq: 11)
+[2025-11-10 16:06:10,804] INFO: ✅ Processing action: HARD_DROP
+[2025-11-10 16:06:10,817] INFO: 🎮 Game Over! Winner: 2
+[2025-11-10 16:06:10,829] INFO: ✅ Game result reported to Lobby Server
+[2025-11-10 16:06:10,829] INFO: 📊 Final results: {'P1': {'user_id': 1, 'score': 0, 'lines_cleared': 0, 'max_combo': 0}, 'P2': {'user_id': 2, 'score': 0, 'lines_cleared': 0, 'max_combo': 0}}
+[2025-11-10 16:06:11,042] INFO: 🔌 Player 2 input handler stopped
+[2025-11-10 16:06:11,805] INFO: 🔌 Player 1 input handler stopped
+[2025-11-10 16:06:12,830] INFO: 🛑 Shutting down Game Server...
+[2025-11-10 16:06:12,831] INFO: ✅ Game Server shut down
+[2025-11-10 16:06:12,831] INFO: 🛑 Shutting down Game Server...
+[2025-11-10 16:06:12,831] INFO: ✅ Game Server shut down
