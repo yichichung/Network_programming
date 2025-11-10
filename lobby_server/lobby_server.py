@@ -609,24 +609,37 @@ class LobbyServer:
         """處理遊戲結果回報"""
         room_id = data.get("room_id")
         winner = data.get("winner")
-        results = data.get("results", [])
+        results = data.get("results", {})
 
         if not room_id:
             return {"status": "error", "message": "缺少 room_id"}
 
         # 儲存遊戲記錄到資料庫
         try:
-            # 提取玩家 ID
-            user_ids = [r["userId"] for r in results]
+            # 提取玩家 ID（results 現在是 dict，keys 是 "P1", "P2"）
+            user_ids = [player_data["user_id"] for player_data in results.values()]
 
             # 建立 match_id (使用時間戳)
             match_id = f"match_{room_id}_{int(datetime.now().timestamp())}"
 
+            # 轉換 results 格式給資料庫（如果需要的話）
+            db_results = [
+                {
+                    "userId": player_data["user_id"],
+                    "score": player_data["score"],
+                    "lines": player_data["lines_cleared"],
+                    "maxCombo": player_data.get("max_combo", 0)
+                }
+                for player_data in results.values()
+            ]
+
             # 儲存到資料庫
-            self.db.create_gamelog(match_id, room_id, user_ids, results)
+            self.db.create_gamelog(match_id, room_id, user_ids, db_results)
             logger.info(f"📊 已儲存遊戲記錄: {match_id}")
         except Exception as e:
             logger.error(f"❌ 儲存遊戲記錄失敗: {e}")
+            import traceback
+            traceback.print_exc()
 
         # 重置房間狀態為 waiting
         self.db.update_room(room_id, {"status": "waiting"})

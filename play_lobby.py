@@ -36,6 +36,9 @@ class InteractiveLobbyClient:
         # 用於處理 replay 請求（避免 stdin 競爭）
         self.pending_replay_request = None  # {"room_id": int}
 
+        # 用於標記是否在等待遊戲開始（避免選單循環）
+        self.waiting_for_game = False
+
     def connect(self):
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -120,6 +123,9 @@ class InteractiveLobbyClient:
     def _handle_notification(self, notif):
         t = notif.get("type")
         if t == "game_start":
+            # Clear waiting flag
+            self.waiting_for_game = False
+
             print("\n" + "="*60)
             print("🎮 遊戲開始！正在自動啟動遊戲...")
             print("="*60)
@@ -135,7 +141,12 @@ class InteractiveLobbyClient:
             action = notif.get("action")
             uid = notif.get("user_id")
             if action == "user_joined":
-                print(f"\n📢 玩家 {uid} 加入了房間\n")
+                print(f"\n📢 玩家 {uid} 加入了房間")
+                # If I'm the host, remind to press 6
+                if self.current_room_id and uid != self.user_id:
+                    print("💡 按 6 開始遊戲\n")
+                else:
+                    print()
             elif action == "user_left":
                 print(f"\n📢 玩家 {uid} 離開了房間\n")
         elif t == "invitation":
@@ -171,16 +182,11 @@ class InteractiveLobbyClient:
             # 檢查結果中是否包含當前使用者的 user_id
             is_player = False
             if request_replay and self.user_id and results:
-                # Debug: print data types and values
-                print(f"\n[DEBUG] self.user_id = {self.user_id} (type: {type(self.user_id)})")
-                print(f"[DEBUG] results = {results}")
                 for role, player_stats in results.items():
                     stats_user_id = player_stats.get("user_id")
-                    print(f"[DEBUG] Checking {role}: user_id={stats_user_id} (type: {type(stats_user_id)})")
                     # Compare both as strings and as ints to handle type mismatches
                     if stats_user_id == self.user_id or str(stats_user_id) == str(self.user_id):
                         is_player = True
-                        print(f"[DEBUG] Match found! is_player = True")
                         break
 
             if not is_player:
@@ -190,7 +196,6 @@ class InteractiveLobbyClient:
                 # 玩家：設置待處理的 replay 請求
                 # 不在背景執行緒中讀取 stdin，而是讓主執行緒處理
                 self.pending_replay_request = {"room_id": room_id}
-                print("\n⚠️  遊戲結束！請在主選單輸入 'y' 重新對戰，或 'n' 拒絕\n")
         elif t == "replay_accepted":
             # 所有玩家同意重玩
             message = notif.get("message", "")
@@ -347,8 +352,9 @@ class InteractiveLobbyClient:
             resp = self.send_request("join_room", {"room_id": room_id})
             if resp.get("status") == "success":
                 self.current_room_id = room_id
+                self.waiting_for_game = True  # Set waiting flag
                 print(f"\n✅ 成功加入房間 {room_id}！")
-                print("等待房主開始遊戲...\n")
+                print("⏳ 等待房主開始遊戲...\n")
                 return True
             else:
                 print(f"\n❌ 加入房間失敗: {resp.get('message')}")
@@ -369,7 +375,7 @@ class InteractiveLobbyClient:
         try:
             resp = self.send_request("start_game", {"room_id": self.current_room_id})
             if resp.get("status") == "success":
-                game_info = resp["data"]
+                game_info = resp.get("data", {})
                 print("\n✅ 遊戲伺服器啟動成功！等待通知...\n")
                 return game_info
             else:
@@ -377,6 +383,8 @@ class InteractiveLobbyClient:
                 return None
         except Exception as e:
             print(f"❌ 錯誤: {e}")
+            import traceback
+            traceback.print_exc()
             return None
 
     def list_online_users(self):
@@ -595,6 +603,12 @@ def main():
 
                 # 清除待處理請求
                 client.pending_replay_request = None
+                continue
+
+            # 如果正在等待遊戲開始，不顯示選單，只等待通知
+            if client.waiting_for_game:
+                import time
+                time.sleep(0.5)  # 短暫休息避免 busy loop
                 continue
 
             print_menu()

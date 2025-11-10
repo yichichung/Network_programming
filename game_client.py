@@ -104,6 +104,7 @@ class GameClient:
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(None, 24)
         self.big_font = pygame.font.Font(None, 48)
+        self.huge_font = pygame.font.Font(None, 96)  # Extra large font for game over
 
     def connect(self):
         """Connect to game server"""
@@ -423,20 +424,51 @@ class GameClient:
 
             # Game over overlay
             if self.game_over:
+                # Dark overlay with higher opacity
                 overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
-                overlay.set_alpha(200)
+                overlay.set_alpha(230)
                 overlay.fill(BLACK)
                 self.screen.blit(overlay, (0, 0))
 
-                if self.winner == self.user_id:
-                    text = self.big_font.render("YOU WIN!", True, GREEN)
-                elif self.winner is None:
-                    text = self.big_font.render("DRAW!", True, YELLOW)
+                # Determine message and color
+                if self.spectator:
+                    # Spectator mode - show who won
+                    if self.winner is None:
+                        main_text = "DRAW!"
+                        text_color = YELLOW
+                    else:
+                        main_text = f"WINNER: P{self.winner}"
+                        text_color = GREEN
                 else:
-                    text = self.big_font.render("YOU LOSE!", True, RED)
+                    # Player mode
+                    if self.winner == self.user_id:
+                        main_text = "YOU WIN!"
+                        text_color = GREEN
+                    elif self.winner is None:
+                        main_text = "DRAW!"
+                        text_color = YELLOW
+                    else:
+                        main_text = "YOU LOSE!"
+                        text_color = RED
 
-                text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2))
+                # Draw main message with huge font and shadow effect
+                shadow = self.huge_font.render(main_text, True, BLACK)
+                shadow_rect = shadow.get_rect(center=(SCREEN_WIDTH // 2 + 4, SCREEN_HEIGHT // 2 - 46))
+                self.screen.blit(shadow, shadow_rect)
+
+                text = self.huge_font.render(main_text, True, text_color)
+                text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50))
                 self.screen.blit(text, text_rect)
+
+                # Draw border around text
+                pygame.draw.rect(self.screen, text_color,
+                               (text_rect.left - 20, text_rect.top - 20,
+                                text_rect.width + 40, text_rect.height + 40), 5)
+
+                # Draw instruction to close window
+                instruction = self.big_font.render("Press ESC or close window to exit", True, WHITE)
+                instruction_rect = instruction.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 80))
+                self.screen.blit(instruction, instruction_rect)
 
             # Controls hint or spectator mode indicator
             controls_y = SCREEN_HEIGHT - 60
@@ -459,6 +491,10 @@ class GameClient:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
+                elif event.type == pygame.KEYDOWN:
+                    # Allow ESC to close window when game is over
+                    if event.key == pygame.K_ESCAPE and self.game_over:
+                        self.running = False
 
             # Handle input
             if self.connected and not self.game_over:

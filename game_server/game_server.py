@@ -476,10 +476,10 @@ class GameServer:
 
         return ",".join(result)
 
-    def broadcast_to_all(self, message):
+    def broadcast_to_all(self, message, force=False):
         """Broadcast message to all players and spectators"""
-        # Skip if game is over to avoid broken pipe errors
-        if self.game_over:
+        # Skip if game is over to avoid broken pipe errors (unless forced)
+        if self.game_over and not force:
             return
 
         msg_str = json.dumps(message)
@@ -555,7 +555,8 @@ class GameServer:
                 for user_id, player_info in self.players.items()
             ]
         }
-        self.broadcast_to_all(game_over_msg)
+        # Force broadcast even though game_over is True
+        self.broadcast_to_all(game_over_msg, force=True)
 
         # Report to Lobby Server
         self.report_game_result(results)
