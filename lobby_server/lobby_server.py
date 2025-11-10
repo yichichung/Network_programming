@@ -306,6 +306,30 @@ class LobbyServer:
                     logger.info(f"👋 使用者 {user_info['name']} (ID: {user_id}) 已登出")
                     del self.online_users[user_id]
                 del self.user_sockets[client_sock]
+
+                # 清理房間成員資格
+                rooms_to_cleanup = []
+                for room_id, room_info in self.rooms.items():
+                    if user_id in room_info.get("members", []):
+                        room_info["members"].remove(user_id)
+                        logger.info(f"🚪 使用者 {user_id} 從房間 {room_id} 移除（斷線）")
+
+                        # 廣播給房間內其他成員
+                        self.broadcast_to_room(room_id, {
+                            "type": "room_update",
+                            "action": "user_left",
+                            "user_id": user_id
+                        })
+
+                        # 如果房間空了，標記為需要清理
+                        if len(room_info["members"]) == 0:
+                            rooms_to_cleanup.append(room_id)
+
+                # 清理空房間
+                for room_id in rooms_to_cleanup:
+                    del self.rooms[room_id]
+                    self.db.delete_room(room_id)
+                    logger.info(f"🗑️ 房間 {room_id} 已刪除（無成員）")
     
     # ========== 列表查詢 ==========
     
@@ -785,6 +809,19 @@ class LobbyServer:
         except Exception as e:
             logger.error(f"❌ enqueue 訊息給使用者 {user_id} 失敗: {e}")
     
+    def broadcast_shutdown(self, message="Server is shutting down"):
+        """廣播關閉通知給所有連線的客戶端"""
+        logger.info(f"📢 廣播關閉通知給 {len(self.online_users)} 位使用者")
+        with self.lock:
+            for user_id in list(self.online_users.keys()):
+                try:
+                    self.send_to_user(user_id, {
+                        "type": "server_shutdown",
+                        "message": message
+                    })
+                except Exception as e:
+                    logger.error(f"❌ 無法通知使用者 {user_id}: {e}")
+
     def shutdown(self):
         """關閉伺服器（支援多次呼叫）"""
         if self.shutdown_flag:
@@ -793,6 +830,16 @@ class LobbyServer:
         self.shutdown_flag = True
         logger.info("🛑 正在關閉 Lobby Server...")
         self.running = False
+
+        # 通知所有客戶端
+        try:
+            self.broadcast_shutdown("⚠️  Lobby Server is shutting down. Please reconnect later.")
+        except Exception as e:
+            logger.error(f"廣播關閉通知時發生錯誤: {e}")
+
+        # 給客戶端一點時間接收通知
+        import time
+        time.sleep(0.5)
 
         # 關閉所有 Game Server
         try:
