@@ -1,6 +1,7 @@
 pygame 2.6.1 (SDL 2.28.4, Python 3.12.2)
 Hello from the pygame community. https://www.pygame.org/contribute.html
 ✅ Connected to Game Server (localhost:10102)
-✅ Welcomed as SPECTATOR, seed: 1825728631
-🎮 Game Over! Winner: 1
+✅ Welcomed as SPECTATOR, seed: 1847501151
+⚠️ Player 2 disconnected. You win by default!
+🎮 Game Over! Winner: None
 🔌 Connection closed

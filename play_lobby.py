@@ -121,8 +121,14 @@ class InteractiveLobbyClient:
                     # 非 JSON 或解析錯誤時略過
                     continue
 
-                # 通知（server push）
-                if response.get("type"):
+                # DEBUG: Print what we received
+                print(f"[DEBUG] Received: {response}")
+
+                # 區分通知（server push）vs. 同步回應
+                # 通知有 "type" 欄位，同步回應有 "status" 欄位
+                if response.get("type") and not response.get("status"):
+                    # 這是通知（notification）
+                    print(f"[DEBUG] Treating as notification (has type={response.get('type')}, no status)")
                     try:
                         self._handle_notification(response)
                     except Exception:
@@ -131,14 +137,8 @@ class InteractiveLobbyClient:
                     continue
 
                 # 同步回應 → 放到 response queue，供 send_request 取
-                # 但要過濾掉心跳回應（heartbeat 回應沒有 action 欄位）
+                print(f"[DEBUG] Putting in response queue")
                 try:
-                    # Check if this is a generic success response without data
-                    # This might be a heartbeat response, so we should skip it
-                    # unless it has meaningful data
-                    if response.get("status") == "success" and not response.get("data") and not response.get("message"):
-                        # This is likely a heartbeat response, skip it
-                        continue
                     self._response_queue.put(response)
                 except Exception:
                     # 若放 queue 失敗，忽略

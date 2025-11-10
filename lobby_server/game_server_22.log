@@ -1,0 +1,20 @@
+[2025-11-11 01:08:43,720] INFO: 🎮 Game Server started on port 10102
+[2025-11-11 01:08:43,720] INFO:    Room: 22, Players: [1, 2]
+[2025-11-11 01:08:43,720] INFO:    Seed: 1857932360
+[2025-11-11 01:08:48,133] INFO: 📥 Player 1 connected from ('127.0.0.1', 64864)
+[2025-11-11 01:08:48,134] INFO: ✅ Player 2 (P2) ready
+[2025-11-11 01:08:48,135] INFO: 📥 Player 2 connected from ('127.0.0.1', 64865)
+[2025-11-11 01:08:48,135] INFO: ✅ Player 1 (P1) ready
+[2025-11-11 01:08:48,135] INFO: ✅ Both players connected, starting game...
+[2025-11-11 01:08:48,135] INFO: 🎮 Starting input handler for player 2
+[2025-11-11 01:08:48,135] INFO: 🎮 Starting input handler for player 1
+[2025-11-11 01:08:53,543] ERROR: ❌ ProtocolError for 2: 連線已關閉（recv 回傳空資料）
+[2025-11-11 01:08:53,544] WARNING: ⚠️ Player 2 disconnected during game!
+[2025-11-11 01:08:53,637] INFO: 🎮 Game Over! Winner: None
+[2025-11-11 01:08:54,141] INFO: 🔌 Player 1 input handler stopped
+[2025-11-11 01:09:47,844] INFO: 🛑 Shutting down Game Server...
+[2025-11-11 01:09:47,846] INFO: ✅ Game Server shut down
+[2025-11-11 01:09:47,846] INFO: 
+⚠️ Interrupted
+[2025-11-11 01:09:47,851] INFO: 🛑 Shutting down Game Server...
+[2025-11-11 01:09:47,851] INFO: ✅ Game Server shut down

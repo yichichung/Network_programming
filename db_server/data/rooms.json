@@ -138,5 +138,26 @@
     "visibility": "public",
     "status": "waiting",
     "id": 20
+  },
+  {
+    "name": "alskdj",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "waiting",
+    "id": 21
+  },
+  {
+    "name": "as;ldkmj",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "waiting",
+    "id": 22
+  },
+  {
+    "name": "asdflkn",
+    "host_user_id": 1,
+    "visibility": "public",
+    "status": "waiting",
+    "id": 23
   }
 ]
