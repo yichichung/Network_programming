@@ -146,8 +146,10 @@ class InteractiveLobbyClient:
 
             except Exception as e:
                 # 常見情況：socket 被關閉或網路錯誤
+                print(f"[DEBUG] Exception in _recv_loop: {type(e).__name__}: {e}")
                 # 若是因為我們主動停止，結束 loop
                 if not self._recv_running:
+                    print(f"[DEBUG] _recv_running is False, breaking")
                     break
                 # 否則短暫休息後重試（避免 busy loop）
                 import time
@@ -160,15 +162,19 @@ class InteractiveLobbyClient:
         timeout: 等待伺服器回應最大秒數（預設 10 秒）
         """
         request = {"action": action, "data": data or {}}
-        # 送出請求（此函式仍為同步，等待回應）
+        
+        print(f"[DEBUG] Sending request: {action} with data: {data}")
         send_message(self.sock, json.dumps(request))
+        print(f"[DEBUG] Request sent, waiting for response...")
 
         # 等待 background thread 把回應放進 queue
         try:
             resp = self._response_queue.get(timeout=timeout)
+            print(f"[DEBUG] Got response from queue: {resp}")
             return resp
         except Exception as e:
             # 若超時或其他，擲出 TimeoutError 讓呼叫端處理
+            print(f"[DEBUG] Timeout or error waiting for response: {e}")
             raise TimeoutError("等待伺服器回應逾時") from e
 
     def _handle_notification(self, notif):
@@ -677,34 +683,43 @@ class InteractiveLobbyClient:
             print(f"❌ 無法啟動觀戰視窗: {e}")
 
     def close(self):
-        # 先嘗試優雅登出（如果你想避免在 close 時把緩衝區通知印出，可註解掉 logout）
-        if self.sock:
-            try:
-                # 保持原本行為：嘗試 logout（send_request 會等待 background thread 的回應）
-                try:
-                    self.send_request("logout", timeout=5.0)
-                except Exception:
-                    # 忽略登出失敗
-                    pass
-            except Exception:
-                pass
+        if not self.sock:
+            return
+        # 1) 盡力送登出，但「不要等回覆」
+        try:
+            send_message(self.sock, json.dumps({"action": "logout", "data": {}}))
+        except Exception:
+            pass
 
-            # 停 background thread 並關 socket
-            try:
-                self._stop_recv_thread()
-            except Exception:
-                pass
+        # 2) 告知接收緒停下來
+        self._recv_running = False
 
-            try:
-                self._stop_heartbeat_thread()
-            except Exception:
-                pass
+        # 3) 中斷阻塞中的 recv（讓 _recv_loop 優雅退出）
+        try:
+            self.sock.shutdown(socket.SHUT_RDWR)
+        except Exception:
+            pass
 
-            try:
-                self.sock.close()
-            except Exception:
-                pass
+        # 4) 等接收緒結束一小下
+        try:
+            if self._recv_thread and self._recv_thread.is_alive():
+                self._recv_thread.join(timeout=0.5)
+        except Exception:
+            pass
 
+        # 5) 關心跳（如果有啟）
+        try:
+            self._stop_heartbeat_thread()
+        except Exception:
+            pass
+
+        # 6) 最後關 socket
+        try:
+            self.sock.close()
+        except Exception:
+            pass
+
+        self.sock = None
 
 def print_menu():
     """Print main menu"""

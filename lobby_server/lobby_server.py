@@ -231,8 +231,11 @@ class LobbyServer:
                     
                     action = request.get("action")
                     data = request.get("data", {})
+                    should_close = False  # ← 新增
                     
-                    logger.info(f"📨 收到請求: {action} from {client_addr}")
+                    import threading
+                    thread_id = threading.current_thread().ident
+                    logger.info(f"📨 [Thread-{thread_id}] 收到請求: {action} from {client_addr}")
                     
                     # 路由到對應的處理函式
                     if action == "register":
@@ -243,7 +246,7 @@ class LobbyServer:
                             user_id = response["data"]["user_id"]
                     elif action == "logout":
                         response = self.handle_logout(client_sock)
-                        break  # 登出後關閉連線
+                        should_close = True 
                     elif action == "list_online_users":
                         response = self.handle_list_online_users()
                     elif action == "list_rooms":
@@ -264,6 +267,7 @@ class LobbyServer:
                         response = self.handle_start_game(data, client_sock)
                     elif action == "report_game_result":
                         response = self.handle_game_result(data)
+                        logger.info(f"🔍 [Thread-{thread_id}] handle_game_result returned: {response}")
                     elif action == "spectate_game":
                         response = self.handle_spectate_game(data, client_sock)
                     elif action == "replay_response":
@@ -272,22 +276,36 @@ class LobbyServer:
                         response = self.handle_heartbeat(client_sock)
                     else:
                         response = {"status": "error", "message": f"未知的 action: {action}"}
-                    
+
                     # 回傳結果
-                    send_message(client_sock, json.dumps(response))
+                    logger.info(f"📤 [Thread-{thread_id}] 準備發送回應給 {client_addr}: {response}")
+                    try:
+                        send_message(client_sock, json.dumps(response))
+                        logger.info(f"✅ 回應已發送給 {client_addr}")
+                    except ProtocolError as e:
+                        logger.error(f"❌ 發送回應失敗給 {client_addr}: {e}")
+                        # 即使發送失敗，也不要 raise，繼續處理下一個請求
+                        # 但如果 action 是 report_game_result，這是預期的（game server 不等回應就關閉）
+
+                    if should_close:                              # ← 回應送完再退出
+                        break
                 
                 except ProtocolError as e:
                     logger.warning(f"⚠️ 協定錯誤: {e}")
+                    logger.info("protocol error, closing connection!!!!!!!!!!!")
                     break
                 except json.JSONDecodeError as e:
                     logger.warning(f"⚠️ JSON 解析錯誤: {e}")
                     error_response = {"status": "error", "message": "JSON 格式錯誤"}
+                    logger.info("format!!!!!!!!!!!!!!!!")
                     send_message(client_sock, json.dumps(error_response))
                 except socket.timeout:
                     logger.warning(f"⏰ 客戶端 {client_addr} 超時")
+                    logger.info("timeout!!!!!!!!!!!!!!!!")
                     break
                 except (ConnectionResetError, BrokenPipeError):
                     logger.info(f"🔌 客戶端 {client_addr} 斷線")
+
                     break
         
         except Exception as e:
@@ -778,34 +796,18 @@ class LobbyServer:
             if room_id in self.game_manager.active_games:
                 del self.game_manager.active_games[room_id]
 
-        # 發送 game_ended 通知給房間內所有成員（玩家和觀眾）
-        # 玩家會收到 replay 請求，觀眾只收到遊戲結束通知
-        # 注意：使用資料庫而非 self.rooms，因為 self.rooms 可能在玩家斷線時已被清理
+        # 發送 game_ended 通知給仍在線的玩家
+        # 直接從 results 取得玩家 ID，不依賴 self.rooms（因為斷線玩家已被移除）
+        logger.info(f"⚡ [LINE 801] About to process notifications for room {room_id}")
+        logger.info(f"⚡ [LINE 801] results = {results}")
         with self.lock:
-            logger.info(f"🔍 檢查房間 {room_id} 是否在 self.rooms 中...")
-            logger.info(f"🔍 self.rooms.keys() = {list(self.rooms.keys())}")
+            # 從遊戲結果中提取玩家 ID
+            player_ids = [player_data["user_id"] for player_data in results.values()]
+            logger.info(f"🎮 遊戲玩家: {player_ids}")
 
-            # 先嘗試從 self.rooms 取得成員列表
-            members = []
-            if room_id in self.rooms:
-                members = list(self.rooms[room_id]["members"])
-                logger.info(f"✅ 從 self.rooms 取得 {len(members)} 位成員: {members}")
-            else:
-                # 如果 self.rooms 中沒有（可能被清理了），從資料庫取得
-                logger.warning(f"⚠️ 房間 {room_id} 不在 self.rooms 中，嘗試從資料庫查詢...")
-                try:
-                    room_data = self.db.get_room(room_id)
-                    if room_data:
-                        # 資料庫中的房間可能包含斷線的玩家，只通知仍在線的
-                        # 從遊戲結果中提取玩家 ID
-                        player_ids = [player_data["user_id"] for player_data in results.values()]
-                        # 只通知仍在線的玩家
-                        members = [uid for uid in player_ids if uid in self.online_users]
-                        logger.info(f"✅ 從資料庫取得玩家 {player_ids}，其中在線: {members}")
-                    else:
-                        logger.error(f"❌ 資料庫中也找不到房間 {room_id}")
-                except Exception as e:
-                    logger.error(f"❌ 查詢資料庫時發生錯誤: {e}")
+            # 只通知仍在線的玩家
+            members = [uid for uid in player_ids if uid in self.online_users]
+            logger.info(f"📱 其中在線的玩家: {members} (online_users: {list(self.online_users.keys())})")
 
             # 發送通知
             if members:
@@ -943,6 +945,9 @@ class LobbyServer:
     
     def send_to_user(self, user_id, message):
         """把發送任務放到 queue，由 worker 實際送出（非阻塞）"""
+        import traceback
+        logger.info(f"🎯 [SEND_TO_USER] Called for user {user_id}, message type: {message.get('type', 'unknown')}")
+        logger.info(f"🎯 [SEND_TO_USER] Stack trace:\n{''.join(traceback.format_stack()[-4:-1])}")
         try:
             self.send_queue.put((user_id, message))
         except Exception as e:

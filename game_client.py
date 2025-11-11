@@ -7,10 +7,18 @@ import sys
 import os
 import time
 import argparse
+import logging
 
 # Add paths for imports
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'lobby_server'))
 from protocol import send_message, recv_message, ProtocolError
+
+# Logging setup
+logging.basicConfig(
+    level=logging.INFO,
+    format='[%(asctime)s] %(levelname)s: %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 # Initialize Pygame
 pygame.init()
@@ -20,8 +28,8 @@ BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GRAY = (128, 128, 128)
 DARK_GRAY = (64, 64, 64)
-LIGHT_BLUE = (173, 216, 230)  # 新增淡藍色背景
-GOLD = (255, 215, 0)          # 新增金色
+LIGHT_BLUE = (173, 216, 230)
+GOLD = (255, 215, 0)
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 100, 255)
@@ -42,13 +50,13 @@ PIECE_COLORS = {
 }
 
 # Display settings
-CELL_SIZE = 30          # 調大這個數字 = 更大的主棋盤
+CELL_SIZE = 30
 BOARD_WIDTH = 10
 BOARD_HEIGHT = 20
-MINI_CELL_SIZE = 15     # 調大這個數字 = 更大的對手棋盤
+MINI_CELL_SIZE = 15
 
 # Screen dimensions
-INFO_WIDTH = 200        # 調整左側面板寬度
+INFO_WIDTH = 200
 MAIN_BOARD_WIDTH = BOARD_WIDTH * CELL_SIZE
 MAIN_BOARD_HEIGHT = BOARD_HEIGHT * CELL_SIZE
 MINI_BOARD_WIDTH = BOARD_WIDTH * MINI_CELL_SIZE
@@ -72,6 +80,7 @@ class GameClient:
         self.sock = None
         self.connected = False
         self.running = True
+        self.disconnecting = False  # Flag to prevent race conditions
 
         # Game state
         self.role = None
@@ -88,12 +97,12 @@ class GameClient:
         self.my_next = []
         self.game_over = False
         self.winner = None
-        self.game_over_reason = None  # For disconnect messages
+        self.game_over_reason = None
 
         # Input tracking
         self.input_seq = 0
         self.last_key_time = {}
-        self.key_repeat_delay = 0.05  # seconds - faster response
+        self.key_repeat_delay = 0.05
 
         # Lock for thread-safe updates
         self.lock = threading.Lock()
@@ -105,14 +114,14 @@ class GameClient:
         self.clock = pygame.time.Clock()
         self.font = pygame.font.Font(None, 24)
         self.big_font = pygame.font.Font(None, 48)
-        self.huge_font = pygame.font.Font(None, 96)  # Extra large font for game over
+        self.huge_font = pygame.font.Font(None, 96)
 
     def connect(self):
         """Connect to game server"""
         try:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.sock.connect((self.host, self.port))
-            print(f"✅ Connected to Game Server ({self.host}:{self.port})")
+            logger.info(f"✅ Connected to Game Server ({self.host}:{self.port})")
 
             # Send HELLO
             hello_msg = {
@@ -131,15 +140,15 @@ class GameClient:
             if welcome.get("type") == "WELCOME":
                 self.role = welcome.get("role")
                 self.seed = welcome.get("seed")
-                print(f"✅ Welcomed as {self.role}, seed: {self.seed}")
+                logger.info(f"✅ Welcomed as {self.role}, seed: {self.seed}")
                 self.connected = True
                 return True
             else:
-                print(f"❌ Unexpected response: {welcome}")
+                logger.error(f"❌ Unexpected response: {welcome}")
                 return False
 
         except Exception as e:
-            print(f"❌ Connection failed: {e}")
+            logger.error(f"❌ Connection failed: {e}")
             return False
 
     def start(self):
@@ -157,7 +166,7 @@ class GameClient:
     def network_loop(self):
         """Receive messages from server"""
         try:
-            while self.running and self.connected:
+            while self.running and self.connected and not self.disconnecting:
                 msg_str = recv_message(self.sock)
                 msg = json.loads(msg_str)
 
@@ -168,12 +177,13 @@ class GameClient:
                 elif msg_type == "GAME_OVER":
                     self.handle_game_over(msg)
                 elif msg_type == "TEMPO":
-                    pass  # Handle tempo updates if needed
+                    pass
 
         except ProtocolError:
-            print("🔌 Connection closed")
+            logger.info("🔌 Connection closed")
         except Exception as e:
-            print(f"❌ Network error: {e}")
+            if not self.disconnecting:
+                logger.error(f"❌ Network error: {e}")
         finally:
             self.connected = False
 
@@ -187,10 +197,7 @@ class GameClient:
         board = self.decompress_board(board_rle)
 
         with self.lock:
-            # For spectators, use role to determine which board
-            # For players, use user_id matching
             if self.spectator:
-                # Spectator mode: use role to assign boards
                 if role == "P1":
                     self.my_board = board
                     self.my_score = snapshot.get("score", 0)
@@ -198,15 +205,13 @@ class GameClient:
                     self.my_level = snapshot.get("level", 1)
                     self.my_hold = snapshot.get("hold")
                     self.my_next = snapshot.get("next", [])
-                else:  # P2
+                else:
                     self.opponent_board = board
                     self.opponent_score = snapshot.get("score", 0)
                     self.opponent_lines = snapshot.get("lines", 0)
                     self.opponent_level = snapshot.get("level", 1)
             else:
-                # Player mode: use user_id to identify own board
                 if user_id == self.user_id:
-                    # My board
                     self.my_board = board
                     self.my_score = snapshot.get("score", 0)
                     self.my_lines = snapshot.get("lines", 0)
@@ -214,7 +219,6 @@ class GameClient:
                     self.my_hold = snapshot.get("hold")
                     self.my_next = snapshot.get("next", [])
                 else:
-                    # Opponent's board
                     self.opponent_board = board
                     self.opponent_score = snapshot.get("score", 0)
                     self.opponent_lines = snapshot.get("lines", 0)
@@ -231,7 +235,6 @@ class GameClient:
                 value, count = token.split("x")
                 flat.extend([int(value)] * int(count))
 
-        # Reshape to 2D
         board = []
         for i in range(BOARD_HEIGHT):
             row = flat[i * BOARD_WIDTH:(i + 1) * BOARD_WIDTH]
@@ -250,13 +253,13 @@ class GameClient:
             message = msg.get("message", "")
 
         if self.game_over_reason == "opponent_disconnected":
-            print(f"⚠️ {message}")
+            logger.info(f"⚠️ {message}")
         else:
-            print(f"🎮 Game Over! Winner: {self.winner}")
+            logger.info(f"🎮 Game Over! Winner: {self.winner}")
 
     def send_input(self, action):
         """Send input to server"""
-        if not self.connected:
+        if not self.connected or self.disconnecting:
             return
 
         self.input_seq += 1
@@ -272,34 +275,55 @@ class GameClient:
         try:
             send_message(self.sock, json.dumps(input_msg))
         except Exception as e:
-            print(f"❌ Failed to send input: {e}")
+            logger.error(f"❌ Failed to send input: {e}")
+
+    def send_disconnect(self):
+        """Send explicit DISCONNECT message to game server"""
+        if not self.connected or self.disconnecting:
+            return
+        
+        self.disconnecting = True
+        
+        try:
+            disconnect_msg = {
+                "type": "DISCONNECT",
+                "userId": self.user_id,
+                "timestamp": int(time.time() * 1000)
+            }
+            send_message(self.sock, json.dumps(disconnect_msg))
+            logger.info("📤 Sent DISCONNECT to game server")
+
+            # Wait for game server to process and report to lobby
+            # This prevents race condition where player logs out before
+            # lobby server can send game_ended notification
+            logger.info("⏳ Waiting 1 second for game server to report to lobby...")
+            time.sleep(1.0)
+            
+        except Exception as e:
+            logger.error(f"❌ Failed to send disconnect: {e}")
 
     def handle_input(self):
         """Handle keyboard input"""
-        # Spectators cannot send input
         if self.spectator:
             return
 
         keys = pygame.key.get_pressed()
         current_time = time.time()
 
-        # Map keys to actions with repeat delay
         key_actions = [
             (pygame.K_LEFT, "LEFT"),
             (pygame.K_RIGHT, "RIGHT"),
             (pygame.K_DOWN, "DOWN"),
-            (pygame.K_UP, "CW"),           # Rotate clockwise
-            (pygame.K_z, "CCW"),           # Rotate counter-clockwise
+            (pygame.K_UP, "CW"),
+            (pygame.K_z, "CCW"),
             (pygame.K_SPACE, "HARD_DROP"),
             (pygame.K_c, "HOLD")
         ]
 
         for key, action in key_actions:
             if keys[key]:
-                # Check repeat delay
                 last_time = self.last_key_time.get(key, 0)
                 if current_time - last_time > self.key_repeat_delay:
-                    print(f"🎮 Sending input: {action}")  # Debug output
                     self.send_input(action)
                     self.last_key_time[key] = current_time
 
@@ -309,27 +333,21 @@ class GameClient:
             for x in range(BOARD_WIDTH):
                 cell = board[y][x]
 
-                # Cell position
                 px = offset_x + x * cell_size
                 py = offset_y + y * cell_size
 
-                # Draw cell
                 if cell == 0:
-                    # Empty
                     color = BLACK
                     pygame.draw.rect(surface, DARK_GRAY, (px, py, cell_size, cell_size), 1)
                 elif cell == 1:
-                    # Locked block
                     color = GRAY
                     pygame.draw.rect(surface, color, (px, py, cell_size, cell_size))
                     pygame.draw.rect(surface, WHITE, (px, py, cell_size, cell_size), 1)
                 elif cell == 2:
-                    # Active piece
                     color = GREEN
                     pygame.draw.rect(surface, color, (px, py, cell_size, cell_size))
                     pygame.draw.rect(surface, WHITE, (px, py, cell_size, cell_size), 2)
 
-        # Draw board border (外框)
         board_width = BOARD_WIDTH * cell_size
         board_height = BOARD_HEIGHT * cell_size
         pygame.draw.rect(surface, WHITE, (offset_x - 2, offset_y - 2, board_width + 4, board_height + 4), 3)
@@ -341,7 +359,6 @@ class GameClient:
 
         color = PIECE_COLORS.get(piece_type, GRAY)
 
-        # Simple representation
         if piece_type == 'I':
             for i in range(4):
                 pygame.draw.rect(surface, color, (x + i * size, y, size - 2, size - 2))
@@ -350,7 +367,6 @@ class GameClient:
                 for dx in range(2):
                     pygame.draw.rect(surface, color, (x + dx * size, y + dy * size, size - 2, size - 2))
         else:
-            # Generic 3-block representation
             for i in range(3):
                 pygame.draw.rect(surface, color, (x + i * size, y, size - 2, size - 2))
 
@@ -359,16 +375,13 @@ class GameClient:
         self.screen.fill(BLACK)
 
         with self.lock:
-            # Info panel (left)
             info_x = 10
             y_offset = 20
 
-            # Role
             role_text = self.font.render(f"Role: {self.role or '?'}", True, WHITE)
             self.screen.blit(role_text, (info_x, y_offset))
             y_offset += 30
 
-            # My stats
             score_text = self.font.render(f"Score: {self.my_score}", True, WHITE)
             self.screen.blit(score_text, (info_x, y_offset))
             y_offset += 25
@@ -381,7 +394,6 @@ class GameClient:
             self.screen.blit(level_text, (info_x, y_offset))
             y_offset += 40
 
-            # Hold piece
             hold_text = self.font.render("Hold:", True, WHITE)
             self.screen.blit(hold_text, (info_x, y_offset))
             y_offset += 25
@@ -389,7 +401,6 @@ class GameClient:
                 self.draw_piece_preview(self.screen, self.my_hold, info_x, y_offset)
             y_offset += 40
 
-            # Next pieces
             next_text = self.font.render("Next:", True, WHITE)
             self.screen.blit(next_text, (info_x, y_offset))
             y_offset += 25
@@ -397,31 +408,26 @@ class GameClient:
                 self.draw_piece_preview(self.screen, piece, info_x, y_offset)
                 y_offset += 25
 
-            # Main board (center)
             board_x = INFO_WIDTH + 10
             board_y = 50
             self.draw_board(self.screen, self.my_board, CELL_SIZE, board_x, board_y)
 
-            # Board label
             if self.spectator:
                 label = self.font.render("Player 1", True, WHITE)
             else:
                 label = self.font.render("Your Board", True, WHITE)
             self.screen.blit(label, (board_x, 20))
 
-            # Opponent board (right)
             mini_x = board_x + MAIN_BOARD_WIDTH + 20
             mini_y = 50
             self.draw_board(self.screen, self.opponent_board, MINI_CELL_SIZE, mini_x, mini_y)
 
-            # Opponent label
             if self.spectator:
                 opp_label = self.font.render("Player 2", True, WHITE)
             else:
                 opp_label = self.font.render("Opponent", True, WHITE)
             self.screen.blit(opp_label, (mini_x, 20))
 
-            # Opponent stats
             opp_stats_y = mini_y + MINI_BOARD_HEIGHT + 20
             opp_score = self.font.render(f"Score: {self.opponent_score}", True, WHITE)
             self.screen.blit(opp_score, (mini_x, opp_stats_y))
@@ -429,20 +435,16 @@ class GameClient:
             opp_lines = self.font.render(f"Lines: {self.opponent_lines}", True, WHITE)
             self.screen.blit(opp_lines, (mini_x, opp_stats_y + 25))
 
-            # Game over overlay
             if self.game_over:
-                # Dark overlay with higher opacity
                 overlay = pygame.Surface((SCREEN_WIDTH, SCREEN_HEIGHT))
                 overlay.set_alpha(230)
                 overlay.fill(BLACK)
                 self.screen.blit(overlay, (0, 0))
 
-                # Determine message and color
                 if self.game_over_reason == "opponent_disconnected":
                     main_text = "OPPONENT\nDISCONNECTED"
                     text_color = YELLOW
                 elif self.spectator:
-                    # Spectator mode - show who won
                     if self.winner is None:
                         main_text = "DRAW!"
                         text_color = YELLOW
@@ -450,7 +452,6 @@ class GameClient:
                         main_text = f"WINNER: P{self.winner}"
                         text_color = GREEN
                 else:
-                    # Player mode
                     if self.winner == self.user_id:
                         main_text = "YOU WIN!"
                         text_color = GREEN
@@ -461,7 +462,6 @@ class GameClient:
                         main_text = "YOU LOSE!"
                         text_color = RED
 
-                # Draw main message with huge font and shadow effect
                 shadow = self.huge_font.render(main_text, True, BLACK)
                 shadow_rect = shadow.get_rect(center=(SCREEN_WIDTH // 2 + 4, SCREEN_HEIGHT // 2 - 46))
                 self.screen.blit(shadow, shadow_rect)
@@ -470,17 +470,14 @@ class GameClient:
                 text_rect = text.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 50))
                 self.screen.blit(text, text_rect)
 
-                # Draw border around text
                 pygame.draw.rect(self.screen, text_color,
                                (text_rect.left - 20, text_rect.top - 20,
                                 text_rect.width + 40, text_rect.height + 40), 5)
 
-                # Draw instruction to close window
                 instruction = self.big_font.render("Press ESC or close window to exit", True, WHITE)
                 instruction_rect = instruction.get_rect(center=(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 80))
                 self.screen.blit(instruction, instruction_rect)
 
-            # Controls hint or spectator mode indicator
             controls_y = SCREEN_HEIGHT - 60
             if self.spectator:
                 spectator_text = self.font.render("SPECTATOR MODE - Read Only", True, GOLD)
@@ -497,36 +494,40 @@ class GameClient:
     def game_loop(self):
         """Main game loop"""
         while self.running:
-            # Handle events
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
                 elif event.type == pygame.KEYDOWN:
-                    # Allow ESC to close window when game is over
                     if event.key == pygame.K_ESCAPE and self.game_over:
                         self.running = False
 
-            # Handle input
             if self.connected and not self.game_over:
                 self.handle_input()
 
-            # Draw
             self.draw_ui()
             pygame.display.flip()
 
-            # FPS limit
             self.clock.tick(60)
 
         self.cleanup()
 
     def cleanup(self):
         """Cleanup resources"""
+        logger.info("🧹 Cleaning up...")
+        
+        # Send disconnect to game server first (if still in game)
+        if self.connected and not self.game_over:
+            self.send_disconnect()
+        
+        # Close socket
         if self.sock:
             try:
                 self.sock.close()
             except:
                 pass
+        
         pygame.quit()
+        logger.info("✅ Cleanup complete")
 
 
 def main():
@@ -535,7 +536,7 @@ def main():
     parser.add_argument("--port", type=int, required=True, help="Game server port")
     parser.add_argument("--room-id", type=int, required=True, help="Room ID")
     parser.add_argument("--user-id", type=int, required=True, help="User ID")
-    parser.add_argument("--spectate", action="store_true", help="Join as spectator (read-only)")
+    parser.add_argument("--spectate", action="store_true", help="Join as spectator")
 
     args = parser.parse_args()
 
@@ -550,7 +551,7 @@ def main():
     try:
         client.start()
     except KeyboardInterrupt:
-        print("\n⚠️ Interrupted")
+        logger.info("\n⚠️ Interrupted by user")
     finally:
         client.cleanup()
 

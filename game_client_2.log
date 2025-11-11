@@ -1,21 +1,16 @@
-2025-11-11 01:11:21.185 python3[47196:15650040] error messaging the mach port for IMKCFRunLoopWakeUpReliable
+[2025-11-11 09:38:41,534] INFO: ✅ Connected to Game Server (localhost:10102)
+[2025-11-11 09:38:41,535] INFO: [PROTOCOL] 準備發送 78 bytes
+[2025-11-11 09:38:41,535] INFO: [PROTOCOL] 已發送 82/82 bytes
+[2025-11-11 09:38:41,535] INFO: [PROTOCOL] ✅ 完整發送 82 bytes
+[2025-11-11 09:38:41,537] INFO: ✅ Welcomed as P2, seed: 1888527922
+[2025-11-11 09:38:46,956] INFO: 
+⚠️ Interrupted by user
+[2025-11-11 09:38:46,957] INFO: 🧹 Cleaning up...
+[2025-11-11 09:38:46,957] INFO: [PROTOCOL] 準備發送 63 bytes
+[2025-11-11 09:38:46,957] INFO: [PROTOCOL] 已發送 67/67 bytes
+[2025-11-11 09:38:46,957] INFO: [PROTOCOL] ✅ 完整發送 67 bytes
+[2025-11-11 09:38:46,957] INFO: 📤 Sent DISCONNECT to game server
+[2025-11-11 09:38:46,957] INFO: ⏳ Waiting 1 second for game server to report to lobby...
+[2025-11-11 09:38:48,072] INFO: ✅ Cleanup complete
 pygame 2.6.1 (SDL 2.28.4, Python 3.12.2)
 Hello from the pygame community. https://www.pygame.org/contribute.html
-✅ Connected to Game Server (localhost:10102)
-✅ Welcomed as P2, seed: 1858081137
-🎮 Sending input: DOWN
-🎮 Sending input: DOWN
-🎮 Sending input: DOWN
-🎮 Sending input: DOWN
-🎮 Sending input: DOWN
-🎮 Sending input: DOWN
-🎮 Sending input: DOWN
-🎮 Sending input: RIGHT
-🎮 Sending input: RIGHT
-🎮 Sending input: RIGHT
-🎮 Sending input: RIGHT
-🎮 Sending input: DOWN
-🎮 Sending input: DOWN
-
-⚠️ Interrupted
-🔌 Connection closed

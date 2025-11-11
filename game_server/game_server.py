@@ -573,15 +573,22 @@ class GameServer:
 
     def report_game_result(self, results):
         """Report game results to Lobby Server"""
+        logger.info(f"📊 Attempting to report game result to lobby: room={self.room_id}, results={results}")
+
         try:
             # Connect to lobby server
+            logger.info(f"📡 Connecting to lobby server at {self.lobby_host}:{self.lobby_port}...")
             lobby_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            lobby_sock.settimeout(5.0)  # 5 second timeout
             lobby_sock.connect((self.lobby_host, self.lobby_port))
+            logger.info("✅ Connected to lobby server")
 
             # Determine winner role
             winner_role = None
             if self.winner:
                 winner_role = "P1" if self.winner == self.player_ids[0] else "P2"
+
+            logger.info(f"🏆 Winner: {winner_role}")
 
             # Send report
             report = {
@@ -592,21 +599,28 @@ class GameServer:
                     "results": results
                 }
             }
+            logger.info(f"📤 Sending report: {report}")
             send_message(lobby_sock, json.dumps(report))
+            logger.info("✅ Report sent, waiting for response...")
 
             # Wait for response
             response_str = recv_message(lobby_sock)
             response = json.loads(response_str)
+            logger.info(f"📥 Received response: {response}")
 
             if response.get("status") == "success":
-                logger.info("✅ Game result reported to Lobby Server")
+                logger.info("✅ Game result reported to Lobby Server successfully")
             else:
                 logger.warning(f"⚠️ Lobby Server response: {response.get('message')}")
 
             lobby_sock.close()
 
+        except socket.timeout as e:
+            logger.error(f"❌ Timeout connecting to lobby server: {e}")
         except Exception as e:
             logger.error(f"❌ Failed to report game result: {e}")
+            import traceback
+            traceback.print_exc()
 
     def handle_player_disconnect(self, user_id):
         """Handle player disconnection during game"""

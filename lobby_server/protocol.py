@@ -10,41 +10,50 @@ class ProtocolError(Exception):
 def send_message(sock, message):
     """
     發送訊息（完整處理部分 I/O）
-    
+
     Args:
         sock: socket 物件
         message: 字串或 bytes
-    
+
     Raises:
         ProtocolError: 當發送失敗時
     """
+    import logging
+    logger = logging.getLogger(__name__)
+
     try:
         # 1. 將訊息轉成 bytes
         if isinstance(message, str):
             message = message.encode('utf-8')
-        
+
         # 2. 檢查長度限制
         msg_len = len(message)
         if msg_len > MAX_MESSAGE_SIZE:
             raise ProtocolError(f"訊息過長: {msg_len} bytes (最大 {MAX_MESSAGE_SIZE})")
-        
+
+        logger.info(f"[PROTOCOL] 準備發送 {msg_len} bytes")
+
         # 3. 建立長度標頭（4 bytes, 網路位元序）
         header = struct.pack('!I', msg_len)
-        
+
         # 4. 完整發送標頭 + 訊息（處理部分 I/O）
         full_message = header + message
         total_sent = 0
-        
+
         while total_sent < len(full_message):
             try:
                 sent = sock.send(full_message[total_sent:])
                 if sent == 0:
                     raise ProtocolError("Socket 連線已關閉")
                 total_sent += sent
+                logger.info(f"[PROTOCOL] 已發送 {total_sent}/{len(full_message)} bytes")
             except socket.error as e:
                 raise ProtocolError(f"發送失敗: {e}")
-                
+
+        logger.info(f"[PROTOCOL] ✅ 完整發送 {total_sent} bytes")
+
     except Exception as e:
+        logger.error(f"[PROTOCOL] ❌ 發送訊息失敗: {e}")
         raise ProtocolError(f"發送訊息時發生錯誤: {e}")
 
 

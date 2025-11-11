@@ -1,0 +1,8 @@
+[2025-11-11 09:38:41,534] INFO: ✅ Connected to Game Server (localhost:10102)
+[2025-11-11 09:38:41,535] INFO: [PROTOCOL] 準備發送 78 bytes
+[2025-11-11 09:38:41,535] INFO: [PROTOCOL] 已發送 82/82 bytes
+[2025-11-11 09:38:41,535] INFO: [PROTOCOL] ✅ 完整發送 82 bytes
+[2025-11-11 09:38:41,537] INFO: ✅ Welcomed as P1, seed: 1888527922
+[2025-11-11 09:38:47,960] INFO: ⚠️ Player 2 disconnected. You win by default!
+[2025-11-11 09:38:47,996] INFO: 🎮 Game Over! Winner: None
+[2025-11-11 09:38:55,004] INFO: 🔌 Connection closed
