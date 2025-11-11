@@ -1,79 +1,16 @@
-[2025-11-11 10:21:32,062] INFO: ✅ Connected to Game Server (localhost:10102)
-[2025-11-11 10:21:32,064] INFO: [PROTOCOL] 準備發送 78 bytes
-[2025-11-11 10:21:32,065] INFO: [PROTOCOL] 已發送 82/82 bytes
-[2025-11-11 10:21:32,065] INFO: [PROTOCOL] ✅ 完整發送 82 bytes
-[2025-11-11 10:21:32,118] INFO: ✅ Welcomed as P2, seed: 1891098906
-[2025-11-11 10:21:33,310] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:33,311] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:33,311] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:33,472] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:33,472] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:33,472] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:33,625] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:33,626] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:33,626] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:33,688] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:33,688] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:33,688] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:33,790] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:33,790] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:33,790] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:33,856] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:33,856] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:33,856] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:34,825] INFO: [PROTOCOL] 準備發送 78 bytes
-[2025-11-11 10:21:34,825] INFO: [PROTOCOL] 已發送 82/82 bytes
-[2025-11-11 10:21:34,826] INFO: [PROTOCOL] ✅ 完整發送 82 bytes
-[2025-11-11 10:21:35,029] INFO: [PROTOCOL] 準備發送 78 bytes
-[2025-11-11 10:21:35,029] INFO: [PROTOCOL] 已發送 82/82 bytes
-[2025-11-11 10:21:35,029] INFO: [PROTOCOL] ✅ 完整發送 82 bytes
-[2025-11-11 10:21:35,093] INFO: [PROTOCOL] 準備發送 78 bytes
-[2025-11-11 10:21:35,094] INFO: [PROTOCOL] 已發送 82/82 bytes
-[2025-11-11 10:21:35,094] INFO: [PROTOCOL] ✅ 完整發送 82 bytes
-[2025-11-11 10:21:35,620] INFO: [PROTOCOL] 準備發送 79 bytes
-[2025-11-11 10:21:35,620] INFO: [PROTOCOL] 已發送 83/83 bytes
-[2025-11-11 10:21:35,620] INFO: [PROTOCOL] ✅ 完整發送 83 bytes
-[2025-11-11 10:21:35,683] INFO: [PROTOCOL] 準備發送 79 bytes
-[2025-11-11 10:21:35,683] INFO: [PROTOCOL] 已發送 83/83 bytes
-[2025-11-11 10:21:35,684] INFO: [PROTOCOL] ✅ 完整發送 83 bytes
-[2025-11-11 10:21:36,245] INFO: [PROTOCOL] 準備發送 79 bytes
-[2025-11-11 10:21:36,245] INFO: [PROTOCOL] 已發送 83/83 bytes
-[2025-11-11 10:21:36,245] INFO: [PROTOCOL] ✅ 完整發送 83 bytes
-[2025-11-11 10:21:36,738] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:36,739] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:36,739] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:36,799] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:36,800] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:36,800] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:36,867] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:36,867] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:36,867] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:36,917] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:36,918] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:36,918] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:36,969] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:36,969] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:36,969] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:37,021] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:37,021] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:37,022] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:37,071] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:37,071] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:37,072] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:37,123] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:37,123] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:37,123] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:37,174] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:37,175] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:37,175] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:37,226] INFO: [PROTOCOL] 準備發送 80 bytes
-[2025-11-11 10:21:37,226] INFO: [PROTOCOL] 已發送 84/84 bytes
-[2025-11-11 10:21:37,226] INFO: [PROTOCOL] ✅ 完整發送 84 bytes
-[2025-11-11 10:21:44,047] INFO: 🎮 Game Over! Winner: 2
-[2025-11-11 10:21:46,081] INFO: 🔌 Connection closed
-[2025-11-11 10:21:48,401] INFO: 🧹 Cleaning up...
-[2025-11-11 10:21:48,522] INFO: ✅ Cleanup complete
-[2025-11-11 10:21:48,523] INFO: 🧹 Cleaning up...
-[2025-11-11 10:21:48,523] INFO: ✅ Cleanup complete
+[2025-11-11 20:37:22,769] INFO: ✅ Connected to Game Server (140.113.17.11:10108)
+[2025-11-11 20:37:22,770] INFO: [PROTOCOL] 準備發送 77 bytes
+[2025-11-11 20:37:22,770] INFO: [PROTOCOL] 已發送 81/81 bytes
+[2025-11-11 20:37:22,770] INFO: [PROTOCOL] ✅ 完整發送 81 bytes
+[2025-11-11 20:37:22,774] INFO: ✅ Welcomed as P2, seed: 1928049822
+[2025-11-11 20:37:29,174] INFO: 
+⚠️ Interrupted by user
+[2025-11-11 20:37:29,175] INFO: 🧹 Cleaning up...
+[2025-11-11 20:37:29,175] INFO: [PROTOCOL] 準備發送 63 bytes
+[2025-11-11 20:37:29,175] INFO: [PROTOCOL] 已發送 67/67 bytes
+[2025-11-11 20:37:29,175] INFO: [PROTOCOL] ✅ 完整發送 67 bytes
+[2025-11-11 20:37:29,175] INFO: 📤 Sent DISCONNECT to game server
+[2025-11-11 20:37:29,175] INFO: ⏳ Waiting 1 second for game server to report to lobby...
+[2025-11-11 20:37:30,194] INFO: ✅ Cleanup complete
 pygame 2.6.1 (SDL 2.28.4, Python 3.12.2)
 Hello from the pygame community. https://www.pygame.org/contribute.html

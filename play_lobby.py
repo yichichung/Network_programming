@@ -43,6 +43,9 @@ class InteractiveLobbyClient:
         # 用於標記是否應該退出（server shutdown）
         self._should_exit = False
 
+        # 用於標記是否需要重新顯示選單（notification interrupt）
+        self._need_redraw_menu = False
+
         # 心跳機制
         self._heartbeat_thread = None
         self._heartbeat_running = False
@@ -144,17 +147,13 @@ class InteractiveLobbyClient:
                     # 若放 queue 失敗，忽略
                     pass
 
-            except Exception as e:
-                # 常見情況：socket 被關閉或網路錯誤
-                print(f"[DEBUG] Exception in _recv_loop: {type(e).__name__}: {e}")
-                # 若是因為我們主動停止，結束 loop
+            except Exception:
+                # Socket closed or network error - stop recv loop
                 if not self._recv_running:
-                    print(f"[DEBUG] _recv_running is False, breaking")
                     break
-                # 否則短暫休息後重試（避免 busy loop）
-                import time
-                time.sleep(0.1)
-                continue
+                # Connection lost - stop trying
+                self._recv_running = False
+                break
 
     def send_request(self, action, data=None, timeout=10.0):
         """
@@ -180,22 +179,20 @@ class InteractiveLobbyClient:
     def _handle_notification(self, notif):
         t = notif.get("type")
         if t == "game_start":
-            # Clear any pending replay request from previous game
             self.pending_replay_request = None
-            # Set waiting flag (don't clear - we're waiting for game to end now)
             self.waiting_for_game = True
 
             print("\n" + "="*60)
             print("🎮 遊戲開始！正在自動啟動遊戲...")
             print("="*60)
 
-            # 自動啟動遊戲客戶端
             host = notif.get('game_server_host', 'localhost')
             port = notif.get('game_server_port')
             room_id = notif.get('room_id')
 
             self._launch_game_client(host, port, room_id)
             print("="*60 + "\n")
+            # ✅ 這裡結束，不再詢問 replay
         elif t == "room_update":
             action = notif.get("action")
             uid = notif.get("user_id")
@@ -208,42 +205,35 @@ class InteractiveLobbyClient:
                     print()
             elif action == "user_left":
                 print(f"\n📢 玩家 {uid} 離開了房間")
-                # If I'm waiting for a game and someone left, return to menu
                 if self.waiting_for_game and uid != self.user_id:
                     print("⚠️  其他玩家離開，返回主選單...\n")
                     self.current_room_id = None
                     self.is_host = False
                     self.waiting_for_game = False
-                    # Force exit from waiting loop by printing newline
+                    self._need_redraw_menu = True   # ✅ 新增：強制主迴圈重繪菜單
                     print()
                 else:
                     print()
+
         elif t == "invitation":
             # 如果你也要顯示邀請通知可以在這裡處理
             from_user = notif.get("from_user_name") or notif.get("from_user_id")
             room_name = notif.get("room_name")
             print(f"\n✉️ 收到邀請：{from_user} 邀請你加入房間 {room_name}\n")
         elif t == "game_ended":
-            # 遊戲結束通知
             room_id = notif.get("room_id")
             winner = notif.get("winner")
             results = notif.get("results", {})
-            request_replay = notif.get("request_replay", False)
 
             print(f"\n[DEBUG] 收到 game_ended 通知: room_id={room_id}, winner={winner}")
-
-            # Clear waiting flag - game ended
             self.waiting_for_game = False
 
             print("\n" + "="*60)
             print("🏁 遊戲結束！")
             print("="*60)
 
-            # 顯示勝利者
             if winner:
                 print(f"🏆 勝利者: Player {winner}")
-
-            # 顯示結果統計（如果有）
             if results:
                 for player, stats in results.items():
                     print(f"\n{player}:")
@@ -251,50 +241,28 @@ class InteractiveLobbyClient:
                     print(f"  消除行數: {stats.get('lines_cleared', 0)}")
 
             print("="*60)
+            print("\n返回主選單...\n")
 
-            # 檢查是否請求 replay
-            if not request_replay:
-                # 不需要 replay（對手已離線或其他原因）
-                # 顯示額外訊息並返回主選單
-                message = notif.get("message", "")
-                if message:
-                    print(f"\n⚠️  {message}")
-                print("\n返回主選單...\n")
-                # 清除房間狀態
-                self.current_room_id = None
-                self.is_host = False
-                self.waiting_for_game = False
-                # Print a newline to interrupt any pending input() call
-                print()
-            else:
-                # 需要 replay - 檢查是否為玩家（不是觀眾）
-                # 檢查結果中是否包含當前使用者的 user_id
-                is_player = False
-                if self.user_id and results:
-                    for role, player_stats in results.items():
-                        stats_user_id = player_stats.get("user_id")
-                        # Compare both as strings and as ints to handle type mismatches
-                        if stats_user_id == self.user_id or str(stats_user_id) == str(self.user_id):
-                            is_player = True
-                            break
+            # ✅ 無條件回主選單（不登出）
+            self.current_room_id = None
+            self.is_host = False
+            self.waiting_for_game = False
+            self.pending_replay_request = None
+            self._need_redraw_menu = True
 
-                if not is_player:
-                    # 觀眾：顯示遊戲結束，回到選單
-                    print("\n📺 觀戰結束，返回主選單...\n")
-                else:
-                    # 玩家：設置待處理的 replay 請求
-                    # 不在背景執行緒中讀取 stdin，而是讓主執行緒處理
-                    self.pending_replay_request = {"room_id": room_id}
-                    # Print a newline to interrupt any pending input() call
-                    print()
         elif t == "replay_accepted":
-            # 所有玩家同意重玩
             message = notif.get("message", "")
             print("\n" + "="*60)
             print("✅ " + message)
             print("="*60 + "\n")
             # Set waiting flag - waiting for host to start game
             self.waiting_for_game = True
+            # ✅ 新增這兩行「純提示」，不自動 start，host 會看到 6/9 的等待選單
+            if self.is_host:
+                print("💡 你是房主：按 6 重新開始，或按 9 離開。")
+            else:
+                print("⏳ 對手同意重玩，等待房主開始。")
+
         elif t == "replay_rejected":
             # 有玩家拒絕重玩
             message = notif.get("message", "")
@@ -311,11 +279,13 @@ class InteractiveLobbyClient:
             print("\n" + "="*60)
             print(f"⚠️  {message}")
             print("="*60 + "\n")
-            print("按 Enter 結束...")
-            # Set flag to exit main loop
+            # Stop recv loop and exit
+            self._recv_running = False
             self._should_exit = True
+            import sys
+            sys.exit(0)
         elif t == "player_disconnected":
-            # 玩家斷線通知
+            # 玩家斷線通知 - 處理所有情況
             disconnected_user_id = notif.get("user_id")
             room_id = notif.get("room_id")
             message = notif.get("message", f"玩家 {disconnected_user_id} 已斷線")
@@ -324,14 +294,16 @@ class InteractiveLobbyClient:
             print(f"⚠️  {message}")
             print("="*60 + "\n")
 
-            # 如果在等待中或遊戲中，返回主選單
-            if self.waiting_for_game:
+            # Clear ALL room-related state and return to menu
+            # This handles: waiting for game start, during game, waiting for replay, etc.
+            if self.current_room_id or self.waiting_for_game or self.pending_replay_request:
                 print("⚠️  返回主選單...\n")
                 self.current_room_id = None
                 self.is_host = False
                 self.waiting_for_game = False
-                # Force exit from waiting loop
-                print()
+                self.pending_replay_request = None
+                # Signal to redraw menu
+                self._need_redraw_menu = True
         else:
             # 其他通知類型
             pass
@@ -357,17 +329,16 @@ class InteractiveLobbyClient:
             print(f"   User: {self.user_name} (ID: {self.user_id})")
 
             # 創建日誌文件來記錄遊戲客戶端輸出
-            log_file = open(f"game_client_{self.user_id}.log", "w")
+            with open(f"game_client_{self.user_id}.log", "w") as log_file:
+                # 等待遊戲結束
+                subprocess.run(
+                    cmd,
+                    stdout=log_file,
+                    stderr=subprocess.STDOUT
+                )
 
-            # 在新進程中啟動遊戲客戶端（不等待它結束）
-            subprocess.Popen(
-                cmd,
-                stdout=log_file,
-                stderr=subprocess.STDOUT
-            )
-
-            print("✅ 遊戲視窗應該已經開啟！")
-            print(f"📄 遊戲日誌: game_client_{self.user_id}.log")
+            print("\n✅ 遊戲視窗已關閉")
+            print(f"📄 遊戲日誌: game_client_{self.user_id}.log\n")
 
         except Exception as e:
             print(f"❌ 無法啟動遊戲客戶端: {e}")
@@ -526,11 +497,22 @@ class InteractiveLobbyClient:
             else:
                 print(f"\n❌ 啟動遊戲失敗: {resp.get('message')}")
                 return None
+
+        except TimeoutError:
+            # ✅ 新增：逾時視同對手離線/房間失效 → 清狀態並回主選單
+            print("\n⚠️ 無法啟動：可能對手已離線或房間已失效，返回主選單...\n")
+            self.current_room_id = None
+            self.is_host = False
+            self.waiting_for_game = False
+            self._need_redraw_menu = True
+            return None
+
         except Exception as e:
             print(f"❌ 錯誤: {e}")
             import traceback
             traceback.print_exc()
             return None
+
 
     def leave_room(self):
         if not self.current_room_id:
@@ -738,14 +720,14 @@ def print_menu():
     print("="*60)
 
 
-def main():
+def main(host='140.113.17.11', port=14931):
     """Main interactive loop"""
     print("="*60)
     print("WELCOME TO TETRIS LOBBY")
     print("="*60)
     print()
 
-    client = InteractiveLobbyClient()
+    client = InteractiveLobbyClient(host=host, port=port)
 
     if not client.connect():
         return
@@ -760,40 +742,40 @@ def main():
                 break
 
             # 檢查是否有待處理的 replay 請求
-            if client.pending_replay_request:
-                room_id = client.pending_replay_request["room_id"]
-                print("\n" + "="*60)
-                print("⚠️  等待您的 REPLAY 回應")
-                print("="*60)
-                replay_choice = input("是否要重新對戰？ (y/n): ").strip().lower()
+            # if client.pending_replay_request:
+            #     room_id = client.pending_replay_request["room_id"]
+            #     print("\n" + "="*60)
+            #     print("⚠️  等待您的 REPLAY 回應")
+            #     print("="*60)
+            #     replay_choice = input("是否要重新對戰？ (y/n): ").strip().lower()
 
-                want_replay = (replay_choice == 'y')
+            #     want_replay = (replay_choice == 'y')
 
-                # 發送回應給伺服器
-                try:
-                    send_message(client.sock, json.dumps({
-                        "action": "replay_response",
-                        "data": {
-                            "room_id": room_id,
-                            "replay": want_replay
-                        }
-                    }))
-                    if want_replay:
-                        print("✅ 已發送重新對戰請求，等待對手回應...\n")
-                        # DON'T set waiting_for_game yet - wait for replay_accepted notification
-                        # The server will send replay_accepted when BOTH players have responded
-                    else:
-                        print("✅ 已回絕重新對戰，返回主選單...\n")
-                        # Clear room state but stay logged in
-                        client.current_room_id = None
-                        client.is_host = False
-                        client.waiting_for_game = False
-                except Exception as e:
-                    print(f"❌ 發送回應失敗: {e}\n")
+            #     # 發送回應給伺服器
+            #     try:
+            #         send_message(client.sock, json.dumps({
+            #             "action": "replay_vote",
+            #             "data": {
+            #                 "room_id": room_id,
+            #                 "vote": want_replay
+            #             }
+            #         }))
+            #         if want_replay:
+            #             print("✅ 已發送重新對戰請求，等待對手回應...\n")
+            #             # DON'T set waiting_for_game yet - wait for replay_accepted notification
+            #             # The server will send replay_accepted when BOTH players have responded
+            #         else:
+            #             print("✅ 已回絕重新對戰，返回主選單...\n")
+            #             # Clear room state but stay logged in
+            #             client.current_room_id = None
+            #             client.is_host = False
+            #             client.waiting_for_game = False
+            #     except Exception as e:
+            #         print(f"❌ 發送回應失敗: {e}\n")
 
-                # 清除待處理請求
-                client.pending_replay_request = None
-                continue
+            #     # 清除待處理請求
+            #     client.pending_replay_request = None
+            #     continue
 
             # 如果正在等待遊戲開始或遊戲進行中
             if client.waiting_for_game:
@@ -865,6 +847,13 @@ def main():
 
             # Poll for input with timeout to allow checking for replay requests
             while True:
+                # Check if menu needs redrawing due to notification
+                if client._need_redraw_menu:
+                    client._need_redraw_menu = False
+                    print()  # New line
+                    choice = ""  # Empty choice to trigger menu redraw
+                    break
+
                 # Check if replay request arrived while waiting for input
                 if client.pending_replay_request:
                     print()  # New line after the prompt
@@ -887,8 +876,8 @@ def main():
                         time.sleep(0.1)
                         continue
 
-            # If we broke out due to replay request, continue to handle it
-            if client.pending_replay_request:
+            # If we broke out due to replay request or menu redraw, continue
+            if client.pending_replay_request or not choice:
                 continue
 
             if choice == "1":
@@ -950,4 +939,14 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Multiplayer Tetris Lobby Client')
+    parser.add_argument('--host', type=str, default='140.113.17.11',
+                        help='Lobby server host (default: 140.113.17.11)')
+    parser.add_argument('--port', type=int, default=14931,
+                        help='Lobby server port (default: 14931)')
+
+    args = parser.parse_args()
+
+    main(host=args.host, port=args.port)

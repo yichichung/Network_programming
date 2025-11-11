@@ -250,9 +250,14 @@ class DBServer:
         
         logger.info("✅ DB Server 已關閉")
 
-
 if __name__ == "__main__":
-    server = DBServer(host='0.0.0.0', port=10001)
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--host", default="0.0.0.0")
+    parser.add_argument("--port", type=int, default=10001)
+    args = parser.parse_args()
+
+    server = DBServer(host=args.host, port=args.port)
     try:
         server.start()
     except KeyboardInterrupt:

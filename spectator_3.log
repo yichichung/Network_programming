@@ -1,7 +1,16 @@
+[2025-11-11 10:41:52,025] INFO: ✅ Connected to Game Server (localhost:10102)
+[2025-11-11 10:41:52,026] INFO: [PROTOCOL] 準備發送 77 bytes
+[2025-11-11 10:41:52,026] INFO: [PROTOCOL] 已發送 81/81 bytes
+[2025-11-11 10:41:52,026] INFO: [PROTOCOL] ✅ 完整發送 81 bytes
+[2025-11-11 10:41:52,034] INFO: ✅ Welcomed as SPECTATOR, seed: 1892313629
+[2025-11-11 10:42:09,949] INFO: 
+⚠️ Interrupted by user
+[2025-11-11 10:42:09,950] INFO: 🧹 Cleaning up...
+[2025-11-11 10:42:09,950] INFO: [PROTOCOL] 準備發送 63 bytes
+[2025-11-11 10:42:09,950] INFO: [PROTOCOL] 已發送 67/67 bytes
+[2025-11-11 10:42:09,950] INFO: [PROTOCOL] ✅ 完整發送 67 bytes
+[2025-11-11 10:42:09,950] INFO: 📤 Sent DISCONNECT to game server
+[2025-11-11 10:42:09,950] INFO: ⏳ Waiting 1 second for game server to report to lobby...
+[2025-11-11 10:42:11,064] INFO: ✅ Cleanup complete
 pygame 2.6.1 (SDL 2.28.4, Python 3.12.2)
 Hello from the pygame community. https://www.pygame.org/contribute.html
-✅ Connected to Game Server (localhost:10102)
-✅ Welcomed as SPECTATOR, seed: 1847501151
-⚠️ Player 2 disconnected. You win by default!
-🎮 Game Over! Winner: None
-🔌 Connection closed

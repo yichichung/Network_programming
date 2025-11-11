@@ -28,6 +28,10 @@ class LobbyServer:
         self.port = port
         self.server_socket = None
         self.running = False
+
+        # Game Server host (can be set via environment variable)
+        import os
+        self.game_server_host = os.environ.get('GAME_SERVER_HOST', '140.113.17.11')
         self.shutdown_flag = False
         
         # DB 客戶端
@@ -279,6 +283,8 @@ class LobbyServer:
                         response = self.handle_spectate_game(data, client_sock)
                     elif action == "replay_response":
                         response = self.handle_replay_response(data, client_sock)
+                    elif action == "replay_vote":
+                        response = self.handle_replay_vote(data, client_sock)
                     elif action == "heartbeat":
                         response = self.handle_heartbeat(client_sock)
                     else:
@@ -422,39 +428,55 @@ class LobbyServer:
         return {"status": "success"}
 
     def remove_online_user(self, client_sock):
-        """移除線上使用者"""
+        """移除線上使用者並通知房間內其他成員"""
+        # Step 1: Get user info and affected rooms while holding lock
         with self.lock:
             user_id = self.user_sockets.get(client_sock)
-            if user_id:
-                user_info = self.online_users.get(user_id)
-                if user_info:
-                    logger.info(f"👋 使用者 {user_info['name']} (ID: {user_id}) 已登出")
-                    del self.online_users[user_id]
-                del self.user_sockets[client_sock]
+            if not user_id:
+                return
 
-                # 清理房間成員資格
-                rooms_to_cleanup = []
-                for room_id, room_info in self.rooms.items():
-                    if user_id in room_info.get("members", []):
-                        room_info["members"].remove(user_id)
-                        logger.info(f"🚪 使用者 {user_id} 從房間 {room_id} 移除（斷線）")
+            user_info = self.online_users.get(user_id)
+            if user_info:
+                logger.info(f"👋 使用者 {user_info['name']} (ID: {user_id}) 已登出")
+                del self.online_users[user_id]
+            del self.user_sockets[client_sock]
 
-                        # 廣播給房間內其他成員
-                        self.broadcast_to_room(room_id, {
-                            "type": "room_update",
-                            "action": "user_left",
-                            "user_id": user_id
-                        })
+            # Find affected rooms and their members
+            affected_rooms = []
+            rooms_to_cleanup = []
 
-                        # 如果房間空了，標記為需要清理
-                        if len(room_info["members"]) == 0:
-                            rooms_to_cleanup.append(room_id)
+            for room_id, room_info in self.rooms.items():
+                if user_id in room_info.get("members", []):
+                    room_info["members"].remove(user_id)
+                    logger.info(f"🚪 使用者 {user_id} 從房間 {room_id} 移除（斷線）")
 
-                # 清理空房間
-                for room_id in rooms_to_cleanup:
-                    del self.rooms[room_id]
-                    self.db.delete_room(room_id)
-                    logger.info(f"🗑️ 房間 {room_id} 已刪除（無成員）")
+                    # Get other members who need notification
+                    other_members = [m for m in room_info["members"] if m in self.online_users]
+                    if other_members:
+                        affected_rooms.append((room_id, other_members))
+
+                    # Mark empty rooms for cleanup
+                    if len(room_info["members"]) == 0:
+                        rooms_to_cleanup.append(room_id)
+
+            # Clean up empty rooms
+            for room_id in rooms_to_cleanup:
+                del self.rooms[room_id]
+                self.db.delete_room(room_id)
+                logger.info(f"🗑️ 房間 {room_id} 已刪除（無成員）")
+
+        # Step 2: Send notifications OUTSIDE the lock
+        for room_id, members in affected_rooms:
+            for member_id in members:
+                try:
+                    self.send_to_user(member_id, {
+                        "type": "player_disconnected",
+                        "user_id": user_id,
+                        "room_id": room_id,
+                        "message": f"玩家 {user_id} 已離線"
+                    })
+                except Exception as e:
+                    logger.error(f"Failed to notify {member_id}: {e}")
     
     # ========== 列表查詢 ==========
     
@@ -742,7 +764,7 @@ class LobbyServer:
             self.send_to_user(member_id, {
                 "type": "game_start",
                 "room_id": room_id,
-                "game_server_host": "localhost",  # 或課程機 IP
+                "game_server_host": self.game_server_host,  # Configurable via GAME_SERVER_HOST env var
                 "game_server_port": game_port
             })
         
@@ -751,7 +773,7 @@ class LobbyServer:
         return {
             "status": "success",
             "data": {
-                "game_server_host": "localhost",
+                "game_server_host": self.game_server_host,
                 "game_server_port": game_port
             }
         }
@@ -763,29 +785,37 @@ class LobbyServer:
         results = data.get("results", {})
 
         logger.info(f"🎯 處理遊戲結果: room_id={room_id}, winner={winner}")
-        logger.info(f"🔥🔥🔥 XXXXX THIS IS THE NEW CODE XXXXX 🔥🔥🔥")
 
         if not room_id:
             return {"status": "error", "message": "缺少 room_id"}
 
         # 儲存遊戲記錄到資料庫
         try:
-            # 提取玩家 ID（results 現在是 dict，keys 是 "P1", "P2"）
-            user_ids = [player_data["user_id"] for player_data in results.values()]
+            # 提取玩家 ID（results 現在是 dict，keys 可能是 "P1", "P2"）
+            user_ids = []
+            for player_data in results.values():
+                try:
+                    user_ids.append(int(player_data["user_id"]))
+                except Exception:
+                    # 若取不到或型別不對，略過該條目
+                    pass
 
             # 建立 match_id (使用時間戳)
             match_id = f"match_{room_id}_{int(datetime.now().timestamp())}"
 
             # 轉換 results 格式給資料庫（如果需要的話）
-            db_results = [
-                {
-                    "userId": player_data["user_id"],
-                    "score": player_data["score"],
-                    "lines": player_data["lines_cleared"],
+            db_results = []
+            for player_data in results.values():
+                try:
+                    uid = int(player_data["user_id"])
+                except Exception:
+                    continue
+                db_results.append({
+                    "userId": uid,
+                    "score": player_data.get("score", 0),
+                    "lines": player_data.get("lines_cleared", 0),
                     "maxCombo": player_data.get("max_combo", 0)
-                }
-                for player_data in results.values()
-            ]
+                })
 
             # 儲存到資料庫
             self.db.create_gamelog(match_id, room_id, user_ids, db_results)
@@ -800,44 +830,43 @@ class LobbyServer:
         logger.info(f"🏠 房間 {room_id} 狀態重置為 waiting")
 
         # 從 GameManager 清除遊戲
-        # 不需要 lock！game_manager.active_games 的清理不影響其他操作
-        logger.info(f"💥 [LINE 795] Cleaning game_manager (no lock needed)")
         if room_id in self.game_manager.active_games:
             del self.game_manager.active_games[room_id]
-        logger.info(f"💥 [LINE 799] game_manager cleanup done")
-        # 發送 game_ended 通知給仍在線的玩家
-        # 直接從 results 取得玩家 ID，不依賴 self.rooms（因為斷線玩家已被移除）
-        logger.info(f"⚡ [LINE 801] About to process notifications for room {room_id}")
-        logger.info(f"⚡ [LINE 801] results = {results}")
 
-        # 從遊戲結果中提取玩家 ID
-        player_ids = [player_data["user_id"] for player_data in results.values()]
-        logger.info(f"🎮 遊戲玩家: {player_ids}")
+        # ---- 決定要通知的人：以「房內成員」為主，results 為輔，並做型別保險 ----
+        with self.lock:
+            room_members = list(self.rooms.get(room_id, {}).get("members", []))
 
-        # 不用 lock！dict.keys() 在 CPython 是 thread-safe 的（GIL 保護）
-        # 即使同時有其他 thread 修改，最壞情況只是讀到稍微過時的資料
-        members = [uid for uid in player_ids if uid in self.online_users]
-        logger.info(f"📱 其中在線的玩家: {members}")
+        # 從 results 補上可能缺的 id，並統一轉 int
+        result_user_ids = []
+        for p in results.values():
+            try:
+                result_user_ids.append(int(p["user_id"]))
+            except Exception:
+                pass
 
-        # 在 lock 外面發送通知（避免死鎖）
-        if members:
-            logger.info(f"📢 發送 game_ended 通知給 {len(members)} 位成員: {members}")
+        # 合併、去重
+        candidate_ids = set(room_members) | set(result_user_ids)
 
-            # 檢查是否有足夠玩家進行 replay（需要至少 2 人）
-            can_replay = len(members) >= 2
+        # 僅保留仍在線上的使用者
+        online_ids = [uid for uid in candidate_ids if uid in self.online_users]
+        logger.info(f"📱 game_ended 將通知的在線玩家: {online_ids}；候選:{list(candidate_ids)} 房內:{room_members} results:{result_user_ids}")
 
-            for member_id in members:
-                logger.info(f"  → 發送給使用者 {member_id}")
-                self.send_to_user(member_id, {
-                    "type": "game_ended",
-                    "room_id": room_id,
-                    "winner": winner,
-                    "results": results,
-                    "request_replay": can_replay,  # 只有在至少 2 人在線時才請求 replay
-                    "message": "遊戲結束" if can_replay else "遊戲結束，對手已離線"
-                })
-        else:
-            logger.warning(f"⚠️ 沒有找到任何在線成員，無法發送通知")
+        # 發送 game_ended 通知（沿用現有同步送法）
+        if online_ids:
+            can_replay = len(online_ids) >= 2  # 若你未使用 replay，可保留此欄位或移除
+            for member_id in online_ids:
+                try:
+                    self.send_to_user(member_id, {
+                        "type": "game_ended",
+                        "room_id": room_id,
+                        "winner": winner,
+                        "results": results,
+                        "request_replay": can_replay,
+                        "message": "遊戲結束" if can_replay else "遊戲結束，對手已離線"
+                    })
+                except Exception as e:
+                    logger.warning(f"⚠️ 發送 game_ended 給 {member_id} 失敗: {e}")
 
         return {"status": "success", "message": "遊戲結果已記錄"}
 
@@ -907,6 +936,72 @@ class LobbyServer:
 
         return {"status": "success", "message": "已收到回應"}
 
+    def handle_replay_vote(self, data, client_sock):
+        """處理 replay 投票 (使用 'vote' 參數名稱)"""
+        user_id = self.user_sockets.get(client_sock)
+        if not user_id:
+            return {"status": "error", "message": "未登入"}
+
+        room_id = data.get("room_id")
+        want_replay = data.get("vote", False)
+
+        logger.info(f"👤 使用者 {user_id} replay投票: {'是' if want_replay else '否'} (房間 {room_id})")
+
+        with self.lock:
+            # 確保房間存在
+            if room_id not in self.rooms:
+                return {"status": "error", "message": "房間不存在"}
+
+            # 初始化 replay_responses 如果不存在
+            if "replay_responses" not in self.rooms[room_id]:
+                self.rooms[room_id]["replay_responses"] = {}
+
+            # 記錄此玩家的回應
+            self.rooms[room_id]["replay_responses"][user_id] = want_replay
+
+            # 取得房間中的玩家列表
+            room = self.db.get_room(room_id)
+            if not room:
+                return {"status": "error", "message": "房間資料不存在"}
+
+            players = room.get("players", [])
+
+            # 檢查是否所有玩家都已回應
+            replay_responses = self.rooms[room_id]["replay_responses"]
+            all_responded = all(player in replay_responses for player in players)
+
+            if all_responded:
+                # 所有玩家都回應了
+                all_want_replay = all(replay_responses.get(player, False) for player in players)
+
+                # 清除 replay_responses 以便下次使用
+                self.rooms[room_id]["replay_responses"] = {}
+
+                if all_want_replay:
+                    # 所有玩家都想重玩
+                    logger.info(f"✅ 房間 {room_id} 所有玩家同意重玩")
+
+                    # 通知所有玩家可以重新開始
+                    for player_id in players:
+                        self.send_to_user(player_id, {
+                            "type": "replay_accepted",
+                            "room_id": room_id,
+                            "message": "所有玩家同意重玩，房主可以重新開始遊戲"
+                        })
+                else:
+                    # 至少有一個玩家不想重玩
+                    logger.info(f"❌ 房間 {room_id} 有玩家拒絕重玩")
+
+                    # 通知所有玩家重玩被拒絕
+                    for player_id in players:
+                        self.send_to_user(player_id, {
+                            "type": "replay_rejected",
+                            "room_id": room_id,
+                            "message": "有玩家拒絕重玩，返回選單"
+                        })
+
+        return {"status": "success", "message": "已收到投票"}
+
     def handle_spectate_game(self, data, client_sock):
         """處理觀戰請求"""
         user_id = self.user_sockets.get(client_sock)
@@ -934,7 +1029,7 @@ class LobbyServer:
         return {
             "status": "success",
             "data": {
-                "game_server_host": "localhost",
+                "game_server_host": self.game_server_host,  # Use configured host
                 "game_server_port": game_info["port"],
                 "room_id": room_id
             }
@@ -954,8 +1049,18 @@ class LobbyServer:
                 self.send_to_user(member_id, message)
     
     def send_to_user(self, user_id, message):
-        """Send message directly to user (synchronous)"""
+        """Send message directly to user (prefer queue; fallback to sync)"""
         try:
+            # 先用非阻塞 queue（若有設定）
+            if hasattr(self, "send_queue") and self.send_queue is not None:
+                try:
+                    self.send_queue.put((user_id, message), block=False)
+                    logger.info(f"📮 queued {message.get('type')} to user {user_id}")
+                    return
+                except Exception:
+                    pass  # queue 爆滿或暫時不可用時，改走同步送
+
+            # 同步送（原邏輯）
             user_info = self.online_users.get(user_id)
             if not user_info:
                 logger.warning(f"⚠️ User {user_id} not online, skipping send")
@@ -966,7 +1071,7 @@ class LobbyServer:
             logger.info(f"✅ Sent {message.get('type')} to user {user_id}")
         except Exception as e:
             logger.warning(f"⚠️ Failed to send {message.get('type')} to user {user_id}: {e}")
-    
+
     def broadcast_shutdown(self, message="Server is shutting down"):
         """廣播關閉通知給所有連線的客戶端"""
         logger.info(f"📢 廣播關閉通知給 {len(self.online_users)} 位使用者")
