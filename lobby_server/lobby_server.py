@@ -66,18 +66,25 @@ class LobbyServer:
 
     def _send_worker(self):
         """持續處理 send_queue 的發送任務"""
+        logger.info("🔥🔥🔥 [WORKER] Worker thread started and waiting for tasks 🔥🔥🔥")
         while True:
             try:
+                logger.info(f"[WORKER] 🔄 Waiting for next task from queue (qsize={self.send_queue.qsize()})...")
                 user_id, message = self.send_queue.get()
+                logger.info(f"[WORKER] 📦 Got task from queue: user_id={user_id}, msg_type={message.get('type', 'unknown')}")
                 sock = None
                 try:
-                    with self.lock:
-                        user_info = self.online_users.get(user_id)
-                        if not user_info:
-                            continue
-                        sock = user_info["socket"]
+                    # 不用 lock 讀取 user_info（dict.get() 在 GIL 保護下是 thread-safe 的）
+                    logger.info(f"[WORKER] 📖 Reading user {user_id} from online_users (no lock)")
+                    user_info = self.online_users.get(user_id)
+                    if not user_info:
+                        logger.warning(f"[worker] ⚠️ User {user_id} 不在 online_users 中，跳過發送")
+                        continue
+                    sock = user_info["socket"]
+                    logger.info(f"[worker] ✅ 取得 user {user_id} 的 socket，準備發送")
 
                     # 實際發送（仍使用既有的 protocol.send_message）
+                    logger.info(f"[WORKER] 📤 About to send to user {user_id}")
                     send_message(sock, json.dumps(message))
                     logger.info(f"[worker] 已發送給 user {user_id}: type={message.get('type', 'unknown')}")
                 except Exception as e:
@@ -756,6 +763,7 @@ class LobbyServer:
         results = data.get("results", {})
 
         logger.info(f"🎯 處理遊戲結果: room_id={room_id}, winner={winner}")
+        logger.info(f"🔥🔥🔥 XXXXX THIS IS THE NEW CODE XXXXX 🔥🔥🔥")
 
         if not room_id:
             return {"status": "error", "message": "缺少 room_id"}
@@ -792,42 +800,44 @@ class LobbyServer:
         logger.info(f"🏠 房間 {room_id} 狀態重置為 waiting")
 
         # 從 GameManager 清除遊戲
-        with self.lock:
-            if room_id in self.game_manager.active_games:
-                del self.game_manager.active_games[room_id]
-
+        # 不需要 lock！game_manager.active_games 的清理不影響其他操作
+        logger.info(f"💥 [LINE 795] Cleaning game_manager (no lock needed)")
+        if room_id in self.game_manager.active_games:
+            del self.game_manager.active_games[room_id]
+        logger.info(f"💥 [LINE 799] game_manager cleanup done")
         # 發送 game_ended 通知給仍在線的玩家
         # 直接從 results 取得玩家 ID，不依賴 self.rooms（因為斷線玩家已被移除）
         logger.info(f"⚡ [LINE 801] About to process notifications for room {room_id}")
         logger.info(f"⚡ [LINE 801] results = {results}")
-        with self.lock:
-            # 從遊戲結果中提取玩家 ID
-            player_ids = [player_data["user_id"] for player_data in results.values()]
-            logger.info(f"🎮 遊戲玩家: {player_ids}")
 
-            # 只通知仍在線的玩家
-            members = [uid for uid in player_ids if uid in self.online_users]
-            logger.info(f"📱 其中在線的玩家: {members} (online_users: {list(self.online_users.keys())})")
+        # 從遊戲結果中提取玩家 ID
+        player_ids = [player_data["user_id"] for player_data in results.values()]
+        logger.info(f"🎮 遊戲玩家: {player_ids}")
 
-            # 發送通知
-            if members:
-                logger.info(f"📢 發送 game_ended 通知給 {len(members)} 位成員: {members}")
+        # 不用 lock！dict.keys() 在 CPython 是 thread-safe 的（GIL 保護）
+        # 即使同時有其他 thread 修改，最壞情況只是讀到稍微過時的資料
+        members = [uid for uid in player_ids if uid in self.online_users]
+        logger.info(f"📱 其中在線的玩家: {members}")
 
-                # 檢查是否有足夠玩家進行 replay（需要至少 2 人）
-                can_replay = len(members) >= 2
+        # 在 lock 外面發送通知（避免死鎖）
+        if members:
+            logger.info(f"📢 發送 game_ended 通知給 {len(members)} 位成員: {members}")
 
-                for member_id in members:
-                    logger.info(f"  → 發送給使用者 {member_id}")
-                    self.send_to_user(member_id, {
-                        "type": "game_ended",
-                        "room_id": room_id,
-                        "winner": winner,
-                        "results": results,
-                        "request_replay": can_replay,  # 只有在至少 2 人在線時才請求 replay
-                        "message": "遊戲結束" if can_replay else "遊戲結束，對手已離線"
-                    })
-            else:
-                logger.warning(f"⚠️ 沒有找到任何在線成員，無法發送通知")
+            # 檢查是否有足夠玩家進行 replay（需要至少 2 人）
+            can_replay = len(members) >= 2
+
+            for member_id in members:
+                logger.info(f"  → 發送給使用者 {member_id}")
+                self.send_to_user(member_id, {
+                    "type": "game_ended",
+                    "room_id": room_id,
+                    "winner": winner,
+                    "results": results,
+                    "request_replay": can_replay,  # 只有在至少 2 人在線時才請求 replay
+                    "message": "遊戲結束" if can_replay else "遊戲結束，對手已離線"
+                })
+        else:
+            logger.warning(f"⚠️ 沒有找到任何在線成員，無法發送通知")
 
         return {"status": "success", "message": "遊戲結果已記錄"}
 
@@ -944,14 +954,18 @@ class LobbyServer:
                 self.send_to_user(member_id, message)
     
     def send_to_user(self, user_id, message):
-        """把發送任務放到 queue，由 worker 實際送出（非阻塞）"""
-        import traceback
-        logger.info(f"🎯 [SEND_TO_USER] Called for user {user_id}, message type: {message.get('type', 'unknown')}")
-        logger.info(f"🎯 [SEND_TO_USER] Stack trace:\n{''.join(traceback.format_stack()[-4:-1])}")
+        """Send message directly to user (synchronous)"""
         try:
-            self.send_queue.put((user_id, message))
+            user_info = self.online_users.get(user_id)
+            if not user_info:
+                logger.warning(f"⚠️ User {user_id} not online, skipping send")
+                return
+
+            sock = user_info["socket"]
+            send_message(sock, json.dumps(message))
+            logger.info(f"✅ Sent {message.get('type')} to user {user_id}")
         except Exception as e:
-            logger.error(f"❌ enqueue 訊息給使用者 {user_id} 失敗: {e}")
+            logger.warning(f"⚠️ Failed to send {message.get('type')} to user {user_id}: {e}")
     
     def broadcast_shutdown(self, message="Server is shutting down"):
         """廣播關閉通知給所有連線的客戶端"""

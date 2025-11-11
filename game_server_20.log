@@ -1,0 +1,618 @@
+[2025-11-11 09:51:57,014] INFO: 🎮 Game Server started on port 10102
+[2025-11-11 09:51:57,014] INFO:    Room: 20, Players: [1, 2]
+[2025-11-11 09:51:57,014] INFO:    Seed: 1889325654
+[2025-11-11 09:51:59,518] INFO: 📥 Player 1 connected from ('127.0.0.1', 57058)
+[2025-11-11 09:51:59,520] INFO: [PROTOCOL] 準備發送 121 bytes
+[2025-11-11 09:51:59,520] INFO: [PROTOCOL] 已發送 125/125 bytes
+[2025-11-11 09:51:59,520] INFO: [PROTOCOL] ✅ 完整發送 125 bytes
+[2025-11-11 09:51:59,520] INFO: ✅ Player 1 (P1) ready
+[2025-11-11 09:51:59,520] INFO: 📥 Player 2 connected from ('127.0.0.1', 57059)
+[2025-11-11 09:51:59,520] INFO: [PROTOCOL] 準備發送 121 bytes
+[2025-11-11 09:51:59,520] INFO: [PROTOCOL] 已發送 125/125 bytes
+[2025-11-11 09:51:59,520] INFO: [PROTOCOL] ✅ 完整發送 125 bytes
+[2025-11-11 09:51:59,520] INFO: ✅ Player 2 (P2) ready
+[2025-11-11 09:51:59,520] INFO: ✅ Both players connected, starting game...
+[2025-11-11 09:51:59,521] INFO: 🎮 Starting input handler for player 1
+[2025-11-11 09:51:59,521] INFO: 🎮 Starting input handler for player 2
+[2025-11-11 09:51:59,625] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,625] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,625] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:51:59,625] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,625] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,625] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:51:59,625] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,625] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,625] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:51:59,625] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,625] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,625] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:51:59,729] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,729] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,729] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:51:59,729] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,729] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,729] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:51:59,729] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,729] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,729] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:51:59,729] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,729] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,729] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:51:59,834] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,834] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,835] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:51:59,835] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,835] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,835] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:51:59,835] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,835] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,835] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:51:59,835] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,835] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,835] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:51:59,940] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,940] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,940] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:51:59,940] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,940] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,940] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:51:59,940] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,940] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,940] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:51:59,940] INFO: [PROTOCOL] 準備發送 262 bytes
+[2025-11-11 09:51:59,940] INFO: [PROTOCOL] 已發送 266/266 bytes
+[2025-11-11 09:51:59,940] INFO: [PROTOCOL] ✅ 完整發送 266 bytes
+[2025-11-11 09:52:00,042] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,042] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,042] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,042] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,042] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,042] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,042] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,042] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,042] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,042] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,042] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,042] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,144] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,145] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,145] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,145] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,145] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,145] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,145] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,145] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,145] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,145] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,146] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,146] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,250] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,251] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,251] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,251] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,251] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,251] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,251] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,251] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,251] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,251] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,251] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,251] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,356] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,357] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,357] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,357] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,357] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,357] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,357] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,357] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,357] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,357] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,357] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,357] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,460] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,460] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,460] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,460] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,460] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,460] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,460] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,460] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,460] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,460] INFO: [PROTOCOL] 準備發送 263 bytes
+[2025-11-11 09:52:00,460] INFO: [PROTOCOL] 已發送 267/267 bytes
+[2025-11-11 09:52:00,460] INFO: [PROTOCOL] ✅ 完整發送 267 bytes
+[2025-11-11 09:52:00,564] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,564] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,564] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,564] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,564] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,564] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,564] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,564] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,564] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,564] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,564] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,565] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,666] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,666] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,666] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,666] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,666] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,667] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,667] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,667] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,667] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,667] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,667] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,667] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,772] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,772] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,772] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,772] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,772] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,772] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,772] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,772] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,772] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,772] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,772] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,772] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,873] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,873] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,873] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,874] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,874] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,874] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,874] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,874] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,874] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,874] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,874] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,874] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,979] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,979] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,979] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,979] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,979] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,979] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,979] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,979] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,979] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:00,979] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:00,979] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:00,980] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,085] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,085] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,085] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,085] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,085] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,085] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,085] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,085] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,085] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,085] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,085] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,085] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,190] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,190] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,190] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,190] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,190] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,190] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,191] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,191] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,191] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,191] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,191] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,191] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,295] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,295] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,295] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,295] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,295] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,295] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,296] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,296] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,296] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,296] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,296] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,296] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,400] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,400] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,400] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,400] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,400] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,400] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,400] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,400] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,400] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,400] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,400] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,400] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,501] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,502] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,502] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,502] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,502] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,502] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,502] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,502] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,503] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,503] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,503] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,503] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,608] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,608] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,608] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,608] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,609] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,609] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,609] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,609] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,609] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,609] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,609] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,609] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,714] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,714] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,714] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,714] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,714] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,714] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,714] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,715] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,715] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,715] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,715] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,715] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,820] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,820] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,820] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,820] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,820] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,820] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,820] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,820] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,820] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,820] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,820] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,820] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,925] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,926] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,926] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,926] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,926] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,926] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,926] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,926] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,926] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:01,926] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:01,926] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:01,926] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,030] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,030] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,030] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,030] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,030] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,031] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,031] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,031] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,031] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,031] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,031] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,031] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,136] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,136] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,136] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,137] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,137] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,137] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,137] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,137] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,137] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,137] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,137] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,137] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,242] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,242] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,242] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,243] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,243] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,243] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,243] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,243] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,243] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,243] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,243] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,243] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,347] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,348] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,348] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,348] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,349] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,349] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,349] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,349] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,349] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,349] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,349] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,349] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,456] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,456] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,457] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,457] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,457] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,457] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,458] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,458] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,458] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,458] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,458] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,458] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,562] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,562] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,562] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,562] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,563] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,563] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,563] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,563] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,563] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,563] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,563] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,563] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,669] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,669] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,670] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,670] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,670] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,670] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,670] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,670] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,670] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,670] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,671] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,671] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,776] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,777] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,777] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,777] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,777] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,777] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,777] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,777] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,777] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,778] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,778] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,778] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,878] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,879] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,879] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,879] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,879] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,879] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,879] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,879] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,879] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,879] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,879] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,879] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,982] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,982] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,982] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,983] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,983] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,983] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,983] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,983] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,983] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:02,983] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:02,984] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:02,984] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,084] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,084] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,084] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,084] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,084] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,084] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,084] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,084] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,084] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,084] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,084] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,085] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,190] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,190] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,190] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,191] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,191] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,191] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,191] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,191] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,191] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,191] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,191] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,191] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,297] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,298] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,298] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,298] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,298] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,298] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,298] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,298] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,298] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,298] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,299] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,299] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,405] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,405] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,405] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,405] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,405] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,405] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,405] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,406] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,406] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,406] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,406] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,406] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,511] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,512] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,512] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,512] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,512] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,512] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,512] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,512] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,513] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,513] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,513] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,513] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,617] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,617] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,618] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,618] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,618] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,618] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,618] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,618] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,618] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,618] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,618] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,618] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,723] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,723] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,723] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,723] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,724] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,724] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,724] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,724] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,724] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,724] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,724] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,724] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,827] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,827] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,827] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,827] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,827] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,827] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,827] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,828] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,828] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,828] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,828] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,828] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,934] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,934] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,935] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,935] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,935] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,935] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,935] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,936] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,936] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:03,936] INFO: [PROTOCOL] 準備發送 264 bytes
+[2025-11-11 09:52:03,937] INFO: [PROTOCOL] 已發送 268/268 bytes
+[2025-11-11 09:52:03,937] INFO: [PROTOCOL] ✅ 完整發送 268 bytes
+[2025-11-11 09:52:04,000] ERROR: ❌ ProtocolError for 2: 接收失敗: [Errno 54] Connection reset by peer
+[2025-11-11 09:52:04,000] WARNING: ⚠️ Player 2 disconnected during game!
+[2025-11-11 09:52:04,001] INFO: [PROTOCOL] 準備發送 126 bytes
+[2025-11-11 09:52:04,001] INFO: [PROTOCOL] 已發送 130/130 bytes
+[2025-11-11 09:52:04,001] INFO: [PROTOCOL] ✅ 完整發送 130 bytes
+[2025-11-11 09:52:04,001] INFO: [PROTOCOL] 準備發送 126 bytes
+[2025-11-11 09:52:04,001] ERROR: [PROTOCOL] ❌ 發送訊息失敗: 發送失敗: [Errno 32] Broken pipe
+[2025-11-11 09:52:04,001] INFO: 📊 Attempting to report game result to lobby: room=20, results={'P1': {'user_id': 1, 'score': 0, 'lines_cleared': 0}, 'P2': {'user_id': 2, 'score': 0, 'lines_cleared': 0}}
+[2025-11-11 09:52:04,001] INFO: 📡 Connecting to lobby server at localhost:10002...
+[2025-11-11 09:52:04,004] INFO: ✅ Connected to lobby server
+[2025-11-11 09:52:04,004] INFO: 🏆 Winner: None
+[2025-11-11 09:52:04,004] INFO: 📤 Sending report: {'action': 'report_game_result', 'data': {'room_id': 20, 'winner': None, 'results': {'P1': {'user_id': 1, 'score': 0, 'lines_cleared': 0}, 'P2': {'user_id': 2, 'score': 0, 'lines_cleared': 0}}}}
+[2025-11-11 09:52:04,004] INFO: [PROTOCOL] 準備發送 194 bytes
+[2025-11-11 09:52:04,004] INFO: [PROTOCOL] 已發送 198/198 bytes
+[2025-11-11 09:52:04,004] INFO: [PROTOCOL] ✅ 完整發送 198 bytes
+[2025-11-11 09:52:04,004] INFO: ✅ Report sent, waiting for response...
+[2025-11-11 09:52:04,097] INFO: 🎮 Game Over! Winner: None
+[2025-11-11 09:52:04,097] INFO: [PROTOCOL] 準備發送 158 bytes
+[2025-11-11 09:52:04,097] INFO: [PROTOCOL] 已發送 162/162 bytes
+[2025-11-11 09:52:04,097] INFO: [PROTOCOL] ✅ 完整發送 162 bytes
+[2025-11-11 09:52:04,097] INFO: [PROTOCOL] 準備發送 158 bytes
+[2025-11-11 09:52:04,097] ERROR: [PROTOCOL] ❌ 發送訊息失敗: 發送失敗: [Errno 32] Broken pipe
+[2025-11-11 09:52:04,097] INFO: 📊 Attempting to report game result to lobby: room=20, results={'P1': {'user_id': 1, 'score': 0, 'lines_cleared': 0, 'max_combo': 0}, 'P2': {'user_id': 2, 'score': 0, 'lines_cleared': 0, 'max_combo': 0}}
+[2025-11-11 09:52:04,097] INFO: 📡 Connecting to lobby server at localhost:10002...
+[2025-11-11 09:52:04,103] INFO: ✅ Connected to lobby server
+[2025-11-11 09:52:04,103] INFO: 🏆 Winner: None
+[2025-11-11 09:52:04,103] INFO: 📤 Sending report: {'action': 'report_game_result', 'data': {'room_id': 20, 'winner': None, 'results': {'P1': {'user_id': 1, 'score': 0, 'lines_cleared': 0, 'max_combo': 0}, 'P2': {'user_id': 2, 'score': 0, 'lines_cleared': 0, 'max_combo': 0}}}}
+[2025-11-11 09:52:04,103] INFO: [PROTOCOL] 準備發送 226 bytes
+[2025-11-11 09:52:04,103] INFO: [PROTOCOL] 已發送 230/230 bytes
+[2025-11-11 09:52:04,103] INFO: [PROTOCOL] ✅ 完整發送 230 bytes
+[2025-11-11 09:52:04,103] INFO: ✅ Report sent, waiting for response...
+[2025-11-11 09:52:04,526] INFO: 🔌 Player 1 input handler stopped
+[2025-11-11 09:52:09,006] ERROR: ❌ Failed to report game result: 接收逾時
+Traceback (most recent call last):
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/../lobby_server/protocol.py", line 77, in recv_exact
+    chunk = sock.recv(n - len(data))
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+ConnectionResetError: [Errno 54] Connection reset by peer
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/game_server.py", line 316, in handle_player_input
+    msg_str = recv_message(sock)
+              ^^^^^^^^^^^^^^^^^^
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/../lobby_server/protocol.py", line 103, in recv_message
+    header = recv_exact(sock, 4)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/../lobby_server/protocol.py", line 84, in recv_exact
+    raise ProtocolError(f"接收失敗: {e}")
+lobby_server.protocol.ProtocolError: 接收失敗: [Errno 54] Connection reset by peer
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/../lobby_server/protocol.py", line 77, in recv_exact
+    chunk = sock.recv(n - len(data))
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/game_server.py", line 607, in report_game_result
+    response_str = recv_message(lobby_sock)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/../lobby_server/protocol.py", line 103, in recv_message
+    header = recv_exact(sock, 4)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/../lobby_server/protocol.py", line 82, in recv_exact
+    raise ProtocolError("接收逾時")
+lobby_server.protocol.ProtocolError: 接收逾時
+[2025-11-11 09:52:09,015] INFO: 🏁 Game ended due to player 2 disconnection
+[2025-11-11 09:52:09,015] INFO: 🔌 Player 2 input handler stopped
+[2025-11-11 09:52:09,104] ERROR: ❌ Failed to report game result: 接收逾時
+Traceback (most recent call last):
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/../lobby_server/protocol.py", line 77, in recv_exact
+    chunk = sock.recv(n - len(data))
+            ^^^^^^^^^^^^^^^^^^^^^^^^
+TimeoutError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/game_server.py", line 607, in report_game_result
+    response_str = recv_message(lobby_sock)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/../lobby_server/protocol.py", line 103, in recv_message
+    header = recv_exact(sock, 4)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/Users/ninachung/Documents/GitHub/Network_programming/game_server/../lobby_server/protocol.py", line 82, in recv_exact
+    raise ProtocolError("接收逾時")
+lobby_server.protocol.ProtocolError: 接收逾時
+[2025-11-11 09:52:09,105] INFO: 📊 Final results: {'P1': {'user_id': 1, 'score': 0, 'lines_cleared': 0, 'max_combo': 0}, 'P2': {'user_id': 2, 'score': 0, 'lines_cleared': 0, 'max_combo': 0}}
+[2025-11-11 09:52:11,111] INFO: 🛑 Shutting down Game Server...
+[2025-11-11 09:52:11,111] INFO: ✅ Game Server shut down
+[2025-11-11 09:52:11,111] INFO: 🛑 Shutting down Game Server...
+[2025-11-11 09:52:11,111] INFO: ✅ Game Server shut down
